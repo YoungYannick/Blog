@@ -110,6 +110,17 @@ document.addEventListener('DOMContentLoaded', function() {
   document.body.setAttribute('data-theme', currentTheme);
   window.themeManager.updateThemeIcons(currentTheme);
 
+  // 添加系统主题变化监听
+  if (window.matchMedia) {
+    const colorSchemeQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    colorSchemeQuery.addEventListener('change', (e) => {
+      const newTheme = e.matches ? 'dark' : 'light';
+      document.body.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+      window.themeManager.updateThemeIcons(newTheme);
+    });
+  }
+
   window.addEventListener('scroll', () => {
     if (window.pageYOffset > 300) {
       backToTop.classList.add('show');
