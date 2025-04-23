@@ -1,0 +1,1806 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>YoungYannick's Blog</title>
+  <meta name="author" content="YoungYannick" />
+  <meta name="description" content="YoungYannick's Blog" />
+  <meta name="keywords" content="YoungYannick,Blog,Blog,YoungYannick的博客,youngyannick,yannick" />
+  <link rel="icon" href="/images/Yannick_64.ico" />
+  <link rel="stylesheet" href="/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&family=Quicksand:wght@500&display=swap" rel="stylesheet">
+  <link href="/css/toastr.min.css" rel="stylesheet" />
+  <link href="/css/navbar.css" rel="stylesheet" />
+  <link href="/css/footer.css" rel="stylesheet" />
+  <link href="/css/theme.css" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/tools-bubble.css">
+  <script src="/js/tools-bubble.js"></script>
+  <script src="/js/theme.js"></script>
+  <script src="/js/filter-module.js"></script>
+  <script src="/js/jquery-3.7.1.js"></script>
+  <script src="/js/bootstrap.bundle.min.js"></script>
+  <script src="/js/clipboard.min.js"></script>
+  <script src="/js/toastr.min.js"></script>
+  <script src="/js/navbar.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #f0f4ff;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    body::before,
+    body::after {
+      content: '';
+      position: absolute;
+      width: 60vmin;
+      height: 60vmin;
+      border-radius: 50%;
+      filter: blur(100px);
+      opacity: 0.65;
+      animation: float 20s infinite linear;
+      z-index: -1;
+    }
+
+    body::before {
+      background: #FFC0CB;
+      top: 20%;
+      left: 10%;
+    }
+
+    body::after {
+      background: #87CEFA;
+      bottom: 20%;
+      right: 10%;
+      animation-delay: -10s;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0) rotate(0deg); }
+      25% { transform: translate(5vw, -3vh) rotate(90deg); }
+      50% { transform: translate(-4vw, 6vh) rotate(180deg); }
+      75% { transform: translate(3vw, -5vh) rotate(270deg); }
+    }
+
+    .custom-container {
+      padding: 0 15px;
+      position: relative;
+      z-index: 1;
+      width: 100%;
+    }
+
+    .content-wrapper {
+      display: flex;
+      gap: 1.5rem;
+      padding: 0 2rem;
+      margin-bottom: 2rem;
+      min-height: calc(100vh - 80px - 60px);
+    }
+
+    .content-main {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .content-sidebar {
+      width: 300px;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .author-card {
+      background: var(--light-card-bg);
+      border-radius: 24px;
+      padding: 1.5rem;
+      box-shadow: 0 8px 32px rgba(135, 206, 250, 0.1);
+      border: 1px solid var(--light-border);
+      backdrop-filter: blur(8px);
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .author-avatar {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      margin: 0 auto 0.8rem;
+      overflow: hidden;
+      border: 3px solid #fff;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .author-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .author-name {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 0.3rem;
+      color: var(--light-text);
+    }
+
+    .author-bio {
+      font-size: 0.9rem;
+      color: var(--light-text);
+      margin-bottom: 0.8rem;
+    }
+
+    .author-stats {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .stat-item {
+      text-align: center;
+    }
+
+    .stat-value {
+      font-weight: 700;
+      color: var(--light-text);
+    }
+
+    .stat-label {
+      font-size: 0.8rem;
+      color: var(--light-text);
+    }
+
+    .hero-section .social-links2 {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      justify-content: center;
+    }
+
+    .hero-section .social-link2 {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.8rem;  /* 增加内边距 */
+      width: 40px;      /* 固定宽度 */
+      height: 40px;     /* 固定高度 */
+      border-radius: 50%; /* 改为圆形 */
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(5px);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      text-decoration: none;
+    }
+
+    .hero-section .social-link2:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .hero-section {
+      position: relative;
+      height: 100vh;
+      width: 100vw;
+      overflow: hidden;
+      margin-left: calc(-50vw + 50%);
+      margin-right: calc(-50vw + 50%);
+      border-radius: 0 0 15px 15px;
+    }
+
+    .hero-background {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .hero-background img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 0 0 15px 15px;
+    }
+
+    .hero-section::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.3);
+      z-index: 1;
+      border-radius: 0 0 15px 15px;
+    }
+
+    .timeline-card {
+      background: var(--light-card-bg);
+      border-radius: 24px;
+      padding: 2rem;
+      box-shadow: 0 8px 32px rgba(135, 206, 250, 0.1);
+      border: 1px solid var(--light-border);
+      backdrop-filter: blur(8px);
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .timeline {
+      position: relative;
+      padding: 0;
+      margin: 0;
+      list-style: none;
+      overflow-y: auto;
+      flex: 1;
+      padding-right: 10px;
+    }
+
+    .timeline::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .timeline::-webkit-scrollbar-track {
+      background: rgba(135, 206, 250, 0.1);
+      border-radius: 3px;
+    }
+
+    .timeline::-webkit-scrollbar-thumb {
+      background: linear-gradient(135deg, #FFC0CB 30%, #87CEFA 70%);
+      border-radius: 3px;
+    }
+
+    .timeline::-webkit-scrollbar-thumb:hover {
+      background: linear-gradient(135deg, #FFC0CB 50%, #87CEFA 90%);
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 12px;
+      top: 0;
+      width: 2px;
+      background: linear-gradient(135deg, #FFC0CB 30%, #87CEFA 70%);
+      z-index: 1;
+    }
+
+    .timeline-item {
+      position: relative;
+      padding-left: 40px;
+      padding-bottom: 1.5rem;
+    }
+
+    .timeline-item:last-child {
+      padding-bottom: 0;
+    }
+
+    .timeline-dot {
+      position: absolute;
+      left: 6px;
+      top: 0;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #FFC0CB 30%, #87CEFA 70%);
+      border: 2px solid var(--light-card-bg);
+    }
+
+    .timeline-date {
+      font-size: 0.9rem;
+      color: var(--light-text);
+      margin-bottom: 0.3rem;
+      font-weight: 600;
+    }
+
+    .timeline-content {
+      font-size: 0.85rem;
+      color: var(--light-text);
+      padding: 0.5rem;
+      background: rgba(135, 206, 250, 0.1);
+      border-radius: 8px;
+      transition: all 0.3s ease;
+    }
+
+    .timeline-content:hover {
+      background: rgba(135, 206, 250, 0.2);
+      transform: translateX(5px);
+    }
+
+    .timeline-content a {
+      color: var(--light-text);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .timeline-content a:hover {
+      color: #FFC0CB;
+    }
+
+    .welcome-bubble {
+      position: fixed;
+      left: 20px;
+      bottom: 20px;
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      max-width: 350px;
+      transform: translateY(150%);
+      transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .welcome-bubble.show {
+      transform: translateY(0);
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .bubble-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--light-card-bg);
+      backdrop-filter: blur(10px);
+      border-radius: 16px 16px 0 0;
+      padding: 12px 15px;
+      border-bottom: 1px solid rgba(135, 206, 250, 0.2);
+    }
+
+    .bubble-title {
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: #2c3e50;
+      margin: 0;
+      background: linear-gradient(135deg, #FFC0CB 30%, #87CEFA 70%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .bubble-close {
+      background: none;
+      border: none;
+      color: #4a5568;
+      cursor: pointer;
+      font-size: 1.2rem;
+      padding: 0;
+      transition: color 0.3s ease;
+    }
+
+    .bubble-close:hover {
+      color: #FF6B6B;
+    }
+
+    .bubble-content {
+      background: var(--light-card-bg);
+      backdrop-filter: blur(10px);
+      border-radius: 0 0 16px 16px;
+      padding: 15px;
+      box-shadow: 0 8px 32px rgba(135, 206, 250, 0.15);
+      border: 1px solid var(--light-border);
+      border-top: none;
+    }
+
+    .bubble-info {
+      margin-bottom: 10px;
+      color: var(--light-text);
+      font-size: 0.9rem;
+    }
+
+    .bubble-info:last-child {
+      margin-bottom: 0;
+    }
+
+    .bubble-toggle {
+      position: fixed;
+      left: 20px;
+      bottom: 20px;
+      z-index: 999;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #FFC0CB 30%, #87CEFA 70%);
+      color: white;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      border: none;
+      font-size: 1.5rem;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .bubble-toggle.show {
+      display: flex;
+    }
+
+    .bubble-toggle:hover {
+      transform: scale(1.1);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .blog-hello {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 2;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+      width: 100%;
+    }
+
+    .blog-hello h1 {
+      color: #ffffff;
+      font-size: 3rem;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+      -webkit-text-fill-color: #ffffff;
+      -webkit-background-clip: text;
+      font-weight: bold;
+    }
+
+    .blog-hello .typewriter-text {
+      color: rgba(254, 254, 254, 0.7);
+      -webkit-background-clip: text;
+      font-size: 1.15rem;
+      margin: 0;
+      position: relative;
+      display: inline-block;
+      padding-left: 1.2rem;
+    }
+
+    .blog-hello .typewriter-text::before {
+      content: '"';
+      position: absolute;
+      left: -0.2rem;
+      color: rgba(254, 254, 254, 0.7) !important;
+      font-size: 2rem;
+      font-weight: bold;
+      line-height: 1;
+      font-family: "Times New Roman", serif;
+      top: -0.1rem;
+    }
+
+    .blog-hello .typewriter-text::after {
+      content: '|';
+      position: absolute;
+      right: -0.5rem;
+      color: #FFC0CB;
+      font-size: 1.15rem; 
+      animation: cursor 1.2s infinite;
+    }
+
+    .blog-hello .typewriter-text.typing-finished::after {
+      content: '"'; /* 打字结束后显示结束引号 */
+      color: rgba(254, 254, 254, 0.7);
+      font-size: 2rem;
+      font-weight: bold;
+      line-height: 1;
+      font-family: "Times New Roman", serif;
+      right: -1.2rem;
+      top: 0rem;
+      animation: none;
+    }
+
+    @keyframes cursor {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    body[data-theme="dark"] .typewriter-text::before {
+      color: #87CEFA;
+    }
+
+    body[data-theme="dark"] .typewriter-text::after {
+      color: #FFC0CB;
+    }
+
+    .box {
+      width: 100%; /* 确保box填充整个容器 */
+      height: 100%;
+      margin: 0;
+      position: relative;
+      background: var(--light-card-bg);
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 8px 32px rgba(135, 206, 250, 0.1);
+      border: 1px solid var(--light-border);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      backdrop-filter: blur(8px);
+    }
+
+    .content-row > div:last-child {
+      padding-right: 0 !important; /* 移除最后一个col的右padding */
+    }
+
+    .box:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 36px rgba(135, 206, 250, 0.2);
+    }
+
+    .box-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      position: absolute;
+      top: 0;
+      left: 0;
+      transition: transform 0.5s ease-in-out;
+    }
+
+    .box-description {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(5px);
+      color: #fff;
+      padding: 0.8rem;
+      text-align: center;
+      z-index: 1;
+      transition: all 0.3s ease;
+      border-radius: 0 0 24px 24px;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 48px; /* 固定标题区域高度 */
+    }
+
+    .box-description a {
+      color: #fff;
+      text-decoration: none;
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 700;
+      font-size: 1rem; /* 初始字体大小 */
+      transition: color 0.3s ease;
+      white-space: nowrap; /* 强制单行 */
+      overflow: hidden;
+      text-overflow: ellipsis;
+      width: 100%;
+      display: block;
+    }
+
+    .box-description a:hover {
+      color: #FFC0CB;
+    }
+
+    .section-title {
+      position: relative;
+      margin-bottom: 1rem;
+    }
+
+    .section-title h2 {
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 700;
+      font-size: 2rem;
+      color: #2c3e50;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(135deg, #FFC0CB 30%, #87CEFA 70%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: inline-block;
+    }
+
+    .title-underline {
+      height: 4px;
+      width: 80px;
+      background: linear-gradient(135deg, #FFC0CB 30%, #87CEFA 70%);
+      margin: 0 auto;
+      border-radius: 2px;
+    }
+
+    .content-section {
+      background: rgba(255, 255, 255, 0.7);
+      border-radius: 24px;
+      padding: 1.5rem 1.1rem; /* 增加右padding，确保最后一个元素有空间 */
+      box-shadow: 0 8px 32px rgba(135, 206, 250, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      backdrop-filter: blur(8px);
+      display: flex;
+      flex-direction: column;
+      height: 720px; /* 固定高度 */
+    }
+
+    #contentContainer {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      overflow: hidden;
+      width: 100%; /* 明确宽度，防止裁剪 */
+    }
+
+    .content-row {
+      display: flex;
+      width: 100%;
+      flex: 1;
+      gap: 1rem; /* 添加固定间距 */
+      margin-bottom: 1rem; /* 行间距 */
+    }
+
+    .content-row > div {
+      flex: 1; /* 让每个列平均分配宽度 */
+      min-width: 0; /* 防止内容溢出 */
+      padding: 0 !important; /* 移除Bootstrap默认padding */
+    }
+
+    .pagination-controls {
+      background: var(--light-card-bg);
+      padding: 1rem;
+      border-radius: 12px;
+      border: 1px solid var(--light-border);
+      margin-top: 1rem;
+      width: 100%;
+    }
+
+    .pagination-info {
+      color: var(--light-text);
+    }
+
+    .form-select {
+      background-color: var(--light-card-bg);
+      color: var(--light-text);
+      border-color: var(--light-border);
+    }
+
+    #toast-container {
+      margin-top: 80px;
+    }
+
+    #toast-container > div {
+      border-radius: 12px !important;
+      opacity: 1 !important;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+    }
+
+    .repo-title {
+      font-size: 0.85rem !important;
+      margin-bottom: 0.5rem !important;
+    }
+
+    .repo-links {
+      margin-top: 0.8rem;
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+    }
+
+    .repo-link {
+      display: flex;
+      align-items: center;
+      padding: 0.5rem;
+      border-radius: 8px;
+      transition: transform 0.3s ease;
+      text-decoration: none;
+    }
+
+    .repo-link:hover {
+      transform: translateY(-3px);
+    }
+
+    .repo-link span {
+      color: var(--light-text);
+      font-size: 0.9rem;
+      margin-left: 8px;
+    }
+
+    .page-input {
+      width: 50px;
+      text-align: center;
+      border: 1px solid var(--light-border);
+      border-radius: 4px;
+      padding: 2px 4px;
+      margin: 0 4px;
+      background: transparent;
+      color: var(--light-text);
+    }
+
+    .page-input:focus {
+      outline: none;
+      border-color: #87CEFA;
+    }
+
+    body[data-theme="dark"] .page-input {
+      color: var(--dark-text);
+      border-color: var(--dark-border);
+    }
+
+    body[data-theme="dark"] .bubble-header {
+      background: var(--dark-card-bg);
+      border-bottom-color: var(--dark-border);
+    }
+
+    body[data-theme="dark"] .bubble-content {
+      background: var(--dark-card-bg);
+      border-color: var(--dark-border);
+    }
+
+    body[data-theme="dark"] .bubble-info {
+      color: var(--dark-text);
+    }
+
+    body[data-theme="dark"] .box {
+      background: var(--dark-card-bg);
+      border-color: var(--dark-border);
+    }
+
+    body[data-theme="dark"] .box-description a {
+      color: #fff; /* 深色模式下保持白色 */
+    }
+
+    body[data-theme="dark"] .box-description a:hover {
+      color: #FFC0CB;
+    }
+
+    body[data-theme="dark"] .social-link2 {
+      background: var(--dark-card-bg);
+    }
+
+    body[data-theme="dark"] .social-link2 img {
+      filter: brightness(0) invert(1);
+    }
+
+    body[data-theme="dark"] .social-link2 i {
+      color: var(--dark-text) !important;
+    }
+
+    body[data-theme="dark"] .blog-hello h1 {
+      color: rgba(255, 255, 255, 0.85);
+      -webkit-text-fill-color: rgba(255, 255, 255, 0.85);
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    }
+
+    body[data-theme="dark"] .blog-hello .typewriter-text {
+      color: rgba(254, 254, 254, 0.7);
+    }
+
+    body[data-theme="dark"] .author-card {
+      background: var(--dark-card-bg);
+      border-color: var(--dark-border);
+    }
+
+    body[data-theme="dark"] .author-name,
+    body[data-theme="dark"] .author-bio,
+    body[data-theme="dark"] .stat-value,
+    body[data-theme="dark"] .stat-label {
+      color: var(--dark-text);
+    }
+
+    body[data-theme="dark"] .repo-link span {
+      color: var(--dark-text);
+    }
+
+    body[data-theme="dark"] .repo-link i {
+      color: var(--dark-text) !important;
+    }
+
+    body[data-theme="dark"] .repo-link img {
+      filter: brightness(0) invert(1);
+    }
+
+    body[data-theme="dark"] .repo-title {
+      color: var(--dark-text) !important;
+    }
+
+    body[data-theme="dark"] .pagination-controls {
+      background: var(--dark-card-bg);
+      border-color: var(--dark-border);
+    }
+
+    body[data-theme="dark"] .pagination-info {
+      color: var(--dark-text);
+    }
+
+    body[data-theme="dark"] .form-select {
+      background-color: var(--dark-card-bg);
+      color: var(--dark-text);
+      border-color: var(--dark-border);
+    }
+
+    body[data-theme="dark"] .timeline-card {
+      background: var(--dark-card-bg);
+      border-color: var(--dark-border);
+    }
+
+    body[data-theme="dark"] .timeline-dot {
+      border-color: var(--dark-card-bg);
+    }
+
+    body[data-theme="dark"] .timeline-date,
+    body[data-theme="dark"] .timeline-content,
+    body[data-theme="dark"] .timeline-content a {
+      color: var(--dark-text);
+    }
+
+    @media (min-width: 1200px) {
+      .content-section {
+        height: 720px; /* PC端固定高度 */
+        padding: 1.5rem 1.25rem;
+      }
+
+      .content-sidebar {
+        height: 720px; /* 与左侧高度一致 */
+      }
+
+      .author-card {
+        flex: 0 0 auto;
+      }
+
+      .timeline-card {
+        flex: 1;
+      }
+
+      #contentContainer {
+        height: calc(100% - 80px - 2rem); /* 减去标题和分页高度 */
+      }
+
+      .content-row {
+        height: calc(33.33% - 0.67rem); /* 三行，每行均分高度 */
+        justify-content: space-between;
+        padding-right: 0.5rem;
+      }
+
+      .content-row > div {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+      }
+    }
+
+    @media (max-width: 1200px) {
+      .content-wrapper {
+        flex-direction: column;
+      }
+
+      .content-sidebar {
+        width: 100%;
+        height: auto;
+      }
+
+      .content-section {
+        height: 960px; /* 平板设备增加高度 */
+        padding: 1.5rem 0.75rem; /* 平板减小右padding */
+      }
+
+      #contentContainer {
+        height: calc(100% - 80px - 2rem);
+      }
+
+      .content-row {
+        height: calc(25% - 0.75rem); /* 四行 */
+        gap: 0.5rem; /* 减小gap */
+      }
+    }
+
+    @media (max-width: 768px) {
+      .welcome-bubble {
+        max-width: 300px;
+      }
+
+      .hero-section {
+        height: 100vh;
+      }
+
+      .content-section {
+        height: 1200px; /* 手机设备进一步增加高度 */
+        padding: 1.5rem 0.5rem; /* 手机进一步减小 */
+      }
+
+      .section-title h2 {
+        font-size: 1.8rem;
+      }
+
+      .blog-hello h1 {
+        font-size: 2.5rem;
+      }
+
+      .blog-hello .typewriter-text {
+        font-size: 1.05rem;
+        padding-left: 1rem; /* 调整移动端padding */
+      }
+
+      .blog-hello .typewriter-text::before {
+        font-size: 1.8rem;
+        left: -0.2rem;
+        top: -0.1rem;
+      }
+
+      .blog-hello .typewriter-text::after {
+        font-size: 1.05rem; /* 光标大小与文字一致 */
+        right: -0.4rem;
+      }
+
+      .blog-hello .typewriter-text.typing-finished::after {
+        font-size: 1.8rem;
+        right: -1rem;
+        top: -0.1rem;
+      }
+
+      .content-wrapper {
+        padding: 0 1rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .pagination-controls .d-flex {
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .pagination-controls .d-flex > div {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .pagination-controls .ms-auto {
+        margin-left: 0 !important;
+      }
+
+      .content-row {
+        gap: 0.75rem; /* 较窄屏幕减小间距 */
+      }
+
+      .content-row > div {
+        width: 100%; /* 确保在移动端占满宽度 */
+      }
+
+      .box-description {
+        padding: 0.6rem;
+        height: 40px;
+      }
+
+      .box-description a {
+        font-size: 0.9rem;
+      }
+    }
+
+    @media (max-width: 576px) {
+      body {
+        padding: 0;
+      }
+
+      .hero-section {
+        height: 100vh;
+      }
+
+      .welcome-bubble {
+        max-width: 250px;
+        left: 10px;
+        bottom: 10px;
+      }
+
+      .bubble-toggle {
+        left: 10px;
+        bottom: 10px;
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+      }
+
+      .blog-hello h1 {
+        font-size: 1.8rem;
+      }
+
+      .blog-hello .typewriter-text {
+        font-size: 0.8rem;
+        padding-left: 0.8rem;
+      }
+
+      .blog-hello .typewriter-text::before {
+        font-size: 1.4rem;
+        left: -0.15rem;
+        top: -0.1rem;
+      }
+
+      .blog-hello .typewriter-text::after {
+        font-size: 0.8rem; /* 光标大小与文字一致 */
+        right: -0.3rem;
+      }
+
+      .blog-hello .typewriter-text.typing-finished::after {
+        font-size: 1.4rem;
+        right: -0.8rem;
+        top: -0.1rem;
+      }
+
+      .box-description {
+        padding: 0.5rem;
+        height: 36px;
+      }
+
+      .box-description a {
+        font-size: 0.8rem;
+      }
+
+      .section-title h2 {
+        font-size: 1.5rem;
+      }
+
+      .content-section {
+        padding: 1.5rem 0.25rem; /* 超小屏最小化padding */
+        height: 1440px; /* 超小屏幕设备高度 */
+      }
+
+      .content-wrapper {
+        padding: 0 0.5rem;
+        margin-bottom: 1rem;
+      }
+
+      .content-row {
+        gap: 0.5rem; /* 更窄屏幕进一步减小间距 */
+      }
+    }
+
+    .btn-outline-primary {
+      background: linear-gradient(135deg, #FFC0CB 30%, #87CEFA 70%);
+      color: white !important;
+      border: none;
+      padding: 0.8rem 1.5rem;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 600;
+      outline: none !important;
+      transform: translateY(0);
+    }
+
+    .btn-outline-primary:hover,
+    .btn-outline-primary:focus,
+    .btn-outline-primary:active {
+      outline: none !important;
+      box-shadow: 0 6px 15px rgba(191, 200, 209, 0.274);
+      border: none;
+      transform: none;
+      background: linear-gradient(135deg, #FFC0CB 30%, #87CEFA 70%);
+      color: white;
+    }
+
+    body[data-theme="dark"] .btn-outline-primary {
+      background: var(--dark-card-bg);
+      color: var(--dark-text);
+      border: 1px solid var(--dark-border);
+    }
+
+    body[data-theme="dark"] .btn-outline-primary:hover,
+    body[data-theme="dark"] .btn-outline-primary:focus,
+    body[data-theme="dark"] .btn-outline-primary:active {
+      background: rgba(255, 255, 255, 0.1);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+      color: var(--dark-text);
+    }
+
+    .btn-outline-primary:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    body[data-theme="dark"] .btn-outline-primary:disabled {
+        opacity: 0.6;
+        background: var(--dark-card-bg);
+        border: 1px solid var(--dark-border);
+    }
+
+    body[data-theme="dark"] .bubble-toggle {
+      background: var(--dark-card-bg);
+      color: var(--dark-text);
+      border: 1px solid var(--dark-border);
+    }
+
+    body[data-theme="dark"] .bubble-toggle:hover {
+      background: rgba(255, 255, 255, 0.1);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+    }
+  </style>
+</head>
+
+<body>
+  <div id="navbar-container"></div>
+
+  <div class="hero-section">
+    <div class="hero-background" id="heroBackground"></div>
+    <div class="blog-hello">
+      <h1>Welcome to YoungYanick's Blog!</h1>
+      <p id="typewriter" class="typewriter-text"></p>
+      <div class="social-links2" style="margin-top: 1rem;">
+        <a href="https://github.com/youngyannick" target="_blank" class="social-link2">
+          <i class="fab fa-github" style="color: var(--light-text);"></i>
+        </a>
+        <a href="https://gitee.com/YoungYannick/" target="_blank" class="social-link2">
+          <img src="/images/nav/gitee.svg" alt="Gitee" style="height: 1rem; width: 1rem;">
+        </a>
+        <a href="https://www.youtube.com/@yannick_yang" target="_blank" class="social-link2">
+          <i class="fab fa-youtube" style="color: #FF0000;"></i>
+        </a>
+        <a href="https://space.bilibili.com/505709474" target="_blank" class="social-link2">
+          <i class="fab fa-bilibili" style="color: #00A1D6;"></i>
+        </a>
+        <a href="https://music.163.com/#/user/home?id=435291570" target="_blank" class="social-link2">
+          <img src="/images/nav/NCMusic.svg" alt="NetEase Cloud Music" style="height: 1rem; width: 1rem;">
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="custom-container mt-5">
+    <div class="content-wrapper">
+      <div class="content-main">
+        <div class="content-section">
+          <div class="section-title text-center mb-4">
+            <h2>Content Navigation</h2>
+            <div class="title-underline"></div>
+          </div>
+
+          <!-- 内容展示区域 -->
+          <div id="contentContainer">
+            <!-- 内容将通过 JavaScript 动态加载 -->
+          </div>
+
+          <!-- 分页控制器 -->
+          <div class="pagination-controls">
+            <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
+              <div class="pagination-info">
+                Page： <input type="number" id="currentPageInfo" class="page-input" min="1">Total：<span id="totalPagesInfo">1</span>
+              </div>
+              <div class="d-flex align-items-center">
+                <button id="prevPage" class="btn btn-outline-primary me-2">Pre page</button>
+                <button id="nextPage" class="btn btn-outline-primary ms-2">Next page</button>
+              </div>
+              <div class="d-flex align-items-center ms-auto">
+                <label class="me-2">per page：</label>
+                <select id="itemsPerPage" class="form-select form-select-sm" style="width: auto;">
+                  <option value="3">3</option>
+                  <option value="6">6</option>
+                  <option value="9">9</option>
+                  <option value="12">12</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="content-sidebar">
+        <div class="author-card">
+          <div class="author-avatar">
+            <img src="/images/Yannick_64.ico" alt="YoungYannick">
+          </div>
+          <h3 class="author-name">YoungYannick</h3>
+          <p class="author-bio">A developer who loves programming, games and music.</p>
+          <div class="author-stats">
+            <div class="stat-item">
+              <div class="stat-value" id="articleCount">0</div>
+              <div class="stat-label">Articles</div>
+            </div>
+          </div>
+          <div style="margin-top: 1.5rem;">
+            <p style="font-size: 0.9rem; color: var(--light-text); margin-bottom: 0.8rem;" class="repo-title">My personal Repositories</p>
+            <div class="repo-links">
+              <a href="https://github.com/YoungYannick/Repository" target="_blank" class="repo-link">
+                <i class="fab fa-github" style="color: var(--light-text);"></i>
+                <span>GitHub</span>
+              </a>
+              <a href="https://gitee.com/YoungYannick/Repository" target="_blank" class="repo-link">
+                <img src="/images/nav/gitee.svg" alt="Gitee" style="height: 1rem; width: 1rem;">
+                <span>Gitee</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="timeline-card">
+          <div class="section-title text-center mb-4">
+            <h2>Archives</h2>
+            <div class="title-underline"></div>
+          </div>
+          <ul class="timeline">
+            
+            <li class="timeline-item">
+              <div class="timeline-dot"></div>
+              <div class="timeline-date">2025-04-14</div>
+              <div class="timeline-content">
+                <a href="/free-subscription.html" target="_blank">Free Subscription Share</a>
+              </div>
+            </li>
+            <li class="timeline-item">
+              <div class="timeline-dot"></div>
+              <div class="timeline-date">2025-04-14</div>
+              <div class="timeline-content">
+                <a href="/weapon-analysis-tool.html" target="_blank">Weapon Analysis Tool</a>
+              </div>
+            </li>
+            <li class="timeline-item">
+              <div class="timeline-dot"></div>
+              <div class="timeline-date">2025-04-13</div>
+              <div class="timeline-content">
+                <a href="/proxy-tools.html" target="_blank">Proxy Tools</a>
+              </div>
+            </li>
+            <li class="timeline-item">
+              <div class="timeline-dot"></div>
+              <div class="timeline-date">2025-04-13</div>
+              <div class="timeline-content">
+                <a href="/regular.html" target="_blank">Regular Expression Generator</a>
+              </div>
+            </li>
+            <li class="timeline-item">
+              <div class="timeline-dot"></div>
+              <div class="timeline-date">2025-04-13</div>
+              <div class="timeline-content">
+                <a href="/compare.html" target="_blank">File Comparison</a>
+              </div>
+            </li>
+            <li class="timeline-item">
+              <div class="timeline-dot"></div>
+              <div class="timeline-date">2025-04-13</div>
+              <div class="timeline-content">
+                <a href="/content.html" target="_blank">Forza Horizon 4&5 Gallery</a>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="footer-container"></div>
+
+  <div class="welcome-bubble">
+    <div class="bubble-header">
+      <h3 class="bubble-title">Welcome to visit</h3>
+      <button class="bubble-close" id="bubbleClose"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="bubble-content">
+      <p class="bubble-info" id="location">Welcome friends from !</p>
+      <p class="bubble-info" id="isp">Your operator is: </p>
+      <p class="bubble-info" id="ip">Your IP is: </p>
+      <p class="bubble-info" id="browser">You are using a browser</p>
+      <p class="bubble-info" id="date">Today is:</p>
+      <p class="bubble-info" id="weather">Current weather: Loading...</p>
+    </div>
+  </div>
+
+  <button class="bubble-toggle" id="bubbleToggle"><i class="fas fa-info"></i></button>
+
+  <script>
+    $(document).ready(function() {
+      $("#navbar-container").load("navbar.html", function() {
+        window.dispatchEvent(new Event('scroll'));
+      });
+
+      $("#footer-container").load("footer.html");
+
+      const text = "The world has become so alien to me, and everything, including my own existence, feels devoid of meaning.";
+      const typewriterElement = $("#typewriter");
+      let index = 0;
+      let isDeleting = false;
+      let typingSpeed = 65;
+      let pauseEnd = 1000;
+
+      function type() {
+        const currentText = text.substring(0, index);
+        typewriterElement.text(currentText);
+
+        if (!isDeleting) {
+          typingSpeed = 65 + Math.random() * 50;
+          
+          if ([',', '.'].includes(text.charAt(index - 1))) {
+            typingSpeed = 300;
+          }
+        }
+
+        if (!isDeleting && index === text.length) {
+          // 打字结束后，添加 typing-finished 类来隐藏光标
+          setTimeout(() => {
+            typewriterElement.addClass('typing-finished');
+          }, pauseEnd);
+          return;
+        }
+
+        index = !isDeleting ? index + 1 : index;
+        
+        setTimeout(type, typingSpeed);
+      }
+
+      setTimeout(type, 1000);
+
+      const images = [
+        // { name: "9.jpg", weight: 10 },
+        // { name: "11.jpg", weight: 20 },
+        { name: "13.jpg", weight: 100 }
+      ];
+
+      function weightedRandomImage() {
+        const totalWeight = images.reduce((sum, img) => sum + img.weight, 0);
+        let random = Math.random() * totalWeight;
+        
+        for (const img of images) {
+          random -= img.weight;
+          if (random <= 0) {
+            return img.name;
+          }
+        }
+        return images[images.length - 1].name;
+      }
+
+      const randomImage = weightedRandomImage();
+      const heroBackground = document.getElementById('heroBackground');
+      heroBackground.innerHTML = `<img src="/images/banner/${randomImage}" alt="Background Image">`;
+
+      // setTimeout(() => {
+      //   $('.welcome-bubble').addClass('show');
+      // }, 1000);
+
+      $('#bubbleClose').on('click', function() {
+        $('.welcome-bubble').removeClass('show');
+        setTimeout(() => {
+          $('#bubbleToggle').addClass('show');
+        }, 500);
+      });
+
+      $('#bubbleToggle').on('click', function(e) {
+        e.preventDefault();
+        $(this).removeClass('show');
+        $('.welcome-bubble').addClass('show');
+      });
+
+      toastr.options = {
+        positionClass: "toast-top-center",
+        closeButton: true,
+        progressBar: true,
+        timeOut: 3000,
+        extendedTimeOut: 1000,
+        preventDuplicates: true,
+        newestOnTop: true
+      };
+
+      const contentData = [
+        {
+          title: "Forza Horizon 4&5 Gallery",
+          image: "/images/content/Forza/1.jpg",
+          link: "/content.html"
+        },
+        {
+          title: "File Comparison",
+          image: "/images/content/File_Comparison/comparison.png",
+          link: "/compare.html"
+        },
+        {
+          title: "Regular Expression Generator",
+          image: "/images/content/Regular_Expression_Generator/regular.png",
+          link: "/regular.html"
+        },
+        {
+          title: "Proxy Tools",
+          image: "/images/content/Proxy_Tools/proxy.png",
+          link: "/proxy-tools.html"
+        },
+        {
+          title: "Weapon Analysis Tool",
+          image: "/images/content/Weapon_Analysis_Tool/BF005.png",
+          link: "/weapon-analysis-tool.html"
+        },
+        {
+          title: "Free Subscription Share",
+          image: "/images/content/FreeSubscription/freeSubscription.png",
+          link: "/free-subscription.html"
+        }
+      ];
+
+      document.getElementById('articleCount').textContent = contentData.length;
+
+      let currentPage = 1;
+      let itemsPerPage = parseInt(localStorage.getItem('itemsPerPage')) || 9;
+
+      function getUrlParams() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const page = parseInt(urlParams.get('page'));
+        const size = parseInt(urlParams.get('size'));
+
+        if (page && page > 0) {
+          const totalPages = Math.ceil(contentData.length / (size || itemsPerPage));
+          currentPage = page > totalPages ? totalPages : page;
+        }
+        if (size && [3, 6, 9, 12].includes(size)) {
+          itemsPerPage = size;
+          $('#itemsPerPage').val(size);
+          localStorage.setItem('itemsPerPage', size);
+        }
+      }
+
+      function updateUrlParams() {
+        const newUrl = new URL(window.location.href);
+        if (currentPage === 1 && itemsPerPage === 9) {
+          newUrl.search = '';
+        } else {
+          newUrl.searchParams.set('page', currentPage);
+          newUrl.searchParams.set('size', itemsPerPage);
+        }
+        window.history.pushState({}, '', newUrl);
+      }
+
+      $('#itemsPerPage').val(itemsPerPage);
+
+      function adjustFontSize() {
+        $('.box-description a').each(function() {
+          const $title = $(this);
+          const containerWidth = $title.parent().width() - 20; // 减去左右padding
+          let fontSize = parseFloat($title.css('font-size')); // 当前字体大小
+          const maxFontSize = fontSize; // 最大字体大小
+          const minFontSize = 8; // 最小字体大小
+
+          // 创建一个临时的span元素来测量文本宽度
+          const $temp = $('<span></span>').text($title.text()).css({
+            'font-family': $title.css('font-family'),
+            'font-weight': $title.css('font-weight'),
+            'font-size': fontSize + 'px',
+            'position': 'absolute',
+            'visibility': 'hidden',
+            'white-space': 'nowrap'
+          });
+          $('body').append($temp);
+          let textWidth = $temp.width();
+          $temp.remove();
+
+          // 如果文本宽度超过容器宽度，逐步减小字体
+          while (textWidth > containerWidth && fontSize > minFontSize) {
+            fontSize -= 0.5;
+            $temp.css('font-size', fontSize + 'px').text($title.text());
+            $('body').append($temp);
+            textWidth = $temp.width();
+            $temp.remove();
+          }
+
+          // 如果文本太短，尝试增大字体
+          while (textWidth < containerWidth * 0.9 && fontSize < maxFontSize) {
+            fontSize += 0.5;
+            $temp.css('font-size', fontSize + 'px').text($title.text());
+            $('body').append($temp);
+            textWidth = $temp.width();
+            $temp.remove();
+            if (textWidth > containerWidth) {
+              fontSize -= 0.5;
+              break;
+            }
+          }
+
+          $title.css('font-size', fontSize + 'px');
+        });
+      }
+
+      function renderContent() {
+        const container = $('#contentContainer');
+        container.empty();
+
+        const startIndex = (currentPage - 1) * itemsPerPage;
+        const endIndex = Math.min(startIndex + itemsPerPage, contentData.length);
+        const itemsToShow = endIndex - startIndex;
+
+        // 确定行数和列数
+        let rows = window.innerWidth >= 1200 ? 3 : // PC端固定3行
+                  window.innerWidth > 768 ? 4 : // 平板4行
+                  window.innerWidth > 576 ? 5 : 6; // 手机5-6行
+
+        // 计算每行的列数
+        let columnsPerRow = Math.ceil(itemsToShow / rows);
+        
+        // 创建行容器
+        const rowItems = Array(rows).fill().map(() => []);
+        for (let i = 0; i < itemsToShow; i++) {
+          const rowIndex = Math.floor(i / columnsPerRow);
+          if (rowIndex < rows) {
+            rowItems[rowIndex].push(contentData[startIndex + i]);
+          }
+        }
+
+        // 渲染每一行
+        rowItems.forEach((row, rowIndex) => {
+          if (row.length > 0) {
+            const rowHtml = $('<div class="content-row"></div>');
+            row.forEach(item => {
+              const itemHtml = `
+                <div class="content-item">
+                  <div class="box">
+                    <a href="${item.link}" target="_self">
+                      <img src="${item.image}" alt="${item.title}" class="box-image" />
+                    </a>
+                    <div class="box-description">
+                      <a href="${item.link}" target="_self">${item.title}</a>
+                    </div>
+                  </div>
+                </div>
+              `;
+              rowHtml.append(itemHtml);
+            });
+            container.append(rowHtml);
+          }
+        });
+
+        const totalPages = Math.ceil(contentData.length / itemsPerPage);
+        $('#currentPageInfo').val(currentPage);
+        $('#totalPagesInfo').text(totalPages);
+        $('#currentPageInfo').attr('max', totalPages);
+
+        $('#prevPage').prop('disabled', currentPage === 1);
+        $('#nextPage').prop('disabled', currentPage === totalPages);
+
+        // 调整标题字体大小
+        setTimeout(adjustFontSize, 0);
+
+        updateUrlParams();
+      }
+
+      $('#itemsPerPage').on('change', function() {
+        itemsPerPage = parseInt($(this).val());
+        localStorage.setItem('itemsPerPage', itemsPerPage);
+        currentPage = 1;
+        renderContent();
+      });
+
+      $('#prevPage').on('click', function() {
+        if (currentPage > 1) {
+          currentPage--;
+          renderContent();
+        }
+      });
+
+      $('#nextPage').on('click', function() {
+        const totalPages = Math.ceil(contentData.length / itemsPerPage);
+        if (currentPage < totalPages) {
+          currentPage++;
+          renderContent();
+        }
+      });
+
+      $('#currentPageInfo').on('blur keypress', function(e) {
+        if (e.type === 'keypress' && e.which !== 13) {
+          return;
+        }
+
+        const totalPages = Math.ceil(contentData.length / itemsPerPage);
+        const targetPage = parseInt($(this).val());
+
+        if (!targetPage || targetPage < 1 || targetPage > totalPages) {
+          toastr.error(`Please enter a page number between 1 - ${totalPages}!`);
+          $(this).val(currentPage);
+          return;
+        }
+
+        if (targetPage !== currentPage) {
+          currentPage = targetPage;
+          renderContent();
+        }
+      });
+
+      window.addEventListener('popstate', function() {
+        getUrlParams();
+        renderContent();
+      });
+
+      window.addEventListener('resize', function() {
+        renderContent();
+      });
+
+      async function fetchIpAndWeather() {
+        // 按顺序尝试的 IP API 列表
+        const ipApis = [
+            'https://jkapi.com/api/zz_ip?type=json',
+            'https://g3.letv.com/r?format=1',
+            'https://ip-api.io/json',
+            'https://freeipapi.com/api/json',
+            'https://api.ip2location.io/',
+            'https://api.ip.sb/geoip/',
+            // 'http://demo.ip-api.com/json/?fields=66842623&lang=en',
+            // 'https://api.vore.top/api/IPdata',
+            // 'https://ip.useragentinfo.com/json'
+        ];
+
+        let ipData = null;
+        let latitude = 39.9042; // 默认：北京
+        let longitude = 116.4074;
+
+        // 尝试每个 IP API 直到成功
+        for (const api of ipApis) {
+            try {
+                const response = await fetch(api, { timeout: 5000 });
+                if (response.ok) {
+                    const data = await response.json();
+                    if (api.includes('https://api.ip.sb/geoip/')) {
+                      ipData = {
+                            location: `${data.country || ''} ${data.organization || ''}`,
+                            isp: data.isp || 'Unknown',
+                            ip: data.ip || 'Unknown'
+                        };
+                        latitude = data.latitude || latitude;
+                        longitude = data.longitude || longitude;
+                        break;
+                    } else if (api.includes('https://ip-api.io/json')) {
+                      ipData = {
+                          location: `${data.countryName || ''} ${data.city || ''}`,
+                          isp: data.organisation || 'Unknown',
+                          ip: data.ip || 'Unknown'
+                      };
+                      latitude = data.latitude || latitude;
+                      longitude = data.longitude || longitude;
+                      break;
+                    } else if (api.includes('https://freeipapi.com/api/json')) {
+                      ipData = {
+                          location: `${data.countryName || ''} ${data.cityName || ''}`,
+                          isp: data.countryCode || 'Unknown',
+                          ip: data.ipAddress || 'Unknown'
+                      };
+                      latitude = data.latitude || latitude;
+                      longitude = data.longitude || longitude;
+                      break;
+                    } else if (api.includes('https://g3.letv.com/r?format=1')) {
+                      ipData = {
+                          location: `${data.desc || ''}`,
+                          isp: data.nodelist[0].isp || 'Unknown',
+                          ip: data.host || 'Unknown'
+                      };
+                      break;
+                    } else if (api.includes('https://api.ip2location.io/')) {
+                      ipData = {
+                          location: `${data.country_name || ''} ${data.city_name || ''}`,
+                          isp: data.as || 'Unknown',
+                          ip: data.ip || 'Unknown'
+                      };
+                      latitude = data.latitude || latitude;
+                      longitude = data.longitude || longitude;
+                      break;
+                    // }else if (api.includes('https://api.vore.top/api/IPdata') && data.code === 200) {
+                    //   ipData = {
+                    //       location: `${data.ipdata.info1 || ''} ${data.ipdata.info2 || ''} ${data.ipdata.info3 || ''}`,
+                    //       isp: data.ipdata.isp || 'Unknown',
+                    //       ip: data.ipinfo.text || 'Unknown'
+                    //   };
+                    //   break;
+                    // } else if (api.includes('http://demo.ip-api.com/json/?fields=66842623&lang=en') && data.status === 'success') {
+                    //     ipData = {
+                    //         location: `${data.country || ''} ${data.regionName || ''} ${data.city || ''}`,
+                    //         isp: data.isp || 'Unknown',
+                    //         ip: data.query || 'Unknown'
+                    //     };
+                    //     latitude = data.lat || latitude;
+                    //     longitude = data.lon || longitude;
+                    //     break;
+                    // } else if (api.includes('https://ip.useragentinfo.com/json') && data.code === 0) {
+                    //     ipData = {
+                    //         location: `${data.country || ''} ${data.province || ''} ${data.city || ''}`,
+                    //         isp: data.isp || 'Unknown',
+                    //         ip: data.ip || 'Unknown'
+                    //     };
+                    //     break;
+                    } else if (api.includes('https://jkapi.com/api/zz_ip?type=json') && data.code === 0) {
+                      if(!data.data.addr) break;
+                        ipData = {
+                            location: `${data.data.country || ''} ${data.data.province || ''} ${data.data.city || ''}`,
+                            isp: data.data.isp || 'Unknown',
+                            ip: data.data.addr || 'Unknown'
+                        };
+                        latitude = data.latitude || latitude;
+                        longitude = data.longitude || longitude;
+                        break;
+                    }
+                }
+            } catch (e) {
+                console.warn(`Failed to fetch IP from ${api}:`, e);
+                continue;
+            }
+        }
+
+        // 更新 IP 相关的 UI 元素
+        if (ipData) {
+            document.getElementById('location').textContent = `Welcome friends from ${ipData.location}!`;
+            document.getElementById('isp').textContent = `Your operator is: ${ipData.isp}`;
+            document.getElementById('ip').textContent = `Your IP is: ${ipData.ip}`;
+        } else {
+            document.getElementById('location').textContent = `Welcome friends from unknown location!`;
+            document.getElementById('isp').textContent = `Your operator is: Unknown`;
+            document.getElementById('ip').textContent = `Your IP is: Unknown`;
+        }
+
+        // 更新浏览器信息
+        function getBrowserName(userAgent) {
+            if (userAgent.includes("Chrome") && !userAgent.includes("Edge")) return "Chrome";
+            if (userAgent.includes("Firefox")) return "Firefox";
+            if (userAgent.includes("Safari") && !userAgent.includes("Chrome")) return "Safari";
+            if (userAgent.includes("Edge")) return "Edge";
+            if (userAgent.includes("MSIE") || userAgent.includes("Trident/")) return "Internet Explorer";
+            return "Unknown";
+        }
+        const userAgent = window.navigator.userAgent;
+        const browserName = getBrowserName(userAgent);
+        document.getElementById('browser').textContent = `You are using a ${browserName} browser`;
+
+        // 更新日期
+        const today = new Date();
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        document.getElementById('date').textContent = `Today is: ${today.toLocaleDateString('en-US', options)}`;
+
+        // 需要尝试的天气 API 列表
+        const weatherApis = [
+            {
+                // Open-Meteo API（免费，无需密钥）
+                url: `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true&hourly=temperature_2m,weathercode`,
+                parse: (data) => {
+                    const weatherCode = data.current_weather.weathercode;
+                    const temp = data.current_weather.temperature;
+                    let condition = '';
+                    let reminder = '';
+
+                    // 解析 WMO 天气代码
+                    if (weatherCode === 0) {
+                        condition = 'Clear';
+                        reminder = 'Clear weather, perfect for outdoor activities!'; //天气晴朗，非常适合户外活动！
+                    } else if ([1, 2, 3].includes(weatherCode)) {
+                        condition = 'Cloudy';
+                        reminder = 'Cloudy weather, consider bringing an umbrella!'; //阴天，请考虑带伞！
+                    } else if ([51, 53, 55, 61, 63, 65].includes(weatherCode)) {
+                        condition = 'Rain';
+                        reminder = 'Rainy day, don’t forget your umbrella and waterproof clothing!'; //下雨天，别忘了带伞和防水服！
+                    } else if ([71, 73, 75].includes(weatherCode)) {
+                        condition = 'Snow';
+                        reminder = 'Snowing! Stay warm and watch for slippery roads!';  //下雪了！注意保暖，小心路滑！
+                    } else {
+                        condition = 'Unknown';
+                        reminder = 'Weather unknown, check the latest forecast!'; //天气未知，请查看最新预报！
+                    }
+
+                    return { temp, condition, reminder };
+                }
+            }
+        ];
+
+        // 尝试每个天气 API 直到成功
+        let weatherData = null;
+        for (const api of weatherApis) {
+            try {
+                const response = await fetch(api.url, { timeout: 5000 });
+                if (response.ok) {
+                    const data = await response.json();
+                    weatherData = api.parse(data);
+                    break;
+                }
+            } catch (e) {
+                console.warn(`Failed to fetch weather from ${api.url}:`, e);
+                continue;
+            }
+        }
+
+        // 更新天气 UI 元素
+        if (weatherData) {
+            document.getElementById('weather').textContent = `Current weather: ${weatherData.condition}, Temperature: ${weatherData.temp}°C, ${weatherData.reminder}`;
+        } else {
+            document.getElementById('weather').textContent = `Current weather: Unknown, unable to fetch weather data`;
+        }
+
+        // 在获取 IP 和天气数据后显示欢迎气泡
+        $('.welcome-bubble').addClass('show');
+      }
+      // 调用 fetchIpAndWeather 函数
+      fetchIpAndWeather();
+
+      getUrlParams();
+      renderContent();
+    });
+  </script>
+</body>
+</html>

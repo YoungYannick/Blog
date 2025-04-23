@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Proxy Tools - YoungYannick's Blog</title>
+  <meta name="author" content="YoungYannick" />
+  <meta name="description" content="Proxy Tools - YoungYannick's Blog" />
+  <meta name="keywords" content="YoungYannick,Blog,Blog,Proxy Tools,代理工具" />
+  <link rel="icon" href="/images/Yannick_64.ico" />
+  <link rel="stylesheet" href="/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&family=Quicksand:wght@500&display=swap" rel="stylesheet">
+  <link href="/css/toastr.min.css" rel="stylesheet" />
+  <link href="/css/navbar.css" rel="stylesheet" />
+  <link href="/css/footer.css" rel="stylesheet" />
+  <link href="/css/theme.css" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/tools-bubble.css">
+  <script src="/js/tools-bubble.js"></script>
+  <script src="/js/theme.js"></script>
+  <script src="/js/filter-module.js"></script>
+  <script src="/js/jquery-3.7.1.js"></script>
+  <script src="/js/bootstrap.bundle.min.js"></script>
+  <script src="/js/clipboard.min.js"></script>
+  <script src="/js/toastr.min.js"></script>
+  <script src="/js/navbar.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #f0f4ff;
+      position: relative;
+      overflow-x: hidden;
+      padding: 1rem;
+    }
+
+    body::before,
+    body::after {
+      content: '';
+      position: absolute;
+      width: 60vmin;
+      height: 60vmin;
+      border-radius: 50%;
+      filter: blur(100px);
+      opacity: 0.65;
+      animation: float 20s infinite linear;
+      z-index: -1;
+    }
+
+    body::before {
+      background: #FFC0CB;
+      top: 20%;
+      left: 10%;
+    }
+
+    body::after {
+      background: #87CEFA;
+      bottom: 20%;
+      right: 10%;
+      animation-delay: -10s;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0) rotate(0deg); }
+      25% { transform: translate(5vw, -3vh) rotate(90deg); }
+      50% { transform: translate(-4vw, 6vh) rotate(180deg); }
+      75% { transform: translate(3vw, -5vh) rotate(270deg); }
+    }
+
+    .custom-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 15px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .page-title {
+      text-align: center;
+      margin: 2rem auto;
+      padding-top: 80px;
+      width: 100%;
+    }
+
+    .page-title h1 {
+      font-family: 'Quicksand', sans-serif;
+      color: #2c3e50;
+      font-size: clamp(2rem, 5vw, 2.8rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+      background: linear-gradient(135deg, #FFC0CB 30%, #87CEFA 70%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .content-section {
+      background: rgba(255, 255, 255, 0.7);
+      border-radius: 24px;
+      padding: 2rem;
+      box-shadow: 0 8px 32px rgba(135, 206, 250, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      backdrop-filter: blur(8px);
+      margin-bottom: 3rem;
+    }
+
+    .section-title {
+      position: relative;
+      margin-bottom: 2rem;
+    }
+
+    .section-title h2 {
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 700;
+      font-size: 2rem;
+      color: var(--light-text);
+      margin-bottom: 0.5rem;
+      background: linear-gradient(135deg, #FFC0CB 30%, #87CEFA 70%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: inline-block;
+    }
+
+    .title-underline {
+      height: 4px;
+      width: 80px;
+      background: linear-gradient(135deg, #FFC0CB 30%, #87CEFA 70%);
+      margin: 0 auto;
+      border-radius: 2px;
+    }
+
+    .table-responsive {
+      overflow-x: auto;
+    }
+
+    .table {
+      width: 100%;
+      margin-bottom: 1rem;
+      color: var(--light-text);
+      border-collapse: collapse;
+    }
+
+    .table th,
+    .table td {
+      color: var(--light-text);
+      padding: 0.75rem;
+      vertical-align: middle;
+      text-align: center;
+      border-top: 1px solid #dee2e6;
+    }
+
+    .table thead th {
+      vertical-align: bottom;
+      border-bottom: 2px solid #dee2e6;
+      background-color: rgba(135, 206, 250, 0.1);
+    }
+
+    .table tbody + tbody {
+      border-top: 2px solid #dee2e6;
+    }
+
+    .table a {
+      color: #007bff;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .table a:hover {
+      color: #0056b3;
+      text-decoration: underline;
+    }
+
+    .platform-icon {
+      width: 32px;
+      height: 32px;
+      margin: 0 2px;
+    }
+
+    @media (max-width: 768px) {
+      .section-title h2 {
+        font-size: 1.8rem;
+      }
+      
+      .content-section {
+        padding: 1.5rem;
+      }
+    }
+
+    @media (max-width: 576px) {
+      body {
+        padding: 0.5rem;
+      }
+      
+      .page-title h1 {
+        font-size: 1.8rem;
+      }
+      
+      .section-title h2 {
+        font-size: 1.5rem;
+      }
+      
+      .content-section {
+        padding: 1.5rem 1rem;
+      }
+      
+      .platform-icon {
+        width: 24px;
+        height: 24px;
+      }
+    }
+
+    /* 暗色主题适配 */
+    body[data-theme="dark"] .table {
+      color: var(--dark-text);
+    }
+
+    body[data-theme="dark"] .section-title h2 {
+      color: var(--dark-text);
+    }
+
+    body[data-theme="dark"] .table th,
+    body[data-theme="dark"] .table td {
+      color: var(--dark-text);
+      border-color: var(--dark-border);
+    }
+
+    body[data-theme="dark"] .table thead th {
+      background-color: rgba(135, 206, 250, 0.05);
+      border-bottom-color: var(--dark-border);
+    }
+  </style>
+</head>
+
+<body>
+  <!-- 导入导航栏 -->
+  <div id="navbar-container"></div>
+
+  <div class="container-fluid">
+    <div class="row justify-content-center">
+      <div class="col-12 page-title">
+        <h1>Proxy Tools</h1>
+      </div>
+    </div>
+  </div>
+
+  <div id="article-meta-container" style="position: relative; z-index: 999999;"></div>
+
+  <div class="container custom-container">
+    <!-- 客户端部分 -->
+    <div class="content-section">
+      <div class="section-title text-center mb-4">
+        <h2>Clients</h2>
+        <div class="title-underline"></div>
+      </div>
+      <div class="table-responsive">
+        <table class="table">
+          <thead>
+            <tr>
+              <th class="text-center">Client</th>
+              <th class="text-center">Platform</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="text-center"><a href="https://github.com/clash-verge-rev/clash-verge-rev" target="_blank">Clash-Verge-Rev</a></td>
+              <td class="text-center">
+                <img class="platform-icon" src="/images/content/ProxyTools/microsoft.svg" alt="Windows">
+                <img class="platform-icon" src="/images/content/ProxyTools/linux.svg" alt="Linux">
+                <img class="platform-icon" src="/images/content/ProxyTools/macos.svg" alt="macOS">
+              </td>
+            </tr>
+            <tr>
+              <td class="text-center"><a href="https://github.com/LibNyanpasu/clash-nyanpasu" target="_blank">Clash-Nyanpasu</a></td>
+              <td class="text-center">
+                <img class="platform-icon" src="/images/content/ProxyTools/microsoft.svg" alt="Windows">
+                <img class="platform-icon" src="/images/content/ProxyTools/linux.svg" alt="Linux">
+                <img class="platform-icon" src="/images/content/ProxyTools/macos.svg" alt="macOS">
+              </td>
+            </tr>
+            <tr>
+              <td class="text-center"><a href="https://github.com/MetaCubeX/ClashMetaForAndroid" target="_blank">ClashMetaForAndroid</a></td>
+              <td class="text-center">
+                <img class="platform-icon" src="/images/content/ProxyTools/android.svg" alt="Android">
+              </td>
+            </tr>
+            <tr>
+              <td class="text-center"><a href="https://github.com/2dust/v2rayN/releases" target="_blank">V2rayN</a></td>
+              <td class="text-center">
+                <img class="platform-icon" src="/images/content/ProxyTools/microsoft.svg" alt="Windows">
+                <img class="platform-icon" src="/images/content/ProxyTools/linux.svg" alt="Linux">
+                <img class="platform-icon" src="/images/content/ProxyTools/macos.svg" alt="macOS">
+              </td>
+            </tr>
+            <tr>
+              <td class="text-center"><a href="https://github.com/2dust/v2rayNG/releases" target="_blank">v2rayNG</a></td>
+              <td class="text-center">
+                <img class="platform-icon" src="/images/content/ProxyTools/android.svg" alt="Android">
+              </td>
+            </tr>
+            <tr>
+              <td class="text-center"><a href="https://github.com/GUI-for-Cores/GUI.for.SingBox/releases" target="_blank">GUI for SingBox</a></td>
+              <td class="text-center">
+                <img class="platform-icon" src="/images/content/ProxyTools/microsoft.svg" alt="Windows">
+                <img class="platform-icon" src="/images/content/ProxyTools/linux.svg" alt="Linux">
+                <img class="platform-icon" src="/images/content/ProxyTools/macos.svg" alt="macOS">
+              </td>
+            </tr>
+            <tr>
+              <td class="text-center"><a href="https://github.com/SagerNet/sing-box/releases" target="_blank">SingBox</a></td>
+              <td class="text-center">
+                <img class="platform-icon" src="/images/content/ProxyTools/android.svg" alt="Android">
+              </td>
+            </tr>
+            <tr>
+              <td class="text-center"><a href="https://github.com/MatsuriDayo/nekoray/releases" target="_blank">NekoRay</a></td>
+              <td class="text-center">
+                <img class="platform-icon" src="/images/content/ProxyTools/microsoft.svg" alt="Windows">
+                <img class="platform-icon" src="/images/content/ProxyTools/linux.svg" alt="Linux">
+              </td>
+            </tr>
+            <tr>
+              <td class="text-center"><a href="https://github.com/MatsuriDayo/NekoBoxForAndroid/releases" target="_blank">NekoBox For Android</a></td>
+              <td class="text-center">
+                <img class="platform-icon" src="/images/content/ProxyTools/android.svg" alt="Android">
+              </td>
+            </tr>
+            <tr>
+              <td class="text-center"><a href="https://github.com/mihomo-party-org/mihomo-party/releases" target="_blank">MihomoParty</a></td>
+              <td class="text-center">
+                <img class="platform-icon" src="/images/content/ProxyTools/microsoft.svg" alt="Windows">
+                <img class="platform-icon" src="/images/content/ProxyTools/linux.svg" alt="Linux">
+                <img class="platform-icon" src="/images/content/ProxyTools/macos.svg" alt="macOS">
+              </td>
+            </tr>
+            <tr>
+              <td class="text-center"><a href="https://github.com/chen08209/FlClash/releases" target="_blank">FlClash</a></td>
+              <td class="text-center">
+                <img class="platform-icon" src="/images/content/ProxyTools/microsoft.svg" alt="Windows">
+                <img class="platform-icon" src="/images/content/ProxyTools/linux.svg" alt="Linux">
+                <img class="platform-icon" src="/images/content/ProxyTools/macos.svg" alt="macOS">
+                <img class="platform-icon" src="/images/content/ProxyTools/android.svg" alt="Android">
+              </td>
+            </tr>
+            <tr>
+              <td class="text-center"><a href="https://github.com/hiddify/hiddify-app/releases" target="_blank">Hiddify</a></td>
+              <td class="text-center">
+                <img class="platform-icon" src="/images/content/ProxyTools/microsoft.svg" alt="Windows">
+                <img class="platform-icon" src="/images/content/ProxyTools/linux.svg" alt="Linux">
+                <img class="platform-icon" src="/images/content/ProxyTools/macos.svg" alt="macOS">
+                <img class="platform-icon" src="/images/content/ProxyTools/android.svg" alt="Android">
+              </td>
+            </tr>
+            <tr>
+              <td class="text-center"><a href="https://play.google.com/store/apps/details?id=com.getsurfboard" target="_blank">Surfboard</a></td>
+              <td class="text-center">
+                <img class="platform-icon" src="/images/content/ProxyTools/android.svg" alt="Android">
+              </td>
+            </tr>
+            <tr>
+              <td class="text-center"><a href="https://apps.apple.com/us/app/quantumult-x/id1443988620" target="_blank">Quantumult X</a></td>
+              <td class="text-center">
+                <img class="platform-icon" src="/images/content/ProxyTools/app_store.svg" alt="iOS">
+              </td>
+            </tr>
+            <tr>
+              <td class="text-center"><a href="https://apps.apple.com/us/app/surge-5/id1442620678" target="_blank">Surge</a></td>
+              <td class="text-center">
+                <img class="platform-icon" src="/images/content/ProxyTools/app_store.svg" alt="iOS">
+              </td>
+            </tr>
+            <tr>
+              <td class="text-center"><a href="https://apps.apple.com/us/app/shadowrocket/id932747118" target="_blank">Shadowrocket</a></td>
+              <td class="text-center">
+                <img class="platform-icon" src="/images/content/ProxyTools/app_store.svg" alt="iOS">
+              </td>
+            </tr>
+            <tr>
+              <td class="text-center"><a href="https://apps.apple.com/us/app/stash-rule-based-proxy/id1596063349" target="_blank">Stash</a></td>
+              <td class="text-center">
+                <img class="platform-icon" src="/images/content/ProxyTools/app_store.svg" alt="iOS">
+              </td>
+            </tr>
+            <tr>
+              <td class="text-center"><a href="https://apps.apple.com/us/app/loon/id1373567447" target="_blank">Loon</a></td>
+              <td class="text-center">
+                <img class="platform-icon" src="/images/content/ProxyTools/app_store.svg" alt="iOS">
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- WEB UI面板部分 -->
+    <div class="content-section">
+      <div class="section-title text-center mb-4">
+        <h2>WEB UI Panels</h2>
+        <div class="title-underline"></div>
+      </div>
+      <div class="table-responsive">
+        <table class="table">
+          <thead>
+            <tr>
+              <th class="text-center">Client</th>
+              <th class="text-center">Kernel</th>
+              <th class="text-center">Description</th>
+              <th class="text-center">Online Preview</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="text-center"><a href="https://github.com/MetaCubeX/metacubexd/releases" target="_blank">metacubexd</a></td>
+              <td class="text-center">Meta</td>
+              <td class="text-center">xd Panel</td>
+              <td class="text-center">
+                <a href="https://metacubex.github.io/metacubexd" target="_blank">
+                  <img class="platform-icon" src="https://www.clashverge.dev/assets/icons/html.svg" alt="预览">
+                </a>
+              </td>
+            </tr>
+            <tr>
+              <td class="text-center"><a href="https://github.com/MetaCubeX/Yacd-meta/releases" target="_blank">Yacd-meta</a></td>
+              <td class="text-center">Meta</td>
+              <td class="text-center">yd-meta Panel</td>
+              <td class="text-center">
+                <a href="https://yacd.metacubex.one/" target="_blank">
+                  <img class="platform-icon" src="https://www.clashverge.dev/assets/icons/html.svg" alt="预览">
+                </a>
+              </td>
+            </tr>
+            <tr>
+              <td class="text-center"><a href="https://github.com/MetaCubeX/Razord-meta/releases" target="_blank">Razord-meta</a></td>
+              <td class="text-center">Meta</td>
+              <td class="text-center">rd-meta Panel</td>
+              <td class="text-center">
+                <a href="https://clash.metacubex.one/" target="_blank">
+                  <img class="platform-icon" src="https://www.clashverge.dev/assets/icons/html.svg" alt="预览">
+                </a>
+              </td>
+            </tr>
+            <tr>
+              <td class="text-center"><a href="https://github.com/haishanh/yacd/releases" target="_blank">yacd</a></td>
+              <td class="text-center">Premium</td>
+              <td class="text-center">yd Panel</td>
+              <td class="text-center">
+                <a href="https://yacd.haishan.me/" target="_blank">
+                  <img class="platform-icon" src="https://www.clashverge.dev/assets/icons/html.svg" alt="预览">
+                </a>
+              </td>
+            </tr>
+            <tr>
+              <td class="text-center"><a href="https://github.com/noahss/clash-dashboard/releases" target="_blank">clash-dashboard</a></td>
+              <td class="text-center">Premium</td>
+              <td class="text-center">rd Panel</td>
+              <td class="text-center">
+                <a href="https://clash.razord.top/" target="_blank">
+                  <img class="platform-icon" src="https://www.clashverge.dev/assets/icons/html.svg" alt="预览">
+                </a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- 添加底部 Footer-->
+  <div id="footer-container"></div>
+
+  <script>
+    // 加载导航栏
+    $(document).ready(function() {
+      $("#navbar-container").load("navbar.html", function() {
+        $("#navbar-title").text("Proxy Tools");
+        window.dispatchEvent(new Event('scroll'));
+      });
+      // 加载文章元数据
+      $("#article-meta-container").load("article-meta.html", function() {
+        // 设置日期
+        $('.am-container').attr({
+          'data-publish-date': '2025-04-13 14:01:12',
+          'data-update-date': '2025-04-16 10:05:30'
+        });
+        // 手动触发初始化
+        if (typeof initArticleMeta === 'function') {
+          initArticleMeta();
+        }
+      });
+      // 在 footer 加载完成后再设置年份
+      $("#footer-container").load("footer.html", function() {
+        const yearElement = document.getElementById('currentYear');
+        if (yearElement) {
+          yearElement.textContent = new Date().getFullYear() + ' ';
+        }
+      });
+    });
+  </script>
+</body>
+</html>

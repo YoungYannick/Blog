@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About YoungYannick</title>
+  <meta name="author" content="YoungYannick" />
+  <meta name="description" content="About YoungYannick - Personal information and biography" />
+  <meta name="keywords" content="YoungYannick,About,Biography,Portfolio,youngyannick,yannick" />
+  <link rel="icon" href="/images/Yannick_64.ico" />
+  <link rel="stylesheet" href="/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&family=Quicksand:wght@500&display=swap" rel="stylesheet">
+  <link href="/css/toastr.min.css" rel="stylesheet" />
+  <link href="/css/navbar.css" rel="stylesheet" />
+  <link href="/css/footer.css" rel="stylesheet" />
+  <link href="/css/theme.css" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/tools-bubble.css">
+  <script src="/js/tools-bubble.js"></script>
+  <script src="/js/theme.js"></script>
+  <script src="/js/filter-module.js"></script>
+  <script src="/js/jquery-3.7.1.js"></script>
+  <script src="/js/bootstrap.bundle.min.js"></script>
+  <script src="/js/clipboard.min.js"></script>
+  <script src="/js/toastr.min.js"></script>
+  <script src="/js/navbar.js"></script>
+  <style>
+    /* 基础样式设置 */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #f0f4ff;
+      position: relative;
+      overflow-x: hidden;
+      padding: 1rem;
+    }
+
+    /* 背景渐变效果 */
+    body::before,
+    body::after {
+      content: '';
+      position: absolute;
+      width: 60vmin;
+      height: 60vmin;
+      border-radius: 50%;
+      filter: blur(100px);
+      opacity: 0.65;
+      animation: float 20s infinite linear;
+      z-index: -1;
+    }
+
+    body::before {
+      background: #FFC0CB;
+      top: 20%;
+      left: 10%;
+    }
+
+    body::after {
+      background: #87CEFA;
+      bottom: 20%;
+      right: 10%;
+      animation-delay: -10s;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0) rotate(0deg); }
+      25% { transform: translate(5vw, -3vh) rotate(90deg); }
+      50% { transform: translate(-4vw, 6vh) rotate(180deg); }
+      75% { transform: translate(3vw, -5vh) rotate(270deg); }
+    }
+
+    /* 容器样式 */
+    .custom-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* 页面标题样式 */
+    .page-title {
+      text-align: center;
+      margin: 1rem auto 2rem auto;
+      padding-top: 80px;
+    }
+
+    .page-title h1 {
+      font-family: 'Quicksand', sans-serif;
+      color: #2c3e50;
+      font-size: clamp(2rem, 5vw, 2.8rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+      background: linear-gradient(135deg, #FFC0CB 30%, #87CEFA 70%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    /* 关于我卡片样式 */
+    .about-card {
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 8px 32px rgba(135, 206, 250, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      padding: 2rem;
+      margin-bottom: 2rem;
+      backdrop-filter: blur(8px);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    /* 个人资料部分 */
+    .profile-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 2rem;
+      perspective: 1000px;
+    }
+
+    .profile-image {
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid rgba(255, 255, 255, 0.7);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+      margin-bottom: 1.5rem;
+      transition: transform 0.3s ease;
+      transform-style: preserve-3d;
+    }
+
+    .profile-image:hover {
+      transform: scale3d(1.2, 1.2, 1.3) translateZ(30px);
+    }
+
+    .profile-name {
+      font-family: 'Quicksand', sans-serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--light-text);
+      margin-bottom: 0.5rem;
+    }
+
+    .profile-title {
+      font-size: 1.1rem;
+      color: var(--light-text-secondary);
+      margin-bottom: 1rem;
+    }
+
+    .social-links2 {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+    justify-content: center;
+    }
+
+    .social-link2 {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      padding: 0.8rem;
+      border-radius: 50%;
+      background: var(--light-card-bg);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      text-decoration: none;
+    }
+
+    .social-link2:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+      background: rgba(255, 255, 255, 0.2); /* 添加悬浮时的背景变化 */
+    }
+
+    /* 内容部分样式 */
+    .section-title {
+      font-family: 'Quicksand', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--light-text);
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid rgba(135, 206, 250, 0.3);
+    }
+
+    .section-content {
+      margin-bottom: 2rem;
+      color: var(--light-text);
+      line-height: 1.6;
+    }
+
+    /* 响应式设计 */
+    @media (max-width: 768px) {
+      .interest-item {
+        width: calc(50% - 1rem);
+      }
+    }
+
+    @media (max-width: 576px) {
+      body {
+        padding: 0.5rem;
+      }
+      
+      .about-card {
+        padding: 1.5rem;
+      }
+      
+      .profile-image {
+        width: 150px;
+        height: 150px;
+      }
+
+      .page-title h1 {
+        font-size: 1.8rem;
+      }
+    }
+
+    /* 暗色主题适配 */
+    body[data-theme="dark"] .social-link2 {
+        background: var(--dark-card-bg);
+    }
+
+    body[data-theme="dark"] .social-link2 img {
+        filter: brightness(0) invert(1);
+    }
+
+    body[data-theme="dark"] .profile-name {
+      color: var(--dark-text);
+    }
+
+    body[data-theme="dark"] .profile-title {
+      color: var(--dark-text-secondary);
+    }
+
+    body[data-theme="dark"] .section-title {
+      color: var(--dark-text);
+      border-bottom-color: rgba(135, 206, 250, 0.2);
+    }
+
+    body[data-theme="dark"] .section-content {
+      color: var(--dark-text);
+    }
+
+    body[data-theme="dark"] .social-link2 i {
+      color: var(--dark-text) !important;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- 导入导航栏 -->
+  <div id="navbar-container"></div>
+
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12 page-title">
+        <h1>About Me</h1>
+      </div>
+    </div>
+  </div>
+
+  <div class="custom-container">
+    <!-- 个人资料卡片 -->
+    <div class="about-card">
+      <div class="profile-section">
+        <img src="/images/Yannick_64.ico" alt="YoungYannick" class="profile-image" />
+        <h2 class="profile-name">YoungYannick</h2>
+        <p class="profile-title">A developer who loves programming, games and music.</p>
+        
+        <!-- 社交媒体链接 -->
+        <div class="social-links2">
+          <a href="https://github.com/youngyannick" target="_blank" class="social-link2">
+              <i class="fab fa-github" style="color: var(--light-text);"></i>
+          </a>
+          <a href="https://gitee.com/YoungYannick/" target="_blank" class="social-link2">
+              <img src="/images/nav/gitee.svg" alt="Gitee" style="height: 1rem; width: 1rem;">
+          </a>
+          <a href="https://www.youtube.com/@yannick_yang" target="_blank" class="social-link2">
+              <i class="fab fa-youtube" style="color: #FF0000;"></i>
+          </a>
+          <a href="https://space.bilibili.com/505709474" target="_blank" class="social-link2">
+              <i class="fab fa-bilibili" style="color: #00A1D6;"></i>
+          </a>
+          <a href="https://music.163.com/#/user/home?id=435291570" target="_blank" class="social-link2">
+              <img src="/images/nav/NCMusic.svg" alt="NetEase Cloud Music" style="height: 1rem; width: 1rem;">
+          </a>
+        </div>
+      </div>
+
+      <!-- 关于我部分 -->
+      <h3 class="section-title">About Me</h3>
+      <div class="section-content">
+        <p>Hello! I'm YoungYannick, a passionate software developer with a love for photography and gaming.</p>
+        <p>When I'm not coding, you can find me taking photos of landscapes and cars, especially in Forza Horizon, or exploring new places around the world.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 添加底部 Footer-->
+  <div id="footer-container"></div>
+
+  <script>
+    // 加载导航栏
+    $(document).ready(function() {
+      $("#navbar-container").load("navbar.html", function() {
+        // 导航栏加载完成后设置标题
+        $("#navbar-title").text("About Me");
+        // 导航栏加载完成后手动触发滚动事件，确保导航栏状态正确
+        window.dispatchEvent(new Event('scroll'));
+      });
+      // 加载底部
+      $("#footer-container").load("footer.html");
+    });
+  </script>
+</body>
+</html>

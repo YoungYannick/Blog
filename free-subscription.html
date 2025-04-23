@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Free Subscription Share - YoungYannick's Blog</title>
+    <meta name="author" content="YoungYannick" />
+    <meta name="description" content="YoungYannick's Blog - Free Subscription Share" />
+    <meta name="keywords" content="YoungYannick,Blog,Free Subscription,Share" />
+    <link rel="icon" href="/images/Yannick_64.ico" />
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&family=Quicksand:wght@500&display=swap" rel="stylesheet">
+    <link href="/css/toastr.min.css" rel="stylesheet" />
+    <link href="/css/navbar.css" rel="stylesheet" />
+    <link href="/css/footer.css" rel="stylesheet" />
+    <link href="/css/theme.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/tools-bubble.css">
+    <script src="/js/tools-bubble.js"></script>
+    <script src="/js/theme.js"></script>
+    <script src="/js/filter-module.js"></script>
+    <script src="/js/jquery-3.7.1.js"></script>
+    <script src="/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/clipboard.min.js"></script>
+    <script src="/js/toastr.min.js"></script>
+    <script src="/js/navbar.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--light-bg);
+            position: relative;
+            overflow-x: hidden;
+            padding: 1rem;
+            color: var(--light-text);
+            padding-right: 1rem !important;
+        }
+
+        body::before,
+        body::after {
+            content: '';
+            position: absolute;
+            width: 60vmin;
+            height: 60vmin;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.65;
+            animation: float 20s infinite linear;
+            z-index: -1;
+        }
+
+        body::before {
+            background: #FFC0CB;
+            top: 20%;
+            left: 10%;
+        }
+
+        body::after {
+            background: #87CEFA;
+            bottom: 20%;
+            right: 10%;
+            animation-delay: -10s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(5vw, -3vh) rotate(90deg); }
+            50% { transform: translate(-4vw, 6vh) rotate(180deg); }
+            75% { transform: translate(3vw, -5vh) rotate(270deg); }
+        }
+
+        .page-title {
+            text-align: center;
+            margin: 1rem auto;
+            padding-top: 80px;
+        }
+
+        .page-title h1 {
+            font-family: 'Quicksand', sans-serif;
+            color: #2c3e50;
+            font-size: clamp(2rem, 5vw, 2.8rem);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            background: linear-gradient(135deg, #FFC0CB 30%, #87CEFA 70%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 0 auto;
+        }
+
+        .subscription-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .search-box {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 20px;
+            border: 2px solid var(--light-border);
+            border-radius: 10px;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            background: var(--light-card-bg);
+            color: var(--light-text);
+        }
+
+        .search-input:focus {
+            border-color: #4ecdc4;
+            outline: none;
+            box-shadow: 0 0 10px rgba(78, 205, 196, 0.2);
+        }
+
+        .filter-tags {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .filter-tag {
+            padding: 8px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            background: var(--light-card-bg);
+            color: var(--light-text);
+            border: 1px solid var(--light-border);
+            transition: all 0.3s ease;
+        }
+
+        .filter-tag:hover {
+            transform: translateY(-2px);
+        }
+
+        .filter-tag.active {
+            background: linear-gradient(135deg, #FFC0CB 30%, #87CEFA 70%);
+            color: white;
+            border: none;
+        }
+
+        .subscription-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            padding: 1.5rem;
+            background: var(--light-card-bg);
+            backdrop-filter: blur(15px);
+            border-radius: 24px;
+            box-shadow: 0 8px 32px rgba(135, 206, 250, 0.1);
+            border: 1px solid var(--light-border);
+        }
+
+        .subscription-card {
+            background: var(--light-card-bg);
+            border-radius: 16px;
+            padding: 1.5rem;
+            border: 1px solid var(--light-border);
+            transition: transform 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            height: 220px;  /* 设置固定高度 */
+            display: flex;
+            flex-direction: column;
+        }
+
+        .subscription-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(135deg, #FFC0CB 30%, #87CEFA 70%);
+        }
+
+        .subscription-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 32px rgba(135, 206, 250, 0.15);
+        }
+
+        .subscription-title {
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: var(--light-text);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .subscription-link {
+            font-size: 0.9rem;
+            color: var(--light-text);
+            word-break: break-all;
+            padding: 0.8rem;
+            background: rgba(135, 206, 250, 0.1);
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            flex: 1;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+        }
+
+        .subscription-link:hover {
+            background: rgba(135, 206, 250, 0.2);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+            margin-top: auto;  /* 确保按钮始终在底部 */
+        }
+
+        .action-button {
+            flex: 1;
+            padding: 0.8rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, #FFC0CB 30%, #87CEFA 70%);
+            color: white;
+            text-align: center;
+            border: none;
+            outline: none;
+            transform: translateY(0);
+        }
+
+        .action-button:hover,
+        .action-button:focus,
+        .action-button:active {
+            outline: none !important;
+            box-shadow: 0 6px 15px rgba(191, 200, 209, 0.274);
+            border: none;
+            transform: none;
+        }
+
+        #qrCodeContainer {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            display: inline-block;
+        }
+
+        .btn-close {
+            opacity: 0.7;
+            transition: all 0.3s ease;
+        }
+
+        .btn-close:hover {
+            opacity: 1;
+            transform: rotate(90deg);
+        }
+
+        .modal-content {
+            background: var(--light-card-bg);
+            border: 1px solid var(--light-border);
+            border-radius: 24px;
+            box-shadow: 0 8px 32px rgba(135, 206, 250, 0.1);
+            backdrop-filter: blur(15px);
+        }
+
+        .modal-header {
+            border-bottom: none;
+            padding: 1.5rem 1.5rem 0.5rem;
+        }
+
+        .modal-open {
+            padding-right: 1rem !important;
+            overflow: auto !important;
+        }
+
+        .modal {
+            padding-right: 0 !important;
+        }
+
+        body[data-theme="dark"] .modal-content {
+            background: var(--dark-card-bg);
+            border-color: var(--dark-border);
+        }
+
+        body[data-theme="dark"] .btn-close {
+            filter: invert(1) grayscale(100%) brightness(200%);
+        }
+
+        body[data-theme="dark"] #qrCodeContainer {
+            background: var(--dark-card-bg);
+            border: 1px solid var(--dark-border);
+        }
+
+        .modal-title {
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 700;
+            background: linear-gradient(135deg, #FFC0CB 30%, #87CEFA 70%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        body[data-theme="dark"] .modal-title {
+            color: var(--dark-text);
+        }
+
+        .dropdown-menu {
+            background: var(--light-card-bg);
+            border: 1px solid var(--light-border);
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .dropdown-item {
+            color: var(--light-text);
+            padding: 8px 20px;
+            transition: all 0.3s ease;
+        }
+
+        .dropdown-item:hover {
+            background: rgba(135, 206, 250, 0.1);
+            color: var(--light-text);
+        }
+
+        body[data-theme="dark"] .dropdown-menu {
+            background: var(--dark-card-bg);
+            border-color: var(--dark-border);
+        }
+
+        body[data-theme="dark"] .dropdown-item {
+            color: var(--dark-text);
+        }
+
+        body[data-theme="dark"] .dropdown-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--dark-text);
+        }
+
+        /* 深色模式适配 */
+        body[data-theme="dark"] {
+            background: var(--dark-bg);
+            color: var(--dark-text);
+        }
+
+        body[data-theme="dark"] .search-input {
+            background: var(--dark-card-bg);
+            border-color: var(--dark-border);
+            color: var(--dark-text);
+        }
+
+        body[data-theme="dark"] .filter-tag {
+            background: var(--dark-card-bg);
+            border-color: var(--dark-border);
+            color: var(--dark-text);
+        }
+
+        body[data-theme="dark"] .subscription-grid {
+            background: var(--dark-card-bg);
+            border-color: var(--dark-border);
+        }
+
+        body[data-theme="dark"] .subscription-card {
+            background: var(--dark-card-bg);
+            border-color: var(--dark-border);
+        }
+
+        body[data-theme="dark"] .subscription-title {
+            color: var(--dark-text);
+        }
+
+        body[data-theme="dark"] .subscription-link {
+            color: var(--dark-text);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        body[data-theme="dark"] .subscription-link:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+        
+        body[data-theme="dark"] .action-button {
+            background: var(--dark-card-bg);
+            color: var(--dark-text);
+            border: 1px solid var(--dark-border);
+        }
+
+        body[data-theme="dark"] .action-button:hover,
+        body[data-theme="dark"] .action-button:focus,
+        body[data-theme="dark"] .action-button:active {
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            .subscription-grid {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+            }
+
+            .page-title {
+                padding-top: 60px;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 576px) {
+            body {
+                padding: 0.5rem;
+            }
+
+            .subscription-container {
+                padding: 0 0.5rem;
+            }
+
+            .subscription-grid {
+                padding: 0.8rem;
+            }
+
+            .subscription-card {
+                padding: 1rem;
+            }
+
+            .filter-tags {
+                gap: 8px;
+            }
+
+            .filter-tag {
+                padding: 6px 15px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="navbar-container"></div>
+
+    <div class="page-title">
+        <h1>Free Subscription Share</h1>
+    </div>
+
+    <div id="article-meta-container" style="position: relative; z-index: 999999;"></div>
+
+    <div class="subscription-container">
+        <div class="search-box">
+            <input type="text" class="search-input" placeholder="Search Subscriptions...">
+        </div>
+        
+        <div class="filter-tags">
+            <span class="filter-tag active" data-type="all">All</span>
+            <span class="filter-tag" data-type="clash">Clash</span>
+            <span class="filter-tag" data-type="default">Default</span>
+            <span class="filter-tag" data-type="singbox">SingBox</span>
+        </div>
+
+        <div class="subscription-grid" id="subGrid">
+            <!-- 订阅卡片将通过JS动态生成 -->
+        </div>
+    </div>
+
+    <div class="modal fade" id="qrModal" tabindex="-1" aria-labelledby="qrModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="qrModalLabel">QR Code</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" style="text-align: center;">
+                    <div id="qrCodeContainer"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="footer-container"></div>
+
+    <script>
+        function parseSubscriptionLinks(links) {
+            // 用于记录每种类型的计数
+            const typeCounter = {
+                clash: 0,
+                default: 0, 
+                singbox: 0
+            };
+
+            return links.split('\n')
+                .filter(link => link.trim())
+                .map(link => {
+                    const url = link.trim().toLowerCase();
+                    let type = 'default';  // 默认类型
+
+                    // 优化的类型识别逻辑
+                    if (url.includes('clash') || url.endsWith('.yaml') || url.endsWith('.yml')) {
+                        type = 'clash';
+                    } else if (url.includes('sing-box') || url.endsWith('.json')) {
+                        type = 'singbox';
+                    }
+
+                    // 增加计数并生成标题
+                    typeCounter[type]++;
+                    const typeNames = {
+                        clash: 'Clash Subscription',
+                        default: 'Default Subscription',
+                        singbox: 'SingBox Subscription'
+                    };
+                    
+                    return {
+                        title: `${typeNames[type]} #${typeCounter[type]}`,
+                        link: url,
+                        type: type
+                    };
+                });
+        }
+
+        // 订阅数据
+        const rawLinks = `
+            https://d1.mk/xPv6wHv
+            https://shz.al/hdAT
+            https://shz.al/2MPz
+            https://raw.githubusercontent.com/Ruk1ng001/freeSub/main/clash.yaml
+            https://raw.githubusercontent.com/peasoft/NoMoreWalls/master/list.meta.yml
+            https://raw.githubusercontent.com/firefoxmmx2/v2rayshare_subcription/main/subscription/clash_sub.yaml
+            https://raw.githubusercontent.com/xiaoji235/airport-free/refs/heads/main/clash/v2rayshare.txt
+            https://raw.githubusercontent.com/ermaozi/get_subscribe/main/subscribe/clash.yml
+            https://raw.githubusercontent.com/Pawdroid/Free-servers/refs/heads/main/sub
+            https://raw.githubusercontent.com/shahidbhutta/Clash/refs/heads/main/Router
+            https://raw.githubusercontent.com/anaer/Sub/refs/heads/main/clash.yaml
+            https://raw.githubusercontent.com/a2470982985/getNode/main/clash.yaml
+            https://raw.githubusercontent.com/free18/v2ray/refs/heads/main/c.yaml
+            https://raw.githubusercontent.com/ripaojiedian/freenode/main/clash
+            https://raw.githubusercontent.com/mfuu/v2ray/master/v2ray
+            https://raw.githubusercontent.com/roosterkid/openproxylist/main/V2RAY_RAW.txt
+            https://raw.githubusercontent.com/snakem982/proxypool/main/source/clash-meta.yaml
+            https://raw.githubusercontent.com/zhangkaiitugithub/passcro/main/speednodes.yaml
+            https://raw.githubusercontent.com/ripaojiedian/freenode/main/clash
+            https://raw.githubusercontent.com/JettKing/nodal/main/vpn
+            http://dmnjpan.x3322.net:8090/clash/proxies?speed=10
+            https://sublink.634676.xyz/sub
+            https://bf4ede2b.cf-workers-sub-69z.pages.dev/sub?token=5528764ad2c6eeddb50d9dacb529d0f5&b64
+            https://gitlab.com/api/v4/projects/67260964/repository/files/yyyy02We%2FqQRLivILf/raw?ref=main&private_token=glpat-5-GvKLKzitdx2r1ijUAY
+            https://v1.mk/bksE60j
+            https://raw.githubusercontent.com/xiaoji235/airport-free/refs/heads/main/clash/naidounode.txt
+            https://raw.githubusercontent.com/xiaoji235/airport-free/refs/heads/main/clash/nodefree.txt
+            https://raw.githubusercontent.com/xiaoji235/airport-free/refs/heads/main/clash/wenode.txt
+            https://raw.githubusercontent.com/firefoxmmx2/v2rayshare_subcription/main/subscription/vray_sub.txt
+            https://raw.githubusercontent.com/xiaoji235/airport-free/refs/heads/main/clash/clashnodecc.txt
+            https://raw.githubusercontent.com/xiaoji235/airport-free/refs/heads/main/clash/nodev2ray.txt
+            https://raw.githubusercontent.com/xiaoji235/airport-free/refs/heads/main/v2ray/clashnodecc.txt
+            https://raw.githubusercontent.com/xiaoji235/airport-free/refs/heads/main/v2ray/naidounode.txt
+            https://raw.githubusercontent.com/xiaoji235/airport-free/refs/heads/main/v2ray/nodev2ray.txt
+            https://raw.githubusercontent.com/xiaoji235/airport-free/refs/heads/main/v2ray/v2rayshare.txt
+            https://raw.githubusercontent.com/xiaoji235/airport-free/refs/heads/main/v2ray/wenode.txt
+            https://raw.githubusercontent.com/ermaozi/get_subscribe/main/subscribe/v2ray.txt
+            https://raw.githubusercontent.com/shahidbhutta/Clash/refs/heads/main/myProxyList
+            https://raw.githubusercontent.com/peasoft/NoMoreWalls/master/list.txt
+            https://raw.githubusercontent.com/peasoft/NoMoreWalls/master/list.yml
+            https://raw.githubusercontent.com/peasoft/NoMoreWalls/master/list_raw.txt
+            https://raw.githubusercontent.com/anaer/Sub/refs/heads/main/mihomo.yaml
+            https://raw.githubusercontent.com/a2470982985/getNode/main/v2ray.txt
+            https://raw.githubusercontent.com/free18/v2ray/refs/heads/main/v.txt
+            https://raw.githubusercontent.com/Ruk1ng001/freeSub/main/singBox.json
+            https://raw.githubusercontent.com/Ruk1ng001/freeSub/main/v2ray
+            https://raw.githubusercontent.com/ripaojiedian/freenode/main/sub
+            https://raw.githubusercontent.com/mfuu/v2ray/master/clash.yaml
+            https://raw.githubusercontent.com/roosterkid/openproxylist/main/V2RAY.txt
+            https://raw.githubusercontent.com/roosterkid/openproxylist/main/V2RAY_BASE64.txt
+            https://raw.githubusercontent.com/snakem982/proxypool/main/source/clash-meta-2.yaml
+            https://raw.githubusercontent.com/snakem982/proxypool/main/source/v2ray.txt
+            https://raw.githubusercontent.com/snakem982/proxypool/main/source/v2ray-2.txt
+            https://raw.githubusercontent.com/zhangkaiitugithub/passcro/main/meta.yaml
+            https://raw.githubusercontent.com/zhangkaiitugithub/passcro/main/sing-box.json
+            https://raw.githubusercontent.com/zhangkaiitugithub/passcro/main/speednodes.txt
+            https://raw.githubusercontent.com/ripaojiedian/freenode/main/su
+            https://x.juzi.lat/view.php?id=4f791577a9bfaaf8
+            https://imperialb.in/r/eav0dzoa
+            https://imperialb.in/r/gynacebx
+            https://raw.githubusercontent.com/mfbpn/tg_mfbpn_sub/main/trial.yaml
+            https://api.mxlweb.xyz/sub?target=clash&url=https://mxlsub.me/free&insert=false
+            https://raw.githubusercontent.com/0xJins/x.sub/refs/heads/main/trial.yaml
+            https://sub.reajason.eu.org/clash.yaml
+            https://clash.221207.xyz/pubclashyaml
+            https://mxlsub.me/newful
+            https://igdux.top/5Hna
+            https://proxypool1999.banyunxiaoxi.icu/clash/proxies?speed=10
+            https://node.vpnkk.org/clash/proxies?speed=10
+            https://proxypool.link/clash/config?speed=10
+            https://node.vpnkk.org/clash/proxies?speed=10
+            https://proxypool1999.banyunxiaoxi.icu/clash/proxies?speed=10
+            https://pp.dcd.one/clash/config
+            https://jich.tih2.eu.org/clash/config
+            http://23.105.208.11/clash/proxies
+            https://raw.githubusercontent.com/vxiaov/free_proxies/main/clash/clash.provider.yaml
+            https://raw.githubusercontent.com/ljlfct01/ljlfct01.github.io/refs/heads/main/节点
+            https://raw.githubusercontent.com/leetomlee123/freenode/refs/heads/main/README.md
+            https://raw.githubusercontent.com/mai19950/clashgithub_com/refs/heads/main/site
+            https://raw.githubusercontent.com/aiboboxx/clashfree/refs/heads/main/clash.yml
+            https://raw.githubusercontent.com/Ashkan-m/v2ray/main/Sub.txt
+            https://raw.githubusercontent.com/Kwinshadow/TelegramV2rayCollector/main/sublinks/mix.txt
+            https://raw.githubusercontent.com/qjlxg/hy2/main/configtg.txt
+            https://raw.githubusercontent.com/Surfboardv2ray/TGParse/main/configtg.txt
+            https://raw.githubusercontent.com/miladtahanian/V2RayCFGDumper/main/config.txt
+            https://raw.githubusercontent.com/roosterkid/openproxylist/refs/heads/main/V2RAY_RAW.txt
+            https://raw.githubusercontent.com/MhdiTaheri/V2rayCollector/main/sub/mix
+            https://raw.githubusercontent.com/barry-far/V2ray-Configs/main/All_Configs_Sub.txt
+            https://raw.githubusercontent.com/barry-far/V2ray-Configs/main/Sub6.txt
+            https://raw.githubusercontent.com/barry-far/V2ray-Configs/main/Sub7.txt
+            https://raw.githubusercontent.com/barry-far/V2ray-Configs/main/Sub8.txt
+            https://raw.githubusercontent.com/barry-far/V2ray-Configs/main/Sub5.txt
+            https://raw.githubusercontent.com/barry-far/V2ray-Configs/main/Sub1.txt
+            https://raw.githubusercontent.com/barry-far/V2ray-Configs/main/Sub4.txt
+            https://raw.githubusercontent.com/barry-far/V2ray-Configs/main/Sub3.txt
+            https://raw.githubusercontent.com/barry-far/V2ray-Configs/main/Sub2.txt
+            https://raw.githubusercontent.com/Q3dlaXpoaQ/V2rayN_Clash_Node_Getter/refs/heads/main/APIs/sc4.yaml
+            https://raw.githubusercontent.com/Q3dlaXpoaQ/V2rayN_Clash_Node_Getter/refs/heads/main/APIs/sc1.yaml
+            https://raw.githubusercontent.com/Q3dlaXpoaQ/V2rayN_Clash_Node_Getter/refs/heads/main/APIs/sc2.yaml
+            https://raw.githubusercontent.com/Q3dlaXpoaQ/V2rayN_Clash_Node_Getter/refs/heads/main/APIs/sc3.yaml
+            https://raw.githubusercontent.com/Q3dlaXpoaQ/V2rayN_Clash_Node_Getter/refs/heads/main/APIs/sc0.yaml
+            https://raw.githubusercontent.com/Q3dlaXpoaQ/V2rayN_Clash_Node_Getter/refs/heads/main/APIs/cg0.txt
+            https://raw.githubusercontent.com/Q3dlaXpoaQ/V2rayN_Clash_Node_Getter/refs/heads/main/APIs/cg1.txt
+            https://raw.githubusercontent.com/Q3dlaXpoaQ/V2rayN_Clash_Node_Getter/refs/heads/main/APIs/cg2.txt
+            https://raw.githubusercontent.com/Q3dlaXpoaQ/V2rayN_Clash_Node_Getter/refs/heads/main/APIs/cg3.txt
+            https://raw.githubusercontent.com/Q3dlaXpoaQ/V2rayN_Clash_Node_Getter/refs/heads/main/APIs/cg4.txt
+            https://raw.githubusercontent.com/mahdibland/SSAggregator/master/sub/sub_merge_yaml.yml
+            https://raw.githubusercontent.com/mahdibland/SSAggregator/master/sub/sub_merge.txt
+            https://raw.githubusercontent.com/mahdibland/SSAggregator/master/sub/sub_merge_base64.txt
+            https://raw.githubusercontent.com/mahdibland/ShadowsocksAggregator/master/Eternity.yml
+            https://raw.githubusercontent.com/mahdibland/ShadowsocksAggregator/master/Eternity.txt
+            https://raw.githubusercontent.com/chengaopan/AutoMergePublicNodes/master/list.yml
+            https://raw.githubusercontent.com/chengaopan/AutoMergePublicNodes/master/list_raw.txt
+            https://raw.githubusercontent.com/chengaopan/AutoMergePublicNodes/master/list.txt
+            https://raw.githubusercontent.com/mgit0001/test_clash/refs/heads/main/heima.txt
+            https://raw.githubusercontent.com/mgit0001/test_clash/refs/heads/main/tgs.yaml
+            https://raw.githubusercontent.com/go4sharing/sub/main/sub.yaml
+            https://raw.githubusercontent.com/go4sharing/sub/main/clash.yaml
+            https://raw.githubusercontent.com/go4sharing/sub/main/worker.yaml
+            https://raw.githubusercontent.com/ALIILAPRO/v2rayNG-Config/main/sub.txt
+            https://raw.githubusercontent.com/ALIILAPRO/v2rayNG-Config/main/server.txt
+            https://raw.githubusercontent.com/MrMohebi/xray-proxy-grabber-telegram/master/collected-proxies/row-url/actives.txt
+            https://raw.githubusercontent.com/MrMohebi/xray-proxy-grabber-telegram/master/collected-proxies/row-url/all.txt
+            https://raw.githubusercontent.com/MrMohebi/xray-proxy-grabber-telegram/master/collected-proxies/clash-meta/actives_under_1000ms.yaml
+            https://raw.githubusercontent.com/MrMohebi/xray-proxy-grabber-telegram/master/collected-proxies/clash-meta/actives_under_1500ms.yaml
+            https://raw.githubusercontent.com/MrMohebi/xray-proxy-grabber-telegram/master/collected-proxies/clash-meta/all.yaml
+            https://raw.githubusercontent.com/ts-sf/fly/main/clash
+            https://raw.githubusercontent.com/ts-sf/fly/main/v2
+            https://raw.githubusercontent.com/Epodonios/v2ray-configs/main/All_Configs_Sub.txt
+            https://raw.githubusercontent.com/Epodonios/v2ray-configs/main/All_Configs_base64_Sub.txt
+            https://raw.githubusercontent.com/Surfboardv2ray/Proxy-sorter/main/output/converted.txt
+            https://raw.githubusercontent.com/Surfboardv2ray/Proxy-sorter/main/submerge/converted.tx
+            https://raw.githubusercontent.com/soroushmirzaei/telegram-configs-collector/main/splitted/mixed 
+            https://raw.githubusercontent.com/soroushmirzaei/telegram-configs-collector/main/subscribe
+            `.trim();
+
+        const subscriptions = parseSubscriptionLinks(rawLinks);
+
+        function createSubCard(sub) {
+            return `
+                <div class="subscription-card" data-type="${sub.type}">
+                    <h3 class="subscription-title">${sub.title}</h3>
+                    <div class="subscription-link" onclick="copyToClipboard('${sub.link}')">${sub.link}</div>
+                    <div class="action-buttons">
+                        <div class="dropdown">
+                            ${getActionButtons(sub.type, sub.link)}
+                            <ul class="dropdown-menu">
+                                ${getImportOptions(sub.type, sub.link)}
+                            </ul>
+                        </div>
+                        <button class="action-button" onclick="showQRCode(this, '${sub.link}', '${sub.title}')">
+                            Show QR code
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function getActionButtons(type, link) {
+            if (type === 'singbox') {
+                return `
+                    <div class="dropdown">
+                        <button class="action-button dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Import to …
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#" onclick="importSubscription('singbox', '${link}')">Import to SingBox</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="importSubscription('default', '${link}')">Import to Hiddify</a></li>
+                        </ul>
+                    </div>
+                `;
+            } else {
+                return `
+                    <button class="action-button" onclick="importSubscription('${type}', '${link}')">
+                        Import to ${type === 'clash' ? 'Clash' : 'Hiddify'}
+                    </button>
+                `;
+            }
+        }
+
+        function getImportOptions(type, link) {
+            if (type === 'singbox') {
+                return `
+                    <li><a class="dropdown-item" href="#" onclick="importSubscription('singbox', '${link}')">Import to SingBox</a></li>
+                    <li><a class="dropdown-item" href="#" onclick="importSubscription('default', '${link}')">Import to Hiddify</a></li>
+                `;
+            } else {
+                return `
+                    <li><a class="dropdown-item" href="#" onclick="importSubscription('${type}', '${link}')">Import to ${getClientName(type)}</a></li>
+                `;
+            }
+        
+        }
+
+        function getClientName(type) {
+            switch(type) {
+                case 'clash':
+                    return 'Clash';
+                case 'singbox':
+                    return 'SingBox';
+                default:
+                    return 'Hiddify';
+            }
+        }
+
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                showCopyToast(`Copied: ${text}`);
+            }).catch(() => {
+                // 使用自定义 toast 显示错误
+                const toast = document.createElement('div');
+                toast.id = 'copy-toast';
+                toast.textContent = 'Copy failed';
+                toast.style.background = '#dc3545';  // 使用红色背景表示错误
+                showToast(toast);
+            });
+        }
+
+        function showCopyToast(message) {
+            let toast = document.getElementById('copy-toast');
+            if (!toast) {
+                toast = document.createElement('div');
+                toast.id = 'copy-toast';
+                toast.style.position = 'fixed';
+                toast.style.bottom = '20px';
+                toast.style.left = '50%';
+                toast.style.transform = 'translateX(-50%)';
+                // 根据主题设置不同的背景色
+                toast.style.background = document.body.getAttribute('data-theme') === 'dark' 
+                    ? 'var(--dark-card-bg)'
+                    : 'linear-gradient(135deg, #FFC0CB 30%, #87CEFA 70%)';
+                toast.style.color = document.body.getAttribute('data-theme') === 'dark'
+                    ? 'var(--dark-text)'
+                    : 'white';
+                toast.style.padding = '10px 20px';
+                toast.style.borderRadius = '12px';
+                toast.style.zIndex = '1000';
+                toast.style.transition = 'opacity 0.3s';
+                toast.style.boxShadow = document.body.getAttribute('data-theme') === 'dark'
+                    ? '0 4px 10px rgba(0, 0, 0, 0.3)'
+                    : '0 4px 10px rgba(135, 206, 250, 0.3)';
+                // 暗色模式下添加边框
+                if (document.body.getAttribute('data-theme') === 'dark') {
+                    toast.style.border = '1px solid var(--dark-border)';
+                }
+                document.body.appendChild(toast);
+            }
+
+            // 更新消息并显示
+            toast.textContent = message;
+            toast.style.opacity = '1';
+
+            // 2秒后隐藏
+            clearTimeout(toast.timeout);
+            toast.timeout = setTimeout(() => {
+                toast.style.opacity = '0';
+            }, 2000);
+        }
+
+        function importSubscription(type, url) {
+            const protocols = {
+                clash: 'clash://install-config?url=',
+                singbox: 'sing-box://import-remote-profile?url=',
+                default: 'hiddify://import/'
+            };
+            
+            if (protocols[type]) {
+                window.location.href = protocols[type] + encodeURIComponent(url);
+            }
+        }
+
+        function showQRCode(button, text, title) {
+            // 清空之前的二维码
+            const qrContainer = document.getElementById('qrCodeContainer');
+            qrContainer.innerHTML = '';
+
+            // 更新模态框标题
+            document.getElementById('qrModalLabel').textContent = title;
+
+            // 显示模态框
+            const qrModal = new bootstrap.Modal(document.getElementById('qrModal'), {
+                keyboard: true
+            });
+            qrModal.show();
+
+            // 生成二维码
+            new QRCode(qrContainer, {
+                text: text,
+                width: 200,
+                height: 200,
+                colorDark: "#000000",
+                colorLight: "#ffffff",
+                correctLevel: QRCode.CorrectLevel.H
+            });
+        }
+
+        $(document).ready(function() {
+            // 加载导航栏
+            $("#navbar-container").load("navbar.html", function() {
+                $("#navbar-title").text("Free Sub");
+                window.dispatchEvent(new Event('scroll'));
+            });
+            // 加载文章元数据
+            $("#article-meta-container").load("article-meta.html", function() {
+                // 设置日期
+                $('.am-container').attr({
+                    'data-publish-date': '2025-04-14 15:01:12',
+                    'data-update-date': '2025-04-16 16:06:20'
+                });
+                // 手动触发初始化
+                if (typeof initArticleMeta === 'function') {
+                    initArticleMeta();
+                }
+            });
+
+            // 加载底部
+            $("#footer-container").load("footer.html");
+
+            // 渲染订阅卡片
+            const grid = document.getElementById('subGrid');
+            subscriptions.forEach(sub => {
+                grid.innerHTML += createSubCard(sub);
+            });
+
+            // 搜索功能
+            $('.search-input').on('input', function() {
+                const value = this.value.toLowerCase();
+                $('.subscription-card').each(function() {
+                    const text = $(this).text().toLowerCase();
+                    $(this).toggle(text.includes(value));
+                });
+            });
+
+            // 过滤功能
+            $('.filter-tag').click(function() {
+                $('.filter-tag').removeClass('active');
+                $(this).addClass('active');
+                
+                const type = $(this).data('type');
+                if (type === 'all') {
+                    $('.subscription-card').show();
+                } else {
+                    $('.subscription-card').hide();
+                    $(`.subscription-card[data-type="${type}"]`).show();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

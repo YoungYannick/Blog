@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Weapon Analysis Tool - YoungYannick's Blog</title>
+  <meta name="author" content="YoungYannick" />
+  <meta name="description" content="Weapon Analysis Tool - YoungYannick's Blog" />
+  <meta name="keywords" content="YoungYannick,Blog,Weapon Analysis Tool,武器分析工具" />
+  <link rel="icon" href="/images/Yannick_64.ico" />
+  <link rel="stylesheet" href="/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&family=Quicksand:wght@500&display=swap" rel="stylesheet">
+  <link href="/css/toastr.min.css" rel="stylesheet" />
+  <link href="/css/navbar.css" rel="stylesheet" />
+  <link href="/css/footer.css" rel="stylesheet" />
+  <link href="/css/theme.css" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/tools-bubble.css">
+  <script src="/js/tools-bubble.js"></script>
+  <script src="/js/theme.js"></script>
+  <script src="/js/filter-module.js"></script>
+  <script src="/js/jquery-3.7.1.js"></script>
+  <script src="/js/bootstrap.bundle.min.js"></script>
+  <script src="/js/clipboard.min.js"></script>
+  <script src="/js/toastr.min.js"></script>
+  <script src="/js/navbar.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #f0f4ff;
+      position: relative;
+      overflow-x: hidden;
+      padding: 1rem;
+    }
+
+    body::before,
+    body::after {
+      content: '';
+      position: absolute;
+      width: 60vmin;
+      height: 60vmin;
+      border-radius: 50%;
+      filter: blur(100px);
+      opacity: 0.65;
+      animation: float 20s infinite linear;
+      z-index: -1;
+    }
+
+    body::before {
+      background: #FFC0CB;
+      top: 20%;
+      left: 10%;
+    }
+
+    body::after {
+      background: #87CEFA;
+      bottom: 20%;
+      right: 10%;
+      animation-delay: -10s;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0) rotate(0deg); }
+      25% { transform: translate(5vw, -3vh) rotate(90deg); }
+      50% { transform: translate(-4vw, 6vh) rotate(180deg); }
+      75% { transform: translate(3vw, -5vh) rotate(270deg); }
+    }
+
+    .custom-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 15px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .page-title {
+      text-align: center;
+      margin: 2rem auto;
+      padding-top: 80px;
+      width: 100%;
+    }
+
+    .page-title h1 {
+      font-family: 'Quicksand', sans-serif;
+      color: #2c3e50;
+      font-size: clamp(2rem, 5vw, 2.8rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+      background: linear-gradient(135deg, #FFC0CB 30%, #87CEFA 70%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .content-section {
+      background: rgba(255, 255, 255, 0.7);
+      border-radius: 24px;
+      padding: 2rem;
+      box-shadow: 0 8px 32px rgba(135, 206, 250, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      backdrop-filter: blur(8px);
+      margin-bottom: 3rem;
+    }
+
+    .section-title {
+      position: relative;
+      margin-bottom: 2rem;
+    }
+
+    .section-title h2 {
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 700;
+      font-size: 2rem;
+      color: var(--light-text);
+      margin-bottom: 0.5rem;
+      background: linear-gradient(135deg, #FFC0CB 30%, #87CEFA 70%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: inline-block;
+    }
+
+    .title-underline {
+      height: 4px;
+      width: 80px;
+      background: linear-gradient(135deg, #FFC0CB 30%, #87CEFA 70%);
+      margin: 0 auto;
+      border-radius: 2px;
+    }
+
+    .feature-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .feature-list li {
+      margin-bottom: 1rem;
+      padding-left: 2rem;
+      position: relative;
+      color: var(--light-text);
+    }
+
+    .feature-list li::before {
+      content: '✨';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    .feature-card {
+      background: var(--light-card-bg);
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      border: 1px solid var(--light-border);
+    }
+
+    .feature-card h3 {
+      color: var(--light-text);
+      margin-bottom: 1rem;
+      font-size: 1.5rem;
+    }
+
+    .feature-card p {
+      color: var(--light-text);
+      margin-bottom: 0;
+    }
+
+    .screenshot {
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      margin: 2rem 0;
+      max-width: 100%;
+      height: auto;
+      transition: transform 0.3s ease;
+    }
+
+    .screenshot:hover {
+      transform: scale(1.02);
+    }
+
+    .screenshot-container {
+      position: relative;
+      margin: 2rem 0;
+      text-align: center;
+    }
+
+    .screenshot-caption {
+      margin-top: 1rem;
+      color: var(--light-text);
+      font-style: italic;
+      text-align: center;
+    }
+
+    @media (max-width: 768px) {
+      .section-title h2 {
+        font-size: 1.8rem;
+      }
+      
+      .content-section {
+        padding: 1.5rem;
+      }
+
+      .feature-card {
+        padding: 1rem;
+      }
+    }
+
+    @media (max-width: 576px) {
+      body {
+        padding: 0.5rem;
+      }
+      
+      .page-title h1 {
+        font-size: 1.8rem;
+      }
+      
+      .section-title h2 {
+        font-size: 1.5rem;
+      }
+      
+      .content-section {
+        padding: 1.5rem 1rem;
+      }
+      
+      .feature-card h3 {
+        font-size: 1.3rem;
+      }
+    }
+
+    /* 暗色主题适配 */
+    body[data-theme="dark"] .feature-list li {
+      color: var(--dark-text);
+    }
+
+    body[data-theme="dark"] .feature-card {
+      background: var(--dark-card-bg);
+      border-color: var(--dark-border);
+    }
+
+    body[data-theme="dark"] .feature-card h3,
+    body[data-theme="dark"] .feature-card p {
+      color: var(--dark-text);
+    }
+
+    body[data-theme="dark"] .screenshot-caption {
+      color: var(--dark-text);
+    }
+  </style>
+</head>
+
+<body>
+  <div id="navbar-container"></div>
+
+  <div class="container-fluid">
+    <div class="row justify-content-center">
+      <div class="col-12 page-title">
+        <h1>Weapon Analysis Tool</h1>
+      </div>
+    </div>
+  </div>
+
+  <div class="container custom-container">
+    <div id="article-meta-container" style="position: relative; z-index: 999999;"></div>
+    <!-- 工具概述 -->
+    <div class="content-section">
+      <div class="section-title text-center mb-4">
+        <h2>Overview</h2>
+        <div class="title-underline"></div>
+      </div>
+      <div class="screenshot-container">
+        <img src="/images/content/Weapon_Analysis_Tool/BF005.png" alt="Main Interface" class="screenshot">
+        <p class="screenshot-caption">Weapon Analysis Tool Main Interface</p>
+      </div>
+      <div class="feature-card">
+        <h3>🎯 Core Advantages</h3>
+        <ul class="feature-list">
+          <li>Enterprise-level Reliability: Precise parsing of nested data structures</li>
+          <li>Intelligent Processing Engine: Format preservation + incremental update technology</li>
+          <li>Bi-directional Compatibility: Perfect support for GBK/UTF-8 encoding</li>
+          <li>Extensible Architecture: Modular design for easy feature expansion</li>
+          <li>Full-chain Localization: Complete Chinese support from interface to data</li>
+          <li>Enterprise-level Security: Operation tracking + automatic backup dual insurance</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 功能特性 -->
+    <div class="content-section">
+      <div class="section-title text-center mb-4">
+        <h2>Features</h2>
+        <div class="title-underline"></div>
+      </div>
+      
+      <!-- 智能文件管理 -->
+      <div class="feature-card">
+        <h3>📁 Intelligent File Management</h3>
+        <ul class="feature-list">
+          <li>Dual Path Support: Automatically detect and load default file paths</li>
+          <li>Lossless Editing: Preserve original indentation/spaces/special characters format</li>
+          <li>Safe Operation: Auto backup before modification + exception operation logging</li>
+          <li>Efficient Reload: One-click refresh to test modifications</li>
+        </ul>
+      </div>
+
+      <!-- 三维搜索系统 -->
+      <div class="feature-card">
+        <h3>🔍 3D Search System</h3>
+        <div class="screenshot-container">
+          <img src="/images/content/Weapon_Analysis_Tool/BF005_4.png" alt="Search Feature" class="screenshot">
+          <p class="screenshot-caption">Powerful Search Feature Demonstration</p>
+        </div>
+        <ul class="feature-list">
+          <li>Smart Search: Full-text deep scanning (nested property penetration parsing)</li>
+          <li>Name Precise Positioning (supports fuzzy/exact matching)</li>
+          <li>150ms Delay Debounce Mechanism</li>
+          <li>Property String Cache Acceleration</li>
+          <li>Search Result Highlighting</li>
+        </ul>
+      </div>
+
+      <!-- 皮肤管理中心 -->
+      <div class="feature-card">
+        <h3>🎨 Skin Management Center</h3>
+        <div class="screenshot-container">
+          <img src="/images/content/Weapon_Analysis_Tool/BF005_2.png" alt="Skin Display" class="screenshot">
+          <p class="screenshot-caption">Weapon Skin Display Interface</p>
+        </div>
+        <div class="screenshot-container">
+          <img src="/images/content/Weapon_Analysis_Tool/BF005_3.png" alt="One-Click Skin Change" class="screenshot">
+          <p class="screenshot-caption">One-Click Skin Change Feature</p>
+        </div>
+        <ul class="feature-list">
+          <li>ITEM.CSV Skin Library Parsing</li>
+          <li>Instant One-Click Skin Change</li>
+          <li>Skin Name/ID Bi-directional Search</li>
+        </ul>
+      </div>
+
+      <!-- 智能数据导出 -->
+      <div class="feature-card">
+        <h3>📤 Smart Data Export</h3>
+        <ul class="feature-list">
+          <li>Multiple Format Support: XLSX/PNG/TXT/LTA</li>
+          <li>Custom Templates: Weapon type filtering, field combination export, encoding format selection</li>
+          <li>Batch Processing: Support for multi-file queue export</li>
+        </ul>
+      </div>
+
+      <!-- 本地化支持 -->
+      <div class="feature-card">
+        <h3>🌐 Localization Support</h3>
+        <ul class="feature-list">
+          <li>Real-time Chinese-English Property Translation</li>
+          <li>GBK/UTF-8 Auto Detection</li>
+          <li>Dynamic Font Scaling (Ctrl+Scroll to adjust)</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 性能优化 -->
+    <div class="content-section">
+      <div class="section-title text-center mb-4">
+        <h2>Performance Optimization</h2>
+        <div class="title-underline"></div>
+      </div>
+      
+      <!-- 智能线程调度 -->
+      <div class="feature-card">
+        <h3>🧵 Intelligent Thread Scheduling</h3>
+        <ul class="feature-list">
+          <li>Four-Thread Architecture: File parsing thread, Data saving thread, Image export thread, CSV processing thread</li>
+          <li>Almost Zero Lag Experience: UI and background processing completely separated</li>
+        </ul>
+      </div>
+
+      <!-- 企业级稳定性 -->
+      <div class="feature-card">
+        <h3>🛡️ Enterprise-level Stability</h3>
+        <ul class="feature-list">
+          <li>Exception Capture Mechanism: Prevent program crashes</li>
+          <li>Incremental Update Technology: Only modify changed data blocks</li>
+          <li>Modular Design: Features run independently without interference</li>
+        </ul>
+      </div>
+
+      <!-- 内存优化 -->
+      <div class="feature-card">
+        <h3>🧠 Memory Optimization</h3>
+        <ul class="feature-list">
+          <li>Segmented Reading Technology: Process GB-level files</li>
+          <li>Smart Cache Cleanup: Automatic release of idle resources</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div id="footer-container"></div>
+
+  <script>
+    $(document).ready(function() {
+      $("#navbar-container").load("navbar.html", function() {
+        $("#navbar-title").text("Weapon Analysis Tool");
+        window.dispatchEvent(new Event('scroll'));
+      });
+      // 加载文章元数据
+      $("#article-meta-container").load("article-meta.html", function() {
+        // 设置日期
+        $('.am-container').attr({
+          'data-publish-date': '2025-04-14 14:01:12',
+          'data-update-date': '2025-04-16 16:16:30'
+        });
+        // 手动触发初始化
+        if (typeof initArticleMeta === 'function') {
+          initArticleMeta();
+        }
+      });
+      $("#footer-container").load("footer.html");
+    });
+  </script>
+</body>
+</html>

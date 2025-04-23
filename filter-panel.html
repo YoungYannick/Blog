@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Filter Management Panel - YoungYannick's Blogger</title>
+  <meta name="author" content="YoungYannick" />
+  <link rel="icon" href="/images/Yannick_64.ico" />
+  <link rel="stylesheet" href="/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&family=Quicksand:wght@500&display=swap" rel="stylesheet">
+  <link href="/css/toastr.min.css" rel="stylesheet" />
+  <link href="/css/navbar.css" rel="stylesheet" />
+  <link href="/css/footer.css" rel="stylesheet" />
+  <link href="/css/theme.css" rel="stylesheet" />
+  <script src="/js/theme.js"></script>
+  <script src="/js/jquery-3.7.1.js"></script>
+  <script src="/js/bootstrap.bundle.min.js"></script>
+  <script src="/js/toastr.min.js"></script>
+  <script src="/js/filter-module.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #f0f4ff;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    body::before,
+    body::after {
+      content: '';
+      position: absolute;
+      width: 60vmin;
+      height: 60vmin;
+      border-radius: 50%;
+      filter: blur(100px);
+      opacity: 0.65;
+      animation: float 20s infinite linear;
+      z-index: -1;
+    }
+
+    body::before {
+      background: #FFC0CB;
+      top: 20%;
+      left: 10%;
+    }
+
+    body::after {
+      background: #87CEFA;
+      bottom: 20%;
+      right: 10%;
+      animation-delay: -10s;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0) rotate(0deg); }
+      25% { transform: translate(5vw, -3vh) rotate(90deg); }
+      50% { transform: translate(-4vw, 6vh) rotate(180deg); }
+      75% { transform: translate(3vw, -5vh) rotate(270deg); }
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .panel-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .panel-title {
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 700;
+      font-size: 2.5rem;
+      background: linear-gradient(135deg, #FFC0CB 30%, #87CEFA 70%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.5rem;
+    }
+
+    .panel-subtitle {
+      color: var(--light-text);
+      font-size: 1.1rem;
+      opacity: 0.8;
+    }
+
+    .panel-card {
+      background: var(--light-card-bg);
+      border-radius: 24px;
+      padding: 2rem;
+      box-shadow: 0 8px 32px rgba(135, 206, 250, 0.1);
+      border: 1px solid var(--light-border);
+      backdrop-filter: blur(8px);
+      margin-bottom: 2rem;
+    }
+
+    .panel-section {
+      margin-bottom: 2rem;
+    }
+
+    .panel-section:last-child {
+      margin-bottom: 0;
+    }
+
+    .section-title {
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 700;
+      font-size: 1.5rem;
+      color: var(--light-text);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+    }
+
+    .section-title i {
+      margin-right: 0.5rem;
+      background: linear-gradient(135deg, #FFC0CB 30%, #87CEFA 70%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .filter-option {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .filter-option span {
+      margin-left: 10px;
+      color: var(--light-text);
+    }
+
+    .filter-presets {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .filter-preset-item {
+      padding: 1rem;
+      border-radius: 12px;
+      background: rgba(135, 206, 250, 0.1);
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.2s ease;
+      color: var(--light-text);
+      border: 2px solid transparent;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .filter-preset-item:hover {
+      background: rgba(135, 206, 250, 0.2);
+      transform: translateY(-3px);
+    }
+
+    .filter-preset-item.active {
+      border-color: #87CEFA;
+      background: rgba(135, 206, 250, 0.2);
+    }
+
+    .filter-preset-name {
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .filter-preset-desc {
+      font-size: 0.8rem;
+      opacity: 0.8;
+    }
+
+    .filter-preview {
+      width: 100%;
+      height: 80px;
+      border-radius: 8px;
+      margin-bottom: 0.5rem;
+      background-image: url('/images/banner/13.jpg');
+      background-size: cover;
+      background-position: center;
+    }
+
+    .filter-radio-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .filter-radio-label {
+      display: flex;
+      align-items: center;
+      padding: 0.8rem 1.2rem;
+      border-radius: 12px;
+      background: rgba(135, 206, 250, 0.1);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      color: var(--light-text);
+      border: 2px solid transparent;
+    }
+
+    .filter-radio-label:hover {
+      background: rgba(135, 206, 250, 0.2);
+    }
+
+    .filter-radio-label.active {
+      border-color: #87CEFA;
+      background: rgba(135, 206, 250, 0.2);
+    }
+
+    .filter-radio-label input {
+      margin-right: 0.5rem;
+    }
+
+    .dark-mode-settings {
+      margin-top: 1rem;
+      padding: 1rem;
+      border-radius: 12px;
+      background: rgba(135, 206, 250, 0.05);
+    }
+
+    .dark-select-container {
+      margin-top: 1rem;
+    }
+
+    .dark-select-container label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: var(--light-text);
+    }
+
+    .dark-select {
+      width: 100%;
+      padding: 0.8rem;
+      border-radius: 12px;
+      background: var(--light-card-bg);
+      color: var(--light-text);
+      border: 1px solid var(--light-border);
+      font-family: 'Nunito', sans-serif;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 1rem;
+      margin-top: 2rem;
+      justify-content: space-between; /* 添加居中对齐 */
+    }
+
+    .btn-custom {
+      padding: 0.8rem 2rem;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-align: center;
+      border: none;
+      outline: none;
+      transform: translateY(0);
+      min-width: 120px;
+    }
+
+    .btn-reset {
+      background: rgba(135, 206, 250, 0.1);
+      color: var(--light-text);
+      border: 1px solid var(--light-border);
+    }
+
+    .btn-reset:hover {
+      background: rgba(135, 206, 250, 0.2);
+      transform: translateY(-3px);
+      box-shadow: 0 6px 15px rgba(191, 200, 209, 0.274);
+    }
+
+    .btn-save {
+      background: linear-gradient(135deg, #FFC0CB 30%, #87CEFA 70%);
+      color: white;
+    }
+
+    .btn-save:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 15px rgba(191, 200, 209, 0.274);
+    }
+
+    body[data-theme="dark"] .btn-reset,
+    body[data-theme="dark"] .btn-save {
+      background: var(--dark-card-bg);
+      color: var(--dark-text);
+      border-color: var(--dark-border);
+    }
+
+    body[data-theme="dark"] .btn-reset:hover,
+    body[data-theme="dark"] .btn-save:hover {
+      background: rgba(255, 255, 255, 0.1);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn-primary-custom {
+      background: linear-gradient(135deg, #FFC0CB 30%, #87CEFA 70%);
+      color: white;
+    }
+
+    .btn-primary-custom:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-secondary-custom {
+      background: rgba(135, 206, 250, 0.1);
+      color: var(--light-text);
+    }
+
+    .btn-secondary-custom:hover {
+      background: rgba(135, 206, 250, 0.2);
+      transform: translateY(-3px);
+    }
+
+    .preview-section {
+      margin-top: 2rem;
+    }
+
+    .preview-container {
+      width: 100%;
+      height: 300px;
+      border-radius: 16px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .preview-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* 开关样式 */
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 60px;
+      height: 34px;
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      transition: .4s;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 26px;
+      width: 26px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      transition: .4s;
+    }
+
+    input:checked + .slider {
+      background: linear-gradient(135deg, #FFC0CB 30%, #87CEFA 70%);
+    }
+
+    input:focus + .slider {
+      box-shadow: 0 0 1px #87CEFA;
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(26px);
+    }
+
+    .slider.round {
+      border-radius: 34px;
+    }
+
+    .slider.round:before {
+      border-radius: 50%;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      color: var(--light-text);
+      text-decoration: none;
+      margin-bottom: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .back-link:hover {
+      transform: translateX(-5px);
+      color: #FFC0CB;
+    }
+
+    .back-link i {
+      margin-right: 0.5rem;
+    }
+
+    .dark-select {
+      width: 100%;
+      padding: 6px 10px;
+      border-radius: 8px;
+      border: 2px solid var(--light-border);
+      background: var(--light-card-bg);
+      color: var(--light-text);
+      appearance: none; /* 移除默认箭头 */
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      transition: all 0.3s ease;
+    }
+
+    .dark-select:focus {
+      outline: none;
+      border-color: #87CEFA;
+      box-shadow: 0 0 0 3px rgba(135, 206, 250, 0.2);
+    }
+
+    body[data-theme="dark"] .dark-select {
+      background: var(--dark-card-bg);
+      border-color: var(--dark-border);
+      color: var(--dark-text);
+    }
+
+    body[data-theme="dark"] .dark-select:focus {
+      border-color: #87CEFA;
+      box-shadow: 0 0 0 3px rgba(135, 206, 250, 0.1);
+    }
+
+    .code-container {
+      position: relative;
+      margin-bottom: 1rem;
+    }
+
+    .code-block {
+      background: var(--light-card-bg);
+      padding: 1.2rem;
+      border-radius: 12px;
+      border: 1px solid var(--light-border);
+      margin: 0;
+      font-family: 'Fira Code', 'Consolas', monospace;
+      font-size: 0.9rem;
+      line-height: 1.5;
+      overflow-x: auto;
+      color: #24292e;
+    }
+
+    .code-block .comment { color: #6a737d; }
+    .code-block .keyword { color: #d73a49; }
+    .code-block .string { color: #032f62; }
+    .code-block .number { color: #005cc5; }
+    .code-block .boolean { color: #005cc5; }
+
+    body[data-theme="dark"] .code-block {
+      background: var(--dark-card-bg);
+      border-color: var(--dark-border);
+      color: #e1e4e8;
+    }
+
+    body[data-theme="dark"] .code-block .comment { color: #768390; }
+    body[data-theme="dark"] .code-block .keyword { color: #ff7b72; }
+    body[data-theme="dark"] .code-block .string { color: #a5d6ff; }
+    body[data-theme="dark"] .code-block .number { color: #79c0ff; }
+    body[data-theme="dark"] .code-block .boolean { color: #79c0ff; }
+
+    .copy-button {
+      position: absolute;
+      top: 0.5rem;
+      right: 0.5rem;
+      padding: 0.5rem;
+      background: var(--light-card-bg);
+      border: 1px solid var(--light-border);
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      color: var(--light-text);
+      opacity: 0.7;
+    }
+
+    .copy-button:hover {
+      opacity: 1;
+      transform: translateY(-2px);
+    }
+
+    body[data-theme="dark"] .copy-button {
+      background: var(--dark-card-bg);
+      border-color: var(--dark-border);
+      color: var(--dark-text);
+    }
+
+    .copy-button.copied {
+      background: #28a745;
+      color: white;
+      border-color: transparent;
+    }
+
+    .transition-time-container {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-top: 1.5rem;
+      padding: 1rem;
+      background: rgba(135, 206, 250, 0.05);
+      border-radius: 12px;
+    }
+
+    .transition-time-label {
+      min-width: 180px;
+      color: var(--light-text);
+      font-weight: 500;
+    }
+
+    .transition-time-value {
+      min-width: 45px;
+      text-align: center;
+      padding: 0.3rem 0.6rem;
+      background: var(--light-card-bg);
+      border: 1px solid var(--light-border);
+      border-radius: 6px;
+      color: var(--light-text);
+    }
+
+    .transition-time-slider {
+      flex-grow: 1;
+      height: 6px;
+      -webkit-appearance: none;
+      appearance: none;
+      background: rgba(135, 206, 250, 0.2);
+      border-radius: 3px;
+      outline: none;
+    }
+
+    .transition-time-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #FFC0CB 30%, #87CEFA 70%);
+      cursor: pointer;
+      border: 2px solid white;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      transition: all 0.2s ease;
+    }
+
+    .transition-time-slider::-webkit-slider-thumb:hover {
+      transform: scale(1.1);
+    }
+
+    .transition-time-slider::-moz-range-thumb {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #FFC0CB 30%, #87CEFA 70%);
+      cursor: pointer;
+      border: 2px solid white;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      transition: all 0.2s ease;
+    }
+
+    .transition-time-slider::-moz-range-thumb:hover {
+      transform: scale(1.1);
+    }
+
+    /* 暗色模式适配 */
+    body[data-theme="dark"] .transition-time-value {
+      background: var(--dark-card-bg);
+      border-color: var(--dark-border);
+      color: var(--dark-text);
+    }
+
+    body[data-theme="dark"] .transition-time-slider::-webkit-slider-thumb {
+      border-color: var(--dark-card-bg);
+    }
+
+    body[data-theme="dark"] .transition-time-slider::-moz-range-thumb {
+      border-color: var(--dark-card-bg);
+    }
+
+    body[data-theme="dark"] .copy-button.copied {
+      background: #238636;
+    }
+
+    body[data-theme="dark"] .panel-card {
+      background: var(--dark-card-bg);
+      border-color: var(--dark-border);
+    }
+
+    body[data-theme="dark"] .dark-select {
+      background: var(--dark-card-bg);
+      border-color: var(--dark-border);
+    }
+
+    body[data-theme="dark"] .panel-subtitle,
+    body[data-theme="dark"] .section-title,
+    body[data-theme="dark"] .filter-option span,
+    body[data-theme="dark"] .filter-preset-item,
+    body[data-theme="dark"] .filter-radio-label,
+    body[data-theme="dark"] .dark-select-container label,
+    body[data-theme="dark"] .dark-select,
+    body[data-theme="dark"] .btn-secondary-custom,
+    body[data-theme="dark"] .back-link,
+    body[data-theme="dark"] #config-code,
+    body[data-theme="dark"] .transition-time-label,
+    body[data-theme="dark"] p[style*="color: var(--light-text)"] {
+      color: var(--dark-text) !important;
+    }
+    
+    body[data-theme="dark"] #config-code {
+      background: rgba(255,255,255,0.05);
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 1rem;
+      }
+
+      .panel-card {
+        padding: 1.5rem;
+      }
+
+      .panel-title {
+        font-size: 2rem;
+      }
+
+      .filter-presets {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      }
+
+      .action-buttons {
+        flex-direction: row;
+        justify-content: space-between; /* 移动端也保持两端对齐 */
+      }
+
+      .btn-custom {
+        width: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <a href="/" class="back-link">
+      <i class="fas fa-arrow-left"></i> Back to Home
+    </a>
+    
+    <div class="panel-header">
+      <h1 class="panel-title">Filter Management Panel</h1>
+      <p class="panel-subtitle">Customize your blog's visual experience</p>
+    </div>
+    
+    <div class="panel-card">
+      <div class="panel-section">
+        <h2 class="section-title">
+          <i class="fas fa-sliders-h"></i> Basic Settings
+        </h2>
+        
+        <div class="filter-option">
+          <label class="switch">
+            <input type="checkbox" id="filter-enabled">
+            <span class="slider round"></span>
+          </label>
+          <span>Enable filter effects</span>
+        </div>
+
+        <div class="transition-time-container">
+          <label for="transition-time" class="transition-time-label">Transition Time (seconds):</label>
+          <input type="range" id="transition-time" class="transition-time-slider" min="0" max="2" step="0.1">
+          <span id="transition-time-value" class="transition-time-value">0.5</span>
+        </div>
+      </div>
+      
+      <div class="panel-section">
+        <h2 class="section-title">
+          <i class="fas fa-palette"></i> Filter Selection
+        </h2>
+        <p style="color: var(--light-text); margin-bottom: 1rem;">Select a filter effect to apply to your blog</p>
+        
+        <div class="filter-presets" id="filter-presets-container">
+          <!-- 滤镜预设将通过JS动态添加 -->
+        </div>
+      </div>
+      
+      <div class="panel-section">
+        <h2 class="section-title">
+          <i class="fas fa-expand-arrows-alt"></i> Application
+        </h2>
+        <p style="color: var(--light-text); margin-bottom: 1rem;">Choose where to apply the filter</p>
+        
+        <div class="filter-radio-group">
+          <label class="filter-radio-label" id="apply-background">
+            <input type="radio" name="filter-apply-to" value="background"> Background image only
+          </label>
+          <label class="filter-radio-label" id="apply-global">
+            <input type="radio" name="filter-apply-to" value="global"> Global application
+          </label>
+        </div>
+      </div>
+      
+      <div class="panel-section">
+        <h2 class="section-title">
+          <i class="fas fa-moon"></i> Dark mode settings
+        </h2>
+        
+        <div class="dark-mode-settings">
+          <div class="filter-option">
+            <label class="switch">
+              <input type="checkbox" id="filter-dark-auto">
+              <span class="slider round"></span>
+            </label>
+            <span>Dark mode automatically switches filters</span>
+          </div>
+          
+          <div class="dark-select-container">
+            <label>Filters used in dark mode:</label>
+            <select class="dark-select" id="filter-dark-preset">
+              <!-- 选项将通过JS动态添加 -->
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel-section">
+        <h2 class="section-title">
+          <i class="fas fa-code"></i> Configuration Code
+        </h2>
+        <p style="color: var(--light-text); margin-bottom: 1rem;">You can copy the following code to replace the global configuration</p>
+        
+        <div class="code-container">
+          <pre class="code-block"><code class="javascript" id="config-code">// loading...</code></pre>
+          <button class="copy-button" id="copy-button">
+            <i class="fas fa-copy"></i>
+          </button>
+        </div>
+      </div>
+      
+      <div class="panel-section preview-section">
+        <h2 class="section-title">
+          <i class="fas fa-eye"></i> Preview effect
+        </h2>
+        
+        <div class="preview-container">
+          <img src="/images/banner/13.jpg" class="preview-image" id="preview-image" alt="Filter Preview">
+        </div>
+      </div>
+      
+      <div class="action-buttons">
+        <button id="reset-button" class="btn-custom btn-reset">
+          <i class="fas fa-undo-alt"></i> Reset
+        </button>
+        <button id="save-button" class="btn-custom btn-save">
+          <i class="fas fa-save"></i> Save
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // 获取DOM元素
+      const enabledCheckbox = document.getElementById('filter-enabled');
+      const darkAutoCheckbox = document.getElementById('filter-dark-auto');
+      const darkPresetSelect = document.getElementById('filter-dark-preset');
+      const presetsContainer = document.getElementById('filter-presets-container');
+      const applyBackgroundLabel = document.getElementById('apply-background');
+      const applyGlobalLabel = document.getElementById('apply-global');
+      const previewImage = document.getElementById('preview-image');
+      const resetButton = document.getElementById('reset-button');
+      const saveButton = document.getElementById('save-button');
+      const transitionTimeInput = document.getElementById('transition-time');
+      const transitionTimeValue = document.getElementById('transition-time-value');
+      const configCodeElement = document.getElementById('config-code');
+      
+      // 加载滤镜预设
+      function loadFilterPresets() {
+        const filters = window.filterModule.getAvailableFilters();
+        const config = window.filterModule.getConfig();
+        
+        // 清空容器
+        presetsContainer.innerHTML = '';
+        darkPresetSelect.innerHTML = '';
+        
+        // 添加滤镜预设
+        Object.entries(filters).forEach(([key, filter]) => {
+          // 添加到预设网格
+          const presetItem = document.createElement('div');
+          presetItem.className = 'filter-preset-item';
+          presetItem.dataset.filter = key;
+          
+          // 创建预览图
+          const previewDiv = document.createElement('div');
+          previewDiv.className = 'filter-preview';
+          previewDiv.style.filter = filter.css;
+          
+          // 创建名称和描述
+          const nameDiv = document.createElement('div');
+          nameDiv.className = 'filter-preset-name';
+          nameDiv.textContent = filter.name;
+          
+          const descDiv = document.createElement('div');
+          descDiv.className = 'filter-preset-desc';
+          descDiv.textContent = filter.description;
+          
+          presetItem.appendChild(previewDiv);
+          presetItem.appendChild(nameDiv);
+          presetItem.appendChild(descDiv);
+          
+          if (key === config.currentFilter) {
+            presetItem.classList.add('active');
+          }
+          
+          presetsContainer.appendChild(presetItem);
+          
+          // 添加到暗色模式下拉选择
+          const option = document.createElement('option');
+          option.value = key;
+          option.textContent = filter.name;
+          if (key === config.darkModeFilter) {
+            option.selected = true;
+          }
+          darkPresetSelect.appendChild(option);
+        });
+      }
+      
+      // 更新UI状态
+      function updateUIState() {
+        const config = window.filterModule.getConfig();
+        
+        enabledCheckbox.checked = config.enabled;
+        darkAutoCheckbox.checked = config.darkModeAuto;
+
+        // 更新过渡时间滑块
+        transitionTimeInput.value = config.transitionTime;
+        transitionTimeValue.textContent = config.transitionTime;
+        
+        // 更新配置代码显示
+        updateConfigCode();
+        
+        // 更新应用范围单选按钮
+        const backgroundRadio = applyBackgroundLabel.querySelector('input');
+        const globalRadio = applyGlobalLabel.querySelector('input');
+        
+        backgroundRadio.checked = config.applyTo === 'background';
+        globalRadio.checked = config.applyTo === 'global';
+        
+        applyBackgroundLabel.classList.toggle('active', config.applyTo === 'background');
+        applyGlobalLabel.classList.toggle('active', config.applyTo === 'global');
+        
+        // 更新预设选中状态
+        const presetItems = presetsContainer.querySelectorAll('.filter-preset-item');
+        presetItems.forEach(item => {
+          item.classList.toggle('active', item.dataset.filter === config.currentFilter);
+        });
+        
+        // 更新暗色模式滤镜选择
+        Array.from(darkPresetSelect.options).forEach(option => {
+          option.selected = option.value === config.darkModeFilter;
+        });
+        
+        // 更新预览图
+        updatePreview();
+      }
+
+      function updateConfigCode() {
+        const config = window.filterModule.getConfig();
+        const codeString = `const defaultFilterConfig = {
+  enabled: ${config.enabled},                // 是否启用滤镜
+  currentFilter: '${config.currentFilter}',       // 当前使用的滤镜
+  applyTo: '${config.applyTo}',        // 应用位置: 'background'(仅背景) 或 'global'(全局)
+  darkModeAuto: ${config.darkModeAuto},           // 暗色模式下是否自动切换滤镜
+  darkModeFilter: '${config.darkModeFilter}',        // 暗色模式下使用的滤镜
+  transitionTime: ${config.transitionTime},          // 滤镜切换过渡时间(秒)
+};`;
+
+        // 添加语法高亮
+        const highlightedCode = codeString
+          .replace(/const|let|var/g, '<span class="keyword">$&</span>')
+          .replace(/'[^']*'/g, '<span class="string">$&</span>')
+          .replace(/\btrue\b|\bfalse\b/g, '<span class="boolean">$&</span>')
+          .replace(/\d+\.?\d*/g, '<span class="number">$&</span>')
+          .replace(/\/\/.*/g, '<span class="comment">$&</span>');
+
+        configCodeElement.innerHTML = highlightedCode;
+      }
+
+      // 添加复制按钮功能
+      const copyButton = document.getElementById('copy-button');
+      copyButton.addEventListener('click', async () => {
+        const config = window.filterModule.getConfig();
+        const codeString = `const defaultFilterConfig = {
+  enabled: ${config.enabled},                // 是否启用滤镜
+  currentFilter: '${config.currentFilter}',       // 当前使用的滤镜
+  applyTo: '${config.applyTo}',        // 应用位置: 'background'(仅背景) 或 'global'(全局)
+  darkModeAuto: ${config.darkModeAuto},           // 暗色模式下是否自动切换滤镜
+  darkModeFilter: '${config.darkModeFilter}',        // 暗色模式下使用的滤镜
+  transitionTime: ${config.transitionTime},          // 滤镜切换过渡时间(秒)
+};`;
+
+        try {
+          await navigator.clipboard.writeText(codeString);
+          copyButton.classList.add('copied');
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          toastr.success('Code copied to clipboard');
+          
+          setTimeout(() => {
+            copyButton.classList.remove('copied');
+            copyButton.innerHTML = '<i class="fas fa-copy"></i>';
+          }, 2000);
+        } catch (err) {
+          toastr.error('Copy failed, please copy manually');
+        }
+      });
+
+      // 过渡时间滑块事件
+      transitionTimeInput.addEventListener('input', () => {
+        const value = parseFloat(transitionTimeInput.value);
+        transitionTimeValue.textContent = value;
+        window.filterModule.setTransitionTime(value);
+        updateConfigCode();
+      });
+      
+      // 更新预览图
+      function updatePreview() {
+        const config = window.filterModule.getConfig();
+        const filters = window.filterModule.getAvailableFilters();
+        
+        if (config.enabled) {
+          const isDarkMode = document.body.getAttribute('data-theme') === 'dark';
+          const filterName = isDarkMode && config.darkModeAuto ? config.darkModeFilter : config.currentFilter;
+          const filter = filters[filterName];
+          
+          if (filter) {
+            previewImage.style.filter = filter.css;
+          }
+        } else {
+          previewImage.style.filter = 'none';
+        }
+      }
+      
+      // 事件监听
+      enabledCheckbox.addEventListener('change', () => {
+        window.filterModule.toggleEnabled();
+        updateUIState();
+      });
+      
+      darkAutoCheckbox.addEventListener('change', () => {
+        window.filterModule.setDarkModeAuto(darkAutoCheckbox.checked);
+        updateUIState();
+      });
+      
+      darkPresetSelect.addEventListener('change', () => {
+        window.filterModule.setDarkModeFilter(darkPresetSelect.value);
+        updateUIState();
+      });
+      
+      // 应用范围单选按钮
+      applyBackgroundLabel.addEventListener('click', () => {
+        const radio = applyBackgroundLabel.querySelector('input');
+        radio.checked = true;
+        window.filterModule.setApplyTo('background');
+        updateUIState();
+      });
+      
+      applyGlobalLabel.addEventListener('click', () => {
+        const radio = applyGlobalLabel.querySelector('input');
+        radio.checked = true;
+        window.filterModule.setApplyTo('global');
+        updateUIState();
+      });
+      
+      // 滤镜预设点击事件委托
+      presetsContainer.addEventListener('click', (e) => {
+        const presetItem = e.target.closest('.filter-preset-item');
+        if (presetItem) {
+          const filterName = presetItem.dataset.filter;
+          window.filterModule.applyFilter(filterName);
+          updateUIState();
+        }
+      });
+      
+      // 重置按钮
+      resetButton.addEventListener('click', () => {
+        if (confirm('Are you sure you want to reset all filter settings? This will restore the default configuration.')) {
+          window.filterModule.resetToDefaults();
+          updateUIState();
+          toastr.success('Reset to default settings');
+        }
+      });
+      
+      // 保存按钮
+      saveButton.addEventListener('click', () => {
+        window.filterModule.saveConfig();
+        updateConfigCode();
+        toastr.success('Settings saved');
+      });
+      
+      // 监听主题变化以更新预览
+      document.addEventListener('themeChanged', () => {
+        updatePreview();
+      });
+      
+      // 初始化
+      loadFilterPresets();
+      updateUIState();
+      
+      // 设置toastr通知样式
+      toastr.options = {
+        closeButton: true,
+        progressBar: true,
+        positionClass: "toast-top-right",
+        timeOut: 3000
+      };
+    });
+  </script>
+</body>
+</html>

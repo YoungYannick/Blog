@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Regular Expression Generator - YoungYannick's Blog</title>
+    <meta name="author" content="YoungYannick" />
+    <meta name="description" content="YoungYannick's Blog - Regular Expression Generator Tool" />
+    <meta name="keywords" content="YoungYannick,Blog,Blog,Regular Expression,Regex Generator" />
+    <link rel="icon" href="/images/Yannick_64.ico" />
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&family=Quicksand:wght@500&display=swap" rel="stylesheet">
+    <link href="/css/toastr.min.css" rel="stylesheet" />
+    <link href="/css/navbar.css" rel="stylesheet" />
+    <link href="/css/theme.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/tools-bubble.css">
+    <script src="/js/tools-bubble.js"></script>
+    <script src="/js/theme.js"></script>
+    <script src="/js/filter-module.js"></script>
+    <script src="/js/jquery-3.7.1.js"></script>
+    <script src="/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/clipboard.min.js"></script>
+    <script src="/js/toastr.min.js"></script>
+    <script src="/js/navbar.js"></script>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        min-height: 100vh;
+        font-family: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        background: #f0f4ff;
+        position: relative;
+        overflow-x: hidden;
+        padding: 1rem;
+        color: #2c3e50;
+    }
+
+    body::before,
+    body::after {
+        content: '';
+        position: absolute;
+        width: 60vmin;
+        height: 60vmin;
+        border-radius: 50%;
+        filter: blur(100px);
+        opacity: 0.65;
+        animation: float 20s infinite linear;
+        z-index: -1;
+    }
+
+    body::before {
+        background: #FFC0CB;
+        top: 20%;
+        left: 10%;
+    }
+
+    body::after {
+        background: #87CEFA;
+        bottom: 20%;
+        right: 10%;
+        animation-delay: -10s;
+    }
+
+    @keyframes float {
+        0%, 100% { transform: translate(0, 0) rotate(0deg); }
+        25% { transform: translate(5vw, -3vh) rotate(90deg); }
+        50% { transform: translate(-4vw, 6vh) rotate(180deg); }
+        75% { transform: translate(3vw, -5vh) rotate(270deg); }
+    }
+
+    /* 页面标题样式 */
+    .page-title {
+        text-align: center;
+        margin: 1rem auto 1rem auto;
+        padding-top: 80px;
+    }
+
+    .page-title h1 {
+        font-family: 'Quicksand', sans-serif;
+        color: #2c3e50;
+        font-size: clamp(2rem, 5vw, 2.8rem);
+        font-weight: 800;
+        letter-spacing: -0.03em;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        background: linear-gradient(135deg, #FFC0CB 30%, #87CEFA 70%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin: 0 auto;
+        text-align: center;
+    }
+
+    .version-info {
+        font-size: 0.9rem;
+        color: #666;
+        margin-top: 0.5rem;
+    }
+
+    .y_border_radius_txt {
+        border-radius: 15px;
+        box-shadow: 0px 0px 10px #999999;
+        padding: 10px;
+    }
+    
+    :root {
+        --primary: #4a90e2;
+        --bg: #f5f7fa;
+        --border: #e1e4e8;
+    }
+    
+    .coustom-container {
+        display: grid;
+        grid-gap: 1.5rem;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding-top: 1rem;
+    }
+    
+    .section {
+        background: rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(15px);
+        padding: 1.5rem;
+        border-radius: 24px;
+        box-shadow: 0 8px 32px rgba(135, 206, 250, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+    
+    h2 {
+        margin: 0 0 1rem;
+        color: var(--light-text);
+        font-size: 1.2rem;
+        font-family: 'Quicksand', sans-serif;
+        font-weight: 700;
+    }
+    
+    h3 {
+        color: var(--light-text);
+        font-family: 'Quicksand', sans-serif;
+        font-weight: 700;
+        margin-bottom: 1rem;
+    }
+    
+    .radio-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin-bottom: 1rem;
+    }
+    
+    .countries-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+    }
+    
+    .countries-container {
+        border: 1px solid var(--light-border);
+        border-radius: 16px;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 0.5rem;
+        max-height: 220px;
+        overflow-y: auto;
+        padding: 8px;
+        background: var(--light-card-bg);
+        backdrop-filter: blur(10px);
+        box-shadow: 0 4px 16px var(--light-shadow);
+    }
+    
+    .country-item {
+        color: var(--light-text);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem;
+        border-radius: 8px;
+        transition: background 0.2s;
+    }
+    
+    .country-item:hover {
+        background: var(--light-hover);
+    }
+    
+    #regexResult {
+        font-family: monospace;
+        padding: 1rem;
+        background: var(--light-card-bg);
+        color: var(--light-text);
+        border-radius: 16px;
+        word-break: break-all;
+        white-space: pre-wrap;
+        cursor: pointer;
+        box-shadow: 0 4px 16px var(--light-shadow);
+        border: 1px solid var(--light-border);
+    }
+    
+    .type-switcher {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+    }
+    
+    .position-selector {
+        margin: 1rem 0;
+        padding: 1rem;
+        background: var(--light-card-bg);
+        border-radius: 16px;
+        box-shadow: 0 4px 16px var(--light-shadow);
+        border: 1px solid var(--light-border);
+    }
+    
+    input[type="radio"],
+    input[type="checkbox"] {
+        accent-color: var(--primary);
+    }
+    
+    #validationTip {
+        font-size: 0.9em;
+        padding: 8px 12px;
+        background: rgba(255, 238, 240, 0.8);
+        border-radius: 12px;
+        margin-top: 8px;
+        box-shadow: 0 4px 16px rgba(135, 206, 250, 0.1);
+    }
+    
+    .search-and-buttons {
+        margin-bottom: 1rem;
+    }
+    
+    #searchInput {
+        width: 100%;
+        padding: 0.8rem;
+        margin-bottom: 0.8rem;
+        border: 1px solid var(--light-border);
+        border-radius: 12px;
+        background: var(--light-card-bg);
+        color: var(--light-text);
+        box-shadow: 0 4px 10px var(--light-shadow);
+    }
+    
+    .action-buttons {
+        display: flex;
+        gap: 0.5rem;
+    }
+    
+    .action-buttons button {
+        background: linear-gradient(135deg, #FFC0CB 30%, #87CEFA 70%);
+        color: white;
+        border: none;
+        padding: 0.8rem 1.5rem;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin: 0 0.5rem;
+        font-weight: 600;
+        outline: none !important;
+        transform: translateY(0);
+    }
+
+    .action-buttons button:hover,
+    .action-buttons button:focus,
+    .action-buttons button:active {
+        outline: none !important;
+        box-shadow: 0 6px 15px rgba(191, 200, 209, 0.274);
+        border: none;
+        transform: none;
+    }
+    
+    .custom-input-section {
+        margin: 1rem 0;
+    }
+    
+    #customInput {
+        width: 100%;
+        padding: 0.8rem;
+        border: 2px solid var(--light-border);
+        border-radius: 12px;
+        margin-top: 0.5rem;
+        font-family: monospace;
+        background: var(--light-card-bg);
+        color: var(--light-text);
+        box-shadow: 0 4px 10px var(--light-shadow);
+    }
+    
+    .input-tip {
+        color: var(--light-text-secondary);
+        font-size: 0.9em;
+        margin-top: 0.5rem;
+    }
+    
+    .match-status {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-top: 0.5rem;
+    }
+    
+    .status-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: #ddd;
+    }
+    
+    .status-dot.valid {
+        background: #4CAF50;
+    }
+    
+    #allTypesCheckbox {
+        margin-left: 1rem;
+        accent-color: var(--primary);
+    }
+
+    @media (max-width: 768px) {
+        .type-switcher {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+    }
+
+    @media (max-width: 576px) {
+        body {
+            padding: 0.5rem;
+        }
+        
+        .section {
+            padding: 1rem;
+        }
+        
+        button {
+            padding: 0.6rem 1rem;
+            margin: 0 0.3rem;
+            font-size: 0.9rem;
+        }
+    }
+
+    body[data-theme="dark"] h2,
+    body[data-theme="dark"] h3 {
+        color: var(--dark-text);
+    }
+
+    body[data-theme="dark"] .country-item {
+        color: var(--dark-text);
+    }
+
+    body[data-theme="dark"] .countries-container {
+        background: var(--dark-card-bg);
+        border-color: var(--dark-border);
+        box-shadow: 0 4px 16px var(--dark-shadow);
+    }
+
+    body[data-theme="dark"] .country-item:hover {
+        background: var(--dark-hover);
+    }
+
+    body[data-theme="dark"] #regexResult {
+        background: var(--dark-card-bg);
+        color: var(--dark-text);
+        border-color: var(--dark-border);
+        box-shadow: 0 4px 16px var(--dark-shadow);
+    }
+
+    body[data-theme="dark"] .position-selector {
+        background: var(--dark-card-bg);
+        border-color: var(--dark-border);
+        box-shadow: 0 4px 16px var(--dark-shadow);
+    }
+
+    body[data-theme="dark"] #searchInput {
+        background: var(--dark-card-bg);
+        border-color: var(--dark-border);
+        color: var(--dark-text);
+        box-shadow: 0 4px 10px var(--dark-shadow);
+    }
+
+    body[data-theme="dark"] #customInput {
+        background: var(--dark-card-bg);
+        border-color: var(--dark-border);
+        color: var(--dark-text);
+        box-shadow: 0 4px 10px var(--dark-shadow);
+    }
+
+    /* 输入框焦点状态 */
+    #searchInput:focus,
+    #customInput:focus {
+        outline: none;
+        border-color: var(--light-link);
+        box-shadow: 0 0 0 2px rgba(135, 206, 250, 0.2);
+    }
+
+    body[data-theme="dark"] #searchInput:focus,
+    body[data-theme="dark"] #customInput:focus {
+        border-color: var(--dark-link);
+        box-shadow: 0 0 0 2px rgba(135, 206, 250, 0.1);
+    }
+
+    body[data-theme="dark"] .action-buttons button {
+        background: var(--dark-card-bg);
+        color: var(--dark-text);
+        border: 1px solid var(--dark-border);
+    }
+
+    body[data-theme="dark"] .action-buttons button:hover,
+    body[data-theme="dark"] .action-buttons button:focus,
+    body[data-theme="dark"] .action-buttons button:active {
+        background: rgba(255, 255, 255, 0.1);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+    }
+</style>
+</head>
+<body>
+    <!-- 导入导航栏 -->
+    <div id="navbar-container"></div>
+
+    <!-- 页面标题 -->
+    <div class="page-title">
+        <h1>Regular Expression Generator</h1>
+        <div class="version-info">Version: 1.0.0    By: YoungYannick</div>
+    </div>
+
+    <div id="article-meta-container" style="position: relative; z-index: 999999;"></div>
+
+    <div class="container coustom-container">
+        <!-- 选项区 -->
+        <div class="section">
+            <h2>Options</h2>
+            <div class="radio-group">
+                <label>
+                    <input type="radio" name="logic" value="AND"> AND
+                </label>
+                <label>
+                    <input type="radio" name="logic" value="OR" checked> OR
+                </label>
+                <label>
+                    <input type="radio" name="logic" value="NOT"> NOT
+                </label>
+                <label>
+                    <input type="radio" name="logic" value="XOR"> XOR
+                </label>
+            </div>
+            <div class="position-selector">
+                <h3>Match Position</h3>
+                <div class="radio-group">
+                    <label>
+                        <input type="radio" name="position" value="start" checked> Starts with
+                    </label>
+                    <label>
+                        <input type="radio" name="position" value="contains"> Contains
+                    </label>
+                    <label>
+                        <input type="radio" name="position" value="end"> Ends with
+                    </label>
+                </div>
+            </div>
+            <div class="countries-header">
+                <h3>Location Selection</h3>
+                <div class="type-switcher">
+                    <label><input type="radio" name="displayType" value="zh" checked> Chinese</label>
+                    <label><input type="radio" name="displayType" value="name"> English</label>
+                    <label><input type="radio" name="displayType" value="code"> Code</label>
+                    <label><input type="radio" name="displayType" value="flag"> Flag</label>
+                    <label style="margin-left: 1rem;">
+                        <input type="checkbox" id="allTypesCheckbox"> Include All
+                    </label>
+                </div>
+            </div>
+            <div class="search-and-buttons">
+                <input type="text" id="searchInput" placeholder="Search locations...">
+                <div class="action-buttons">
+                    <button onclick="selectAll()">Select All</button>
+                    <button onclick="invertSelection()">Invert</button>
+                </div>
+            </div>
+            <div class="countries-container" id="countriesContainer"></div>
+            <div id="validationTip" style="color: #dc3545; margin-top: 0.5rem; display: none;"></div>
+            <!-- 自定义输入框 -->
+            <div class="custom-input-section">
+                <h3>Custom Location Input</h3>
+                <textarea id="customInput" 
+                    placeholder="Enter locations (supports Chinese, English, code or flag, separate with , ， 、 || \t \n | # $ %)"
+                    rows="3"></textarea>
+                <div class="input-tip">
+                    <span class="match-status">
+                        <span class="status-dot"></span>
+                        <span>Matched <span id="validCount">0</span>/<span id="totalCount">0</span> items</span>
+                    </span>
+                </div>
+            </div>
+            <label style="display: block; margin-top: 1rem;">
+                <input type="checkbox" id="unicodeCheckbox"> Use Unicode Escape
+            </label>
+        </div>
+        <!-- 结果区 -->
+        <div class="section">
+            <h2>Generated Regular Expression</h2>
+            <div id="regexResult" onclick="copy(this)"></div>
+        </div>
+    </div>
+
+    <!-- 添加底部 Footer -->
+    <div id="footer-container"></div>
+
+<script>
+    $(document).ready(function () {
+        // 加载导航栏
+        $("#navbar-container").load("navbar.html", function() {
+            // 导航栏加载完成后设置标题
+            $("#navbar-title").text("Regex Generator");
+            // 导航栏加载完成后手动触发滚动事件，确保导航栏状态正确
+            window.dispatchEvent(new Event('scroll'));
+        });
+        // 加载文章元数据
+        $("#article-meta-container").load("article-meta.html", function() {
+            // 设置日期
+            $('.am-container').attr({
+                'data-publish-date': '2025-04-13 10:01:12',
+                'data-update-date': '2025-04-16 15:18:30'
+            });
+            // 手动触发初始化
+            if (typeof initArticleMeta === 'function') {
+                initArticleMeta();
+            }
+        });
+        // 加载底部
+        $("#footer-container").load("footer.html");
+        
+        // 初始化页面
+        initCountries();
+        updateCountryDisplay();
+        
+        // 添加事件监听
+        document.getElementById('searchInput').addEventListener('input', handleSearch);
+        document.querySelectorAll('input[name="displayType"]').forEach(radio => {
+            radio.addEventListener('change', updateCountryDisplay);
+        });
+        document.getElementById('customInput').addEventListener('input', processCustomInput);
+        
+        // 添加逻辑和位置选择的事件监听
+        document.querySelectorAll('input[name="logic"], input[name="position"], #unicodeCheckbox').forEach(input => {
+            input.addEventListener('change', generateRegex);
+        });
+    });
+
+    const countries = [
+        { name: 'China', code: 'CN', flag: '🇨🇳', zh: '中国' },
+        { name: 'Hong Kong', code: 'HK', flag: '🇭🇰', zh: '香港' },
+        { name: 'Taiwan', code: 'TW', flag: '🇹🇼', zh: '台湾' },
+        { name: 'Singapore', code: 'SG', flag: '🇸🇬', zh: '新加坡' },
+        { name: 'United States', code: 'US', flag: '🇺🇸', zh: '美国' },
+        { name: 'Japan', code: 'JP', flag: '🇯🇵', zh: '日本' },
+        { name: 'South Korea', code: 'KR', flag: '🇰🇷', zh: '韩国' },
+        { name: 'Afghanistan', code: 'AF', flag: '🇦🇫', zh: '阿富汗' },
+        { name: 'Albania', code: 'AL', flag: '🇦🇱', zh: '阿尔巴尼亚' },
+        { name: 'Algeria', code: 'DZ', flag: '🇩🇿', zh: '阿尔及利亚' },
+        { name: 'Andorra', code: 'AD', flag: '🇦🇩', zh: '安道尔' },
+        { name: 'Angola', code: 'AO', flag: '🇦🇴', zh: '安哥拉' },
+        { name: 'Antigua and Barbuda', code: 'AG', flag: '🇦🇬', zh: '安提瓜和巴布达' },
+        { name: 'Argentina', code: 'AR', flag: '🇦🇷', zh: '阿根廷' },
+        { name: 'Armenia', code: 'AM', flag: '🇦🇲', zh: '亚美尼亚' },
+        { name: 'Australia', code: 'AU', flag: '🇦🇺', zh: '澳大利亚' },
+        { name: 'Austria', code: 'AT', flag: '🇦🇹', zh: '奥地利' },
+        { name: 'Azerbaijan', code: 'AZ', flag: '🇦🇿', zh: '阿塞拜疆' },
+        { name: 'Bahamas', code: 'BS', flag: '🇧🇸', zh: '巴哈马' },
+        { name: 'Bahrain', code: 'BH', flag: '🇧🇭', zh: '巴林' },
+        { name: 'Bangladesh', code: 'BD', flag: '🇧🇩', zh: '孟加拉国' },
+        { name: 'Barbados', code: 'BB', flag: '🇧🇧', zh: '巴巴多斯' },
+        { name: 'Belarus', code: 'BY', flag: '🇧🇾', zh: '白俄罗斯' },
+        { name: 'Belgium', code: 'BE', flag: '🇧🇪', zh: '比利时' },
+        { name: 'Belize', code: 'BZ', flag: '🇧🇿', zh: '伯利兹' },
+        { name: 'Benin', code: 'BJ', flag: '🇧🇯', zh: '贝宁' },
+        { name: 'Bhutan', code: 'BT', flag: '🇧🇹', zh: '不丹' },
+        { name: 'Bolivia', code: 'BO', flag: '🇧🇴', zh: '玻利维亚' },
+        { name: 'Bosnia and Herzegovina', code: 'BA', flag: '🇧🇦', zh: '波斯尼亚和黑塞哥维那' },
+        { name: 'Botswana', code: 'BW', flag: '🇧🇼', zh: '博茨瓦纳' },
+        { name: 'Brazil', code: 'BR', flag: '🇧🇷', zh: '巴西' },
+        { name: 'Brunei', code: 'BN', flag: '🇧🇳', zh: '文莱' },
+        { name: 'Bulgaria', code: 'BG', flag: '🇧🇬', zh: '保加利亚' },
+        { name: 'Burkina Faso', code: 'BF', flag: '🇧🇫', zh: '布基纳法索' },
+        { name: 'Burundi', code: 'BI', flag: '🇧🇮', zh: '布隆迪' },
+        { name: 'Cabo Verde', code: 'CV', flag: '🇨🇻', zh: '佛得角' },
+        { name: 'Cambodia', code: 'KH', flag: '🇰🇭', zh: '柬埔寨' },
+        { name: 'Cameroon', code: 'CM', flag: '🇨🇲', zh: '喀麦隆' },
+        { name: 'Canada', code: 'CA', flag: '🇨🇦', zh: '加拿大' },
+        { name: 'Central African Republic', code: 'CF', flag: '🇨🇫', zh: '中非共和国' },
+        { name: 'Chad', code: 'TD', flag: '🇹🇩', zh: '乍得' },
+        { name: 'Chile', code: 'CL', flag: '🇨🇱', zh: '智利' },
+        { name: 'Colombia', code: 'CO', flag: '🇨🇴', zh: '哥伦比亚' },
+        { name: 'Comoros', code: 'KM', flag: '🇰🇲', zh: '科摩罗' },
+        { name: 'Congo (Congo-Brazzaville)', code: 'CG', flag: '🇨🇬', zh: '刚果（布）' },
+        { name: 'Congo (Congo-Kinshasa)', code: 'CD', flag: '🇨🇩', zh: '刚果（金）' },
+        { name: 'Costa Rica', code: 'CR', flag: '🇨🇷', zh: '哥斯达黎加' },
+        { name: 'Croatia', code: 'HR', flag: '🇭🇷', zh: '克罗地亚' },
+        { name: 'Cuba', code: 'CU', flag: '🇨🇺', zh: '古巴' },
+        { name: 'Cyprus', code: 'CY', flag: '🇨🇾', zh: '塞浦路斯' },
+        { name: 'Czech Republic', code: 'CZ', flag: '🇨🇿', zh: '捷克' },
+        { name: 'Denmark', code: 'DK', flag: '🇩🇰', zh: '丹麦' },
+        { name: 'Djibouti', code: 'DJ', flag: '🇩🇯', zh: '吉布提' },
+        { name: 'Dominica', code: 'DM', flag: '🇩🇲', zh: '多米尼加' },
+        { name: 'Dominican Republic', code: 'DO', flag: '🇩🇴', zh: '多米尼加共和国' },
+        { name: 'Ecuador', code: 'EC', flag: '🇪🇨', zh: '厄瓜多尔' },
+        { name: 'Egypt', code: 'EG', flag: '🇪🇬', zh: '埃及' },
+        { name: 'El Salvador', code: 'SV', flag: '🇸🇻', zh: '萨尔瓦多' },
+        { name: 'Equatorial Guinea', code: 'GQ', flag: '🇬🇶', zh: '赤道几内亚' },
+        { name: 'Eritrea', code: 'ER', flag: '🇪🇷', zh: '厄立特里亚' },
+        { name: 'Estonia', code: 'EE', flag: '🇪🇪', zh: '爱沙尼亚' },
+        { name: 'Eswatini', code: 'SZ', flag: '🇸🇿', zh: '斯威士兰' },
+        { name: 'Ethiopia', code: 'ET', flag: '🇪🇹', zh: '埃塞俄比亚' },
+        { name: 'Fiji', code: 'FJ', flag: '🇫🇯', zh: '斐济' },
+        { name: 'Finland', code: 'FI', flag: '🇫🇮', zh: '芬兰' },
+        { name: 'France', code: 'FR', flag: '🇫🇷', zh: '法国' },
+        { name: 'Gabon', code: 'GA', flag: '🇬🇦', zh: '加蓬' },
+        { name: 'Gambia', code: 'GM', flag: '🇬🇲', zh: '冈比亚' },
+        { name: 'Georgia', code: 'GE', flag: '🇬🇪', zh: '格鲁吉亚' },
+        { name: 'Germany', code: 'DE', flag: '🇩🇪', zh: '德国' },
+        { name: 'Ghana', code: 'GH', flag: '🇬🇭', zh: '加纳' },
+        { name: 'Greece', code: 'GR', flag: '🇬🇷', zh: '希腊' },
+        { name: 'Grenada', code: 'GD', flag: '🇬🇩', zh: '格林纳达' },
+        { name: 'Guatemala', code: 'GT', flag: '🇬🇹', zh: '危地马拉' },
+        { name: 'Guinea', code: 'GN', flag: '🇬🇳', zh: '几内亚' },
+        { name: 'Guinea-Bissau', code: 'GW', flag: '🇬🇼', zh: '几内亚比绍' },
+        { name: 'Guyana', code: 'GY', flag: '🇬🇾', zh: '圭亚那' },
+        { name: 'Haiti', code: 'HT', flag: '🇭🇹', zh: '海地' },
+        { name: 'Honduras', code: 'HN', flag: '🇭🇳', zh: '洪都拉斯' },
+        { name: 'Hungary', code: 'HU', flag: '🇭🇺', zh: '匈牙利' },
+        { name: 'Iceland', code: 'IS', flag: '🇮🇸', zh: '冰岛' },
+        { name: 'India', code: 'IN', flag: '🇮🇳', zh: '印度' },
+        { name: 'Indonesia', code: 'ID', flag: '🇮🇩', zh: '印度尼西亚' },
+        { name: 'Iran', code: 'IR', flag: '🇮🇷', zh: '伊朗' },
+        { name: 'Iraq', code: 'IQ', flag: '🇮🇶', zh: '伊拉克' },
+        { name: 'Ireland', code: 'IE', flag: '🇮🇪', zh: '爱尔兰' },
+        { name: 'Israel', code: 'IL', flag: '🇮🇱', zh: '以色列' },
+        { name: 'Italy', code: 'IT', flag: '🇮🇹', zh: '意大利' },
+        { name: 'Jamaica', code: 'JM', flag: '🇯🇲', zh: '牙买加' },
+        { name: 'Jordan', code: 'JO', flag: '🇯🇴', zh: '约旦' },
+        { name: 'Kazakhstan', code: 'KZ', flag: '🇰🇿', zh: '哈萨克斯坦' },
+        { name: 'Kenya', code: 'KE', flag: '🇰🇪', zh: '肯尼亚' },
+        { name: 'Kiribati', code: 'KI', flag: '🇰🇮', zh: '基里巴斯' },
+        { name: 'North Korea', code: 'KP', flag: '🇰🇵', zh: '朝鲜' },
+        { name: 'Kuwait', code: 'KW', flag: '🇰🇼', zh: '科威特' },
+        { name: 'Kyrgyzstan', code: 'KG', flag: '🇰🇬', zh: '吉尔吉斯斯坦' },
+        { name: 'Laos', code: 'LA', flag: '🇱🇦', zh: '老挝' },
+        { name: 'Latvia', code: 'LV', flag: '🇱🇻', zh: '拉脱维亚' },
+        { name: 'Lebanon', code: 'LB', flag: '🇱🇧', zh: '黎巴嫩' },
+        { name: 'Lesotho', code: 'LS', flag: '🇱🇸', zh: '莱索托' },
+        { name: 'Liberia', code: 'LR', flag: '🇱🇷', zh: '利比里亚' },
+        { name: 'Libya', code: 'LY', flag: '🇱🇾', zh: '利比亚' },
+        { name: 'Liechtenstein', code: 'LI', flag: '🇱🇮', zh: '列支敦士登' },
+        { name: 'Lithuania', code: 'LT', flag: '🇱🇹', zh: '立陶宛' },
+        { name: 'Luxembourg', code: 'LU', flag: '🇱🇺', zh: '卢森堡' },
+        { name: 'Madagascar', code: 'MG', flag: '🇲🇬', zh: '马达加斯加' },
+        { name: 'Malawi', code: 'MW', flag: '🇲🇼', zh: '马拉维' },
+        { name: 'Malaysia', code: 'MY', flag: '🇲🇾', zh: '马来西亚' },
+        { name: 'Maldives', code: 'MV', flag: '🇲🇻', zh: '马尔代夫' },
+        { name: 'Mali', code: 'ML', flag: '🇲🇱', zh: '马里' },
+        { name: 'Malta', code: 'MT', flag: '🇲🇹', zh: '马耳他' },
+        { name: 'Marshall Islands', code: 'MH', flag: '🇲🇭', zh: '马绍尔群岛' },
+        { name: 'Mauritania', code: 'MR', flag: '🇲🇷', zh: '毛里塔尼亚' },
+        { name: 'Mauritius', code: 'MU', flag: '🇲🇺', zh: '毛里求斯' },
+        { name: 'Mexico', code: 'MX', flag: '🇲🇽', zh: '墨西哥' },
+        { name: 'Micronesia', code: 'FM', flag: '🇫🇲', zh: '密克罗尼西亚' },
+        { name: 'Moldova', code: 'MD', flag: '🇲🇩', zh: '摩尔多瓦' },
+        { name: 'Monaco', code: 'MC', flag: '🇲🇨', zh: '摩纳哥' },
+        { name: 'Mongolia', code: 'MN', flag: '🇲🇳', zh: '蒙古' },
+        { name: 'Montenegro', code: 'ME', flag: '🇲🇪', zh: '黑山' },
+        { name: 'Morocco', code: 'MA', flag: '🇲🇦', zh: '摩洛哥' },
+        { name: 'Mozambique', code: 'MZ', flag: '🇲🇿', zh: '莫桑比克' },
+        { name: 'Myanmar (Burma)', code: 'MM', flag: '🇲🇲', zh: '缅甸' },
+        { name: 'Namibia', code: 'NA', flag: '🇳🇦', zh: '纳米比亚' },
+        { name: 'Nauru', code: 'NR', flag: '🇳🇷', zh: '瑙鲁' },
+        { name: 'Nepal', code: 'NP', flag: '🇳🇵', zh: '尼泊尔' },
+        { name: 'Netherlands', code: 'NL', flag: '🇳🇱', zh: '荷兰' },
+        { name: 'New Zealand', code: 'NZ', flag: '🇳🇿', zh: '新西兰' },
+        { name: 'Nicaragua', code: 'NI', flag: '🇳🇮', zh: '尼加拉瓜' },
+        { name: 'Niger', code: 'NE', flag: '🇳🇪', zh: '尼日尔' },
+        { name: 'Nigeria', code: 'NG', flag: '🇳🇬', zh: '尼日利亚' },
+        { name: 'North Macedonia', code: 'MK', flag: '🇲🇰', zh: '北马其顿' },
+        { name: 'Norway', code: 'NO', flag: '🇳🇴', zh: '挪威' },
+        { name: 'Oman', code: 'OM', flag: '🇴🇲', zh: '阿曼' },
+        { name: 'Pakistan', code: 'PK', flag: '🇵🇰', zh: '巴基斯坦' },
+        { name: 'Palau', code: 'PW', flag: '🇵🇼', zh: '帕劳' },
+        { name: 'Panama', code: 'PA', flag: '🇵🇦', zh: '巴拿马' },
+        { name: 'Papua New Guinea', code: 'PG', flag: '🇵🇬', zh: '巴布亚新几内亚' },
+        { name: 'Paraguay', code: 'PY', flag: '🇵🇾', zh: '巴拉圭' },
+        { name: 'Peru', code: 'PE', flag: '🇵🇪', zh: '秘鲁' },
+        { name: 'Philippines', code: 'PH', flag: '🇵🇭', zh: '菲律宾' },
+        { name: 'Poland', code: 'PL', flag: '🇵🇱', zh: '波兰' },
+        { name: 'Portugal', code: 'PT', flag: '🇵🇹', zh: '葡萄牙' },
+        { name: 'Qatar', code: 'QA', flag: '🇶🇦', zh: '卡塔尔' },
+        { name: 'Romania', code: 'RO', flag: '🇷🇴', zh: '罗马尼亚' },
+        { name: 'Russia', code: 'RU', flag: '🇷🇺', zh: '俄罗斯' },
+        { name: 'Rwanda', code: 'RW', flag: '🇷🇼', zh: '卢旺达' },
+        { name: 'Saint Kitts and Nevis', code: 'KN', flag: '🇰🇳', zh: '圣基茨和尼维斯' },
+        { name: 'Saint Lucia', code: 'LC', flag: '🇱🇨', zh: '圣卢西亚' },
+        { name: 'Saint Vincent and the Grenadines', code: 'VC', flag: '🇻🇨', zh: '圣文森特和格林纳丁斯' },
+        { name: 'Samoa', code: 'WS', flag: '🇼🇸', zh: '萨摩亚' },
+        { name: 'San Marino', code: 'SM', flag: '🇸🇲', zh: '圣马力诺' },
+        { name: 'Sao Tome and Principe', code: 'ST', flag: '🇸🇹', zh: '圣多美和普林西比' },
+        { name: 'Saudi Arabia', code: 'SA', flag: '🇸🇦', zh: '沙特阿拉伯' },
+        { name: 'Senegal', code: 'SN', flag: '🇸🇳', zh: '塞内加尔' },
+        { name: 'Serbia', code: 'RS', flag: '🇷🇸', zh: '塞尔维亚' },
+        { name: 'Seychelles', code: 'SC', flag: '🇸🇨', zh: '塞舌尔' },
+        { name: 'Sierra Leone', code: 'SL', flag: '🇸🇱', zh: '塞拉利昂' },
+        { name: 'Slovakia', code: 'SK', flag: '🇸🇰', zh: '斯洛伐克' },
+        { name: 'Slovenia', code: 'SI', flag: '🇸🇮', zh: '斯洛文尼亚' },
+        { name: 'Solomon Islands', code: 'SB', flag: '🇸🇧', zh: '所罗门群岛' },
+        { name: 'Somalia', code: 'SO', flag: '🇸🇴', zh: '索马里' },
+        { name: 'South Africa', code: 'ZA', flag: '🇿🇦', zh: '南非' },
+        { name: 'South Sudan', code: 'SS', flag: '🇸🇸', zh: '南苏丹' },
+        { name: 'Spain', code: 'ES', flag: '🇪🇸', zh: '西班牙' },
+        { name: 'Sri Lanka', code: 'LK', flag: '🇱🇰', zh: '斯里兰卡' },
+        { name: 'Sudan', code: 'SD', flag: '🇸🇩', zh: '苏丹' },
+        { name: 'Suriname', code: 'SR', flag: '🇸🇷', zh: '苏里南' },
+        { name: 'Sweden', code: 'SE', flag: '🇸🇪', zh: '瑞典' },
+        { name: 'Switzerland', code: 'CH', flag: '🇨🇭', zh: '瑞士' },
+        { name: 'Syria', code: 'SY', flag: '🇸🇾', zh: '叙利亚' },
+        { name: 'Tajikistan', code: 'TJ', flag: '🇹🇯', zh: '塔吉克斯坦' },
+        { name: 'Tanzania', code: 'TZ', flag: '🇹🇿', zh: '坦桑尼亚' },
+        { name: 'Thailand', code: 'TH', flag: '🇹🇭', zh: '泰国' },
+        { name: 'Timor-Leste', code: 'TL', flag: '🇹🇱', zh: '东帝汶' },
+        { name: 'Togo', code: 'TG', flag: '🇹🇬', zh: '多哥' },
+        { name: 'Tonga', code: 'TO', flag: '🇹🇴', zh: '汤加' },
+        { name: 'Trinidad and Tobago', code: 'TT', flag: '🇹🇹', zh: '特立尼达和多巴哥' },
+        { name: 'Tunisia', code: 'TN', flag: '🇹🇳', zh: '突尼斯' },
+        { name: 'Turkey', code: 'TR', flag: '🇹🇷', zh: '土耳其' },
+        { name: 'Turkmenistan', code: 'TM', flag: '🇹🇲', zh: '土库曼斯坦' },
+        { name: 'Tuvalu', code: 'TV', flag: '🇹🇻', zh: '图瓦卢' },
+        { name: 'Uganda', code: 'UG', flag: '🇺🇬', zh: '乌干达' },
+        { name: 'Ukraine', code: 'UA', flag: '🇺🇦', zh: '乌克兰' },
+        { name: 'United Arab Emirates', code: 'AE', flag: '🇦🇪', zh: '阿联酋' },
+        { name: 'United Kingdom', code: 'GB', flag: '🇬🇧', zh: '英国' },
+        { name: 'Uruguay', code: 'UY', flag: '🇺🇾', zh: '乌拉圭' },
+        { name: 'Uzbekistan', code: 'UZ', flag: '🇺🇿', zh: '乌兹别克斯坦' },
+        { name: 'Vanuatu', code: 'VU', flag: '🇻🇺', zh: '瓦努阿图' },
+        { name: 'Vatican City', code: 'VA', flag: '🇻🇦', zh: '梵蒂冈' },
+        { name: 'Venezuela', code: 'VE', flag: '🇻🇪', zh: '委内瑞拉' },
+        { name: 'Vietnam', code: 'VN', flag: '🇻🇳', zh: '越南' },
+        { name: 'Yemen', code: 'YE', flag: '🇾🇪', zh: '也门' },
+        { name: 'Zambia', code: 'ZM', flag: '🇿🇲', zh: '赞比亚' },
+        { name: 'Zimbabwe', code: 'ZW', flag: '🇿🇼', zh: '津巴布韦' }
+    ];
+
+    // 初始化位置选择
+    function initCountries() {
+        const container = document.getElementById('countriesContainer');
+        countries.forEach(country => {
+            const label = document.createElement('label');
+            // 添加搜索数据属性
+            label.dataset.search = `${country.zh} ${country.name} ${country.code} ${country.flag}`.toLowerCase();
+            label.className = 'country-item';
+            label.innerHTML = `
+                <input type="checkbox" class="country-checkbox"
+                    data-name="${country.name}"
+                    data-code="${country.code}"
+                    data-flag="${country.flag}"
+                    data-zh="${country.zh}">
+                <span class="country-label">${country.name}</span>
+            `;
+            container.appendChild(label);
+        });
+    }
+    // 新增搜索功能
+    function handleSearch() {
+        const keyword = document.getElementById('searchInput').value.trim().toLowerCase();
+        document.querySelectorAll('.country-item').forEach(item => {
+            const shouldShow = item.dataset.search.includes(keyword);
+            item.style.display = shouldShow ? 'flex' : 'none';
+        });
+    }
+    // 新增全选功能
+    function selectAll() {
+        document.querySelectorAll('.country-item:not([style*="display: none"]) .country-checkbox').forEach(checkbox => {
+            checkbox.checked = true;
+        });
+        generateRegex();
+    }
+    // 新增反选功能
+    function invertSelection() {
+        document.querySelectorAll('.country-item:not([style*="display: none"]) .country-checkbox').forEach(checkbox => {
+            checkbox.checked = !checkbox.checked;
+        });
+        generateRegex();
+    }
+    // 更新位置显示方式
+    function updateCountryDisplay() {
+        const displayType = document.querySelector('input[name="displayType"]:checked').value;
+        document.querySelectorAll('.country-item').forEach((item) => {
+            const checkbox = item.querySelector('.country-checkbox');
+            const label = item.querySelector('.country-label');
+            if (checkbox && label) {
+                label.textContent = checkbox.dataset[displayType];
+            }
+        });
+    }
+
+    // Unicode转义处理
+    function toUnicodeEscape(str) {
+        let result = '';
+        for (let i = 0; i < str.length; i++) {
+            const code = str.codePointAt(i);
+            if (code > 0xFFFF) {
+                // 处理辅助平面字符（转换为代理对）
+                const high = Math.floor((code - 0x10000) / 0x400) + 0xD800;
+                const low = (code - 0x10000) % 0x400 + 0xDC00;
+                result += '\\u' + high.toString(16).padStart(4, '0') 
+                        + '\\u' + low.toString(16).padStart(4, '0');
+                i++; // 跳过代理对的第二个码元
+            } else {
+                // 基本多文种平面字符
+                result += '\\u' + code.toString(16).padStart(4, '0');
+            }
+        }
+        return result;
+    }
+    // 国家反向映射表（用于快速查找）
+    const countryMaps = {
+        zh: new Map(countries.map(c => [c.zh, c])),
+        name: new Map(countries.map(c => [c.name, c])),
+        code: new Map(countries.map(c => [c.code, c])),
+        flag: new Map(countries.map(c => [c.flag, c]))
+    };
+    // 自定义输入处理
+    function processCustomInput() {
+        const input = document.getElementById('customInput').value;
+        const displayType = document.querySelector('input[name="displayType"]:checked').value;
+        const items = input.split(/[,，、||\t\n|#$%]/g).map(s => s.trim()).filter(Boolean);
+        let validCount = 0;
+        const customValues = [];
+        items.forEach(item => {
+            const includeAll = document.getElementById('allTypesCheckbox').checked;
+            if(includeAll) {
+                // 匹配所有类型
+                const matchedCountry = 
+                    countryMaps.zh.get(item) ||
+                    countryMaps.name.get(item) ||
+                    countryMaps.code.get(item) ||
+                    countryMaps.flag.get(item);
+                
+                if(matchedCountry) {
+                    validCount++;
+                    // 添加所有四个类型的值
+                    customValues.push(
+                        matchedCountry.zh,
+                        matchedCountry.name,
+                        matchedCountry.code,
+                        matchedCountry.flag
+                    );
+                }else {
+                    // 未匹配的部分直接添加
+                    customValues.push(item);
+                }
+            } else {
+                // 原有匹配逻辑
+                const matchedCountry = countryMaps[displayType].get(item);
+                if(matchedCountry) {
+                    validCount++;
+                    customValues.push(matchedCountry[displayType]);
+                }else {
+                    // 未匹配的部分直接添加
+                    customValues.push(item);
+                }
+            }
+        });
+        // 更新状态提示
+        document.getElementById('validCount').textContent = validCount;
+        document.getElementById('totalCount').textContent = items.length;
+        document.querySelector('.status-dot').classList.toggle('valid', validCount === items.length);
+        return customValues;
+    }
+    // 生成正则表达式
+    function generateRegex() {
+        const validationTip = document.getElementById('validationTip');
+        validationTip.style.display = 'none';
+        // 获取基础配置
+        const logic = document.querySelector('input[name="logic"]:checked').value;
+        const position = document.querySelector('input[name="position"]:checked').value;
+        const displayType = document.querySelector('input[name="displayType"]:checked').value;
+        const useUnicode = document.getElementById('unicodeCheckbox').checked;
+        const includeAll = document.getElementById('allTypesCheckbox').checked;
+
+        // 处理复选框选择
+        let checkboxValues = [];
+        document.querySelectorAll('.country-checkbox:checked').forEach(cb => {
+            if(includeAll) {
+                // 收集所有四个类型的值
+                checkboxValues.push(
+                    cb.dataset.zh,
+                    cb.dataset.name,
+                    cb.dataset.code,
+                    cb.dataset.flag
+                );
+            } else {
+                // 仅收集当前显示类型
+                checkboxValues.push(cb.dataset[displayType]);
+            }
+        });
+        // 去重处理
+        checkboxValues = [...new Set(checkboxValues)];
+
+        // 获取所有有效值（包括复选框和自定义输入）
+        const getProcessedValues = (values) => {
+            return values.map(value => {
+                return useUnicode 
+                    ? toUnicodeEscape(value)
+                    : value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            });
+        };
+        // 处理自定义输入（包含自动匹配和原始输入）
+        const customValues = processCustomInput(); 
+        // 合并并处理所有值
+        const allValues = getProcessedValues([...checkboxValues, ...customValues]);
+        const totalSelected = allValues.length;
+        // 验证逻辑
+        if (['OR', 'XOR'].includes(logic)) {
+            const minRequire = logic === 'XOR' ? 2 : 1;
+            if (totalSelected < minRequire) {
+                validationTip.textContent = `⚠️ ${logic} logic requires at least ${minRequire} elements to be selected`;
+                validationTip.style.display = 'block';
+                document.getElementById('regexResult').textContent = '';
+                return;
+            }
+            if (logic === 'XOR' && totalSelected > 2) {
+                validationTip.textContent = '⚠️ XOR logic selects at most 2 elements';
+                validationTip.style.display = 'block';
+                document.getElementById('regexResult').textContent = '';
+                return;
+            }
+        }
+        // 空值处理
+        if (totalSelected === 0) {
+            document.getElementById('regexResult').textContent = '^$';
+            return;
+        }
+        // 核心模式生成
+        let pattern = '';
+        switch(logic) {
+            case 'AND':
+                pattern = allValues.join(position === 'contains' ? '.*' : '');
+                break;
+            case 'OR':
+                pattern = allValues.join('|');
+                break;
+            case 'NOT':
+                pattern = allValues.join('|');
+                break;
+            case 'XOR':
+                if (allValues.length === 2) {
+                    pattern = `(${allValues[0]}${allValues[1]}|${allValues[1]}${allValues[0]})`;
+                }
+                break;
+        }
+        // 位置处理
+        let regex = '';
+        switch(position) {
+            case 'start':
+                regex = logic === 'NOT' 
+                    ? `^(?!.*?${pattern})` 
+                    : `^${pattern}`;
+                break;
+            case 'end':
+                regex = logic === 'NOT' 
+                    ? `(?<!${pattern})$` 
+                    : `${pattern}$`;
+                break;
+            case 'contains':
+                if (logic === 'AND') {
+                    const lookaheads = allValues.map(v => `(?=.*${v})`).join('');
+                    regex = `^${lookaheads}.*$`;
+                } else if (logic === 'NOT') {
+                    regex = `^(?!.*?(?:${pattern})).*$`;
+                } else {
+                    regex = `.*${pattern}.*`;
+                }
+                break;
+        }
+        // 边界修正
+        if (!regex.startsWith('^') && position !== 'end') {
+            regex = `^${regex}`;
+        }
+        if (!regex.endsWith('$') && position !== 'start') {
+            regex += `$`;
+        }
+        // 显示结果
+        document.getElementById('regexResult').textContent = regex;
+    }
+    function copy(that) {
+        // 创建一个临时的输入框来复制内容
+        var tempInput = document.createElement('input');
+        document.body.appendChild(tempInput);
+        tempInput.value = that.textContent;
+        tempInput.select();
+        document.execCommand('copy');
+        document.body.removeChild(tempInput);
+    }
+    // 初始化时绑定搜索事件
+    document.getElementById('searchInput').addEventListener('input', handleSearch);
+    // 初始化
+    initCountries();
+    updateCountryDisplay();
+    // 事件监听
+    document.getElementById('customInput').addEventListener('input', () => {
+        processCustomInput();
+        generateRegex();
+    });
+    document.addEventListener('change', (e) => {
+        if (e.target.matches('input[name="displayType"]')) {
+            updateCountryDisplay();
+        }
+        generateRegex();
+    });
+    document.querySelectorAll('input[name="logic"]').forEach(radio => {
+        radio.addEventListener('change', () => {
+            document.getElementById('validationTip').style.display = 'none';
+            generateRegex();
+        });
+    });
+    document.querySelectorAll('.country-checkbox, #unicodeCheckbox')
+        .forEach(element => {
+            element.addEventListener('change', generateRegex);
+        });
+    document.getElementById('allTypesCheckbox').addEventListener('change', () => {
+        includeAll = document.getElementById('allTypesCheckbox').checked; // 定义并更新includeAll的状态
+        // 切换时强制更新显示类型
+        updateCountryDisplay();
+        generateRegex();
+    });
+    // 初始化时调用
+    processCustomInput();
+    generateRegex();
+</script>
+</body>
+</html>

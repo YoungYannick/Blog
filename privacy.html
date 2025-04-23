@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Privacy Policy - YoungYannick's Blog</title>
+    <meta name="author" content="YoungYannick" />
+    <meta name="description" content="YoungYannick's Blog - Privacy Policy" />
+    <meta name="keywords" content="YoungYannick,Blog,Privacy Policy,Privacy" />
+    <link rel="icon" href="/images/Yannick_64.ico" />
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&family=Quicksand:wght@500&display=swap" rel="stylesheet">
+    <link href="/css/toastr.min.css" rel="stylesheet" />
+    <link href="/css/navbar.css" rel="stylesheet" />
+    <link href="/css/footer.css" rel="stylesheet" />
+    <link href="/css/theme.css" rel="stylesheet" />
+    <script src="/js/filter-module.js"></script>
+    <link rel="stylesheet" href="/css/tools-bubble.css">
+    <script src="/js/tools-bubble.js"></script>
+    <script src="/js/theme.js"></script>
+    <script src="/js/jquery-3.7.1.js"></script>
+    <script src="/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/clipboard.min.js"></script>
+    <script src="/js/toastr.min.js"></script>
+    <script src="/js/navbar.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #f0f4ff;
+            position: relative;
+            overflow-x: hidden;
+            padding: 1rem;
+            color: #2c3e50;
+        }
+
+        body::before,
+        body::after {
+            content: '';
+            position: absolute;
+            width: 60vmin;
+            height: 60vmin;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.65;
+            animation: float 20s infinite linear;
+            z-index: -1;
+        }
+
+        body::before {
+            background: #FFC0CB;
+            top: 20%;
+            left: 10%;
+        }
+
+        body::after {
+            background: #87CEFA;
+            bottom: 20%;
+            right: 10%;
+            animation-delay: -10s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(5vw, -3vh) rotate(90deg); }
+            50% { transform: translate(-4vw, 6vh) rotate(180deg); }
+            75% { transform: translate(3vw, -5vh) rotate(270deg); }
+        }
+
+        .privacy-container {
+            max-width: 800px;
+            margin: 80px auto 2rem;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(15px);
+            border-radius: 24px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(135, 206, 250, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .privacy-title {
+            font-family: 'Quicksand', sans-serif;
+            color: #2c3e50;
+            font-size: clamp(2rem, 5vw, 2.8rem);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            background: linear-gradient(135deg, #FFC0CB 30%, #87CEFA 70%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .section-title {
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1.5rem;
+            color: #2c3e50;
+            margin: 2rem 0 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid rgba(135, 206, 250, 0.3);
+        }
+
+        .privacy-content {
+            line-height: 1.8;
+            font-size: 1rem;
+        }
+
+        .privacy-content ul {
+            padding-left: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .privacy-content li {
+            margin-bottom: 0.8rem;
+        }
+
+        .update-date {
+            text-align: right;
+            color: #666;
+            margin-top: 2rem;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .privacy-container {
+                padding: 1.5rem;
+                margin: 60px auto 1rem;
+            }
+            
+            .privacy-title {
+                font-size: 2rem;
+            }
+        }
+
+        body[data-theme="dark"] .privacy-container {
+            background: rgba(30, 30, 30, 0.8);
+            border-color: rgba(70, 70, 70, 0.3);
+        }
+
+        body[data-theme="dark"] .section-title {
+            color: var(--dark-text);
+            border-bottom-color: rgba(135, 206, 250, 0.2);
+        }
+
+        body[data-theme="dark"] .privacy-content {
+            color: var(--dark-text);
+        }
+
+        body[data-theme="dark"] .update-date {
+            color: var(--dark-text-secondary);
+        }
+    </style>
+</head>
+<body>
+    <!-- 导入导航栏 -->
+    <div id="navbar-container"></div>
+
+    <div class="privacy-container">
+        <h1 class="privacy-title">Privacy Policy</h1>
+        
+        <div class="privacy-content">
+            <p class="update-date">Last Updated: 2025-04-15 18:15:49</p>
+    
+            <h2 class="section-title">Website Declaration</h2>
+            <ul>
+                <li>This is a fully static website with no backend services</li>
+                <li>All content is rendered directly through local HTML files</li>
+                <li>No reliance on server-side scripts or databases</li>
+            </ul>
+    
+            <h2 class="section-title">Data Policy</h2>
+            <ul>
+                <li>No collection, storage, or processing of any user information</li>
+                <li>No user registration/login system</li>
+                <li>No access logging functionality</li>
+            </ul>
+    
+            <h2 class="section-title">Third-party Resources</h2>
+            <ul>
+                <li>Font resources loaded via Google Fonts (can be blocked by ad blockers)</li>
+                <li>Icon library using Font Awesome CDN (can be blocked by ad blockers)</li>
+                <li>Loading of these resources follows each provider's privacy policy</li>
+            </ul>
+    
+            <h2 class="section-title">Contact Us</h2>
+            <p>For technical inquiries: <a href="mailto:BigYannick2@gmail.com">BigYannick2@gmail.com</a></p>
+        </div>
+    </div>
+
+    <!-- 添加底部 Footer -->
+    <div id="footer-container"></div>
+
+    <script>
+        $(document).ready(function() {
+            // 加载导航栏
+            $("#navbar-container").load("navbar.html", function() {
+                $("#navbar-title").text("Privacy Policy");
+                window.dispatchEvent(new Event('scroll'));
+            });
+            
+            // 加载底部
+            $("#footer-container").load("footer.html");
+        });
+    </script>
+</body>
+</html>

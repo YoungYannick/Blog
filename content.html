@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Forza Horizon 4&5 - YoungYannick's Blog</title>
+    <meta name="author" content="YoungYannick" />
+    <meta name="description" content="YoungYannick's Blog - Forza Horizon 4&5 Gallery" />
+    <meta name="keywords" content="YoungYannick,Blog,Blog,Forza Horizon,Racing Game,Gallery" />
+    <link rel="icon" href="/images/Yannick_64.ico" />
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&family=Quicksand:wght@500&display=swap" rel="stylesheet">
+    <link href="/css/toastr.min.css" rel="stylesheet" />
+    <link href="/css/navbar.css" rel="stylesheet" />
+    <link href="/css/footer.css" rel="stylesheet" />
+    <link href="/css/theme.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/tools-bubble.css">
+    <script src="/js/tools-bubble.js"></script>
+    <script src="/js/theme.js"></script>
+    <script src="/js/filter-module.js"></script>
+    <script src="/js/jquery-3.7.1.js"></script>
+    <script src="/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/clipboard.min.js"></script>
+    <script src="/js/toastr.min.js"></script>
+    <script src="/js/navbar.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--light-bg);
+            position: relative;
+            overflow-x: hidden;
+            padding: 1rem;
+            color: var(--light-text);
+        }
+
+        body::before,
+        body::after {
+            content: '';
+            position: absolute;
+            width: 60vmin;
+            height: 60vmin;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.65;
+            animation: float 20s infinite linear;
+            z-index: -1;
+        }
+
+        body::before {
+            background: #FFC0CB;
+            top: 20%;
+            left: 10%;
+        }
+
+        body::after {
+            background: #87CEFA;
+            bottom: 20%;
+            right: 10%;
+            animation-delay: -10s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(5vw, -3vh) rotate(90deg); }
+            50% { transform: translate(-4vw, 6vh) rotate(180deg); }
+            75% { transform: translate(3vw, -5vh) rotate(270deg); }
+        }
+
+        .custom-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* 页面标题样式 */
+        .page-title {
+            text-align: center;
+            margin: 1rem auto 1rem auto;
+            padding-top: 80px;
+        }
+
+        .page-title h1 {
+            font-family: 'Quicksand', sans-serif;
+            color: #2c3e50;
+            font-size: clamp(2rem, 5vw, 2.8rem);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            background: linear-gradient(135deg, #FFC0CB 30%, #87CEFA 70%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        /* 图片容器样式 */
+        #image-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: var(--light-card-bg);
+            backdrop-filter: blur(15px);
+            border-radius: 24px;
+            box-shadow: 0 8px 32px rgba(135, 206, 250, 0.1);
+            border: 1px solid var(--light-border);
+            margin-top: 1rem;
+        }
+
+        #image-container img {
+            margin: 0;
+            max-width: 100%;
+            height: auto;
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(135, 206, 250, 0.2);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        #image-container img:hover {
+            transform: scale(1.02);
+            box-shadow: 0 12px 32px rgba(135, 206, 250, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            #image-container {
+                padding: 0.5rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            body {
+                padding: 0.5rem;
+            }
+            
+            .page-title {
+                padding-top: 60px;
+            }
+        }
+
+        body[data-theme="dark"] {
+            background: var(--dark-bg);
+            color: var(--dark-text);
+        }
+
+        body[data-theme="dark"] #image-container {
+            background: var(--dark-card-bg);
+            border-color: var(--dark-border);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 导入导航栏 -->
+    <div id="navbar-container"></div>
+
+    <!-- 页面标题 -->
+    <div class="page-title">
+        <h1>Forza Horizon 4&5 Gallery</h1>
+    </div>
+
+    <div id="article-meta-container" style="position: relative; z-index: 999999;"></div>
+
+    <div class="custom-container">
+        <div id="image-container"></div>
+    </div>
+
+    <!-- 添加底部 Footer-->
+    <div id="footer-container"></div>
+
+    <script>
+        $(document).ready(function() {
+            // 加载导航栏
+            $("#navbar-container").load("navbar.html", function() {
+                // 导航栏加载完成后设置标题
+                $("#navbar-title").text("Forza Horizon Gallery");
+                // 导航栏加载完成后手动触发滚动事件，确保导航栏状态正确
+                window.dispatchEvent(new Event('scroll'));
+            });
+
+            // 加载文章元数据
+            $("#article-meta-container").load("article-meta.html", function() {
+                // 设置日期
+                $('.am-container').attr({
+                    'data-publish-date': '2025-04-13 14:01:12',
+                    'data-update-date': '2025-04-16 16:05:30'
+                });
+                // 手动触发初始化
+                if (typeof initArticleMeta === 'function') {
+                    initArticleMeta();
+                }
+            });
+            
+            // 加载底部
+            $("#footer-container").load("footer.html");
+
+            var imageContainer = $('#image-container');
+            for (var i = 1; i < 107; i++) {
+                var imagePath = '/images/content/Forza/' + i + '.jpg';
+                var imgElement = $('<img>')
+                    .attr('src', imagePath)
+                    .attr('alt', 'Forza Horizon 图片 ' + i)
+                    .attr('loading', 'lazy'); // 添加懒加载
+                imageContainer.append(imgElement);
+            }
+
+            // 添加图片点击放大功能
+            $('#image-container img').click(function() {
+                const src = $(this).attr('src');
+                const alt = $(this).attr('alt');
+                
+                // 创建模态框
+                const modal = $('<div>').css({
+                    'position': 'fixed',
+                    'top': '0',
+                    'left': '0',
+                    'width': '100%',
+                    'height': '100%',
+                    'background': 'rgba(0, 0, 0, 0.8)',
+                    'display': 'flex',
+                    'justify-content': 'center',
+                    'align-items': 'center',
+                    'z-index': '2000',
+                    'cursor': 'zoom-out'
+                });
+                
+                // 创建图片元素
+                const img = $('<img>').attr('src', src).attr('alt', alt).css({
+                    'max-width': '90%',
+                    'max-height': '90%',
+                    'border-radius': '8px',
+                    'box-shadow': '0 0 20px rgba(255, 255, 255, 0.2)'
+                });
+                
+                modal.append(img);
+                $('body').append(modal);
+                
+                // 点击关闭模态框
+                modal.click(function() {
+                    $(this).remove();
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

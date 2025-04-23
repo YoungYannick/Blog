@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sitemap - YoungYannick's Blog</title>
+    <meta name="author" content="YoungYannick" />
+    <meta name="description" content="YoungYannick's Blog - Sitemap" />
+    <meta name="keywords" content="YoungYannick,Blog,Sitemap,站点地图" />
+    <link rel="icon" href="/images/Yannick_64.ico" />
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&family=Quicksand:wght@500&display=swap" rel="stylesheet">
+    <link href="/css/toastr.min.css" rel="stylesheet" />
+    <link href="/css/navbar.css" rel="stylesheet" />
+    <link href="/css/footer.css" rel="stylesheet" />
+    <link href="/css/theme.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/tools-bubble.css">
+    <script src="/js/tools-bubble.js"></script>
+    <script src="/js/theme.js"></script>
+    <script src="/js/filter-module.js"></script>
+    <script src="/js/jquery-3.7.1.js"></script>
+    <script src="/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/clipboard.min.js"></script>
+    <script src="/js/toastr.min.js"></script>
+    <script src="/js/navbar.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--light-bg);
+            position: relative;
+            overflow-x: hidden;
+            padding: 1rem;
+            color: var(--light-text);
+        }
+
+        body::before,
+        body::after {
+            content: '';
+            position: absolute;
+            width: 60vmin;
+            height: 60vmin;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.65;
+            animation: float 20s infinite linear;
+            z-index: -1;
+        }
+
+        body::before {
+            background: #FFC0CB;
+            top: 20%;
+            left: 10%;
+        }
+
+        body::after {
+            background: #87CEFA;
+            bottom: 20%;
+            right: 10%;
+            animation-delay: -10s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(5vw, -3vh) rotate(90deg); }
+            50% { transform: translate(-4vw, 6vh) rotate(180deg); }
+            75% { transform: translate(3vw, -5vh) rotate(270deg); }
+        }
+
+        .sitemap-container {
+            max-width: 1000px;
+            margin: 80px auto 2rem;
+            background: var(--light-card-bg);
+            backdrop-filter: blur(15px);
+            border-radius: 24px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px var(--light-shadow);
+            border: 1px solid var(--light-border);
+        }
+
+        .sitemap-title {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .sitemap-title h1 {
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 700;
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, var(--light-gradient-1) 30%, var(--light-gradient-2) 70%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        .sitemap-title p {
+            color: var(--light-text-secondary);
+            font-size: 1.1rem;
+        }
+
+        .sitemap-section {
+            margin-bottom: 2rem;
+        }
+
+        .sitemap-section-title {
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 600;
+            font-size: 1.5rem;
+            color: var(--light-text);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .sitemap-section-title i {
+            background: linear-gradient(135deg, var(--light-gradient-1) 30%, var(--light-gradient-2) 70%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .sitemap-list {
+            list-style: none;
+            padding-left: 1.5rem;
+        }
+
+        .sitemap-item {
+            margin: 0.5rem 0;
+            position: relative;
+        }
+
+        .sitemap-item::before {
+            content: '';
+            position: absolute;
+            left: -1.5rem;
+            top: 0.7rem;
+            width: 1rem;
+            height: 2px;
+            background: linear-gradient(90deg, var(--light-gradient-1), var(--light-gradient-2));
+        }
+
+        .sitemap-link {
+            color: var(--light-text);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .sitemap-link:hover {
+            color: var(--light-gradient-2);
+            transform: translateX(5px);
+        }
+
+        .sitemap-link i {
+            font-size: 0.9rem;
+            color: var(--light-gradient-1);
+        }
+
+        /* 暗色主题适配 */
+        body[data-theme="dark"] .sitemap-container {
+            background: var(--dark-card-bg);
+            border-color: var(--dark-border);
+            box-shadow: 0 8px 32px var(--dark-shadow);
+        }
+
+        body[data-theme="dark"] .sitemap-title h1 {
+            background: linear-gradient(135deg, var(--dark-gradient-1) 30%, var(--dark-gradient-2) 70%);
+            -webkit-background-clip: text;
+        }
+
+        body[data-theme="dark"] .sitemap-title p {
+            color: var(--dark-text);
+            -webkit-background-clip: text;
+        }
+
+        body[data-theme="dark"] .sitemap-section-title {
+            color: var(--dark-text);
+        }
+
+        body[data-theme="dark"] .sitemap-link {
+            color: var(--dark-text);
+        }
+
+        body[data-theme="dark"] .sitemap-link:hover {
+            color: var(--dark-gradient-2);
+        }
+
+        @media (max-width: 768px) {
+            .sitemap-container {
+                margin: 60px auto 1rem;
+                padding: 1.5rem;
+            }
+
+            .sitemap-title h1 {
+                font-size: 2rem;
+            }
+
+            .sitemap-section-title {
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="navbar-placeholder"></div>
+
+    <div class="sitemap-container">
+        <div class="sitemap-title">
+            <h1>Sitemap</h1>
+            <p>Structured navigation for all pages of the website</p>
+        </div>
+        <div id="sitemap-content">
+            <!-- 动态生成的内容将插入这里 -->
+        </div>
+    </div>
+
+    <div id="footer-placeholder"></div>
+
+    <script>
+        // 页面配置
+        const siteConfig = {
+            pages: [
+                {
+                    type: 'main',
+                    title: 'Main Pages',
+                    icon: 'fas fa-home',
+                    items: [
+                        { url: 'index.html', title: 'Home' },
+                        { url: 'about.html', title: 'About' },
+                        { url: 'privacy.html', title: 'Privacy Policy' }
+                    ]
+                },
+                {
+                    type: 'tools',
+                    title: 'Tools Page',
+                    icon: 'fas fa-tools',
+                    items: [
+                        { url: 'compare.html', title: 'File comparison tool' },
+                        { url: 'regular.html', title: 'Regular Expression Generator' },
+                        { url: 'weapon-analysis-tool.html', title: 'Weapon Analysis Tools' },
+                        { url: 'proxy-tools.html', title: 'Proxy Tools' }
+                    ]
+                },
+                {
+                    type: 'share',
+                    title: 'Share Page',
+                    icon: 'fas fa-share-alt',
+                    items: [
+                        { url: 'free-subscription.html', title: 'Free Subscription Share' },
+                        { url: 'content.html', title: 'Forza Horizon 4&5' }
+                    ]
+                },
+                {
+                    type: 'system',
+                    title: 'System Page',
+                    icon: 'fas fa-cog',
+                    items: [
+                        { url: 'filter-panel.html', title: 'Filter Management Panel' },
+                        { url: '404.html', title: '404 Page' },
+                        { url: 'sitemap.html', title: 'Sitemap' }
+                    ]
+                }
+            ]
+        };
+
+        // 生成站点地图内容
+        function generateSitemap() {
+            const sitemapContent = document.getElementById('sitemap-content');
+            let html = '';
+
+            // 遍历配置生成HTML
+            siteConfig.pages.forEach(section => {
+                // 检查页面是否存在
+                const existingItems = section.items.filter(item => {
+                    const link = document.createElement('a');
+                    link.href = item.url;
+                    return true; // 在纯前端环境中我们假设所有页面都存在
+                });
+
+                if (existingItems.length > 0) {
+                    html += `
+                        <div class="sitemap-section">
+                            <h2 class="sitemap-section-title">
+                                <i class="${section.icon}"></i>
+                                ${section.title}
+                            </h2>
+                            <ul class="sitemap-list">
+                                ${existingItems.map(item => `
+                                    <li class="sitemap-item">
+                                        <a href="/${item.url}" class="sitemap-link">
+                                            <i class="fas fa-angle-right"></i>
+                                            ${item.title}
+                                        </a>
+                                    </li>
+                                `).join('')}
+                            </ul>
+                        </div>
+                    `;
+                }
+            });
+
+            sitemapContent.innerHTML = html;
+        }
+
+        $(document).ready(function() {
+            // 加载导航栏
+            $("#navbar-placeholder").load("/navbar.html", function() {
+                const navbarTitle = document.getElementById('navbar-title');
+                if (navbarTitle) {
+                    navbarTitle.textContent = 'Sitemap';
+                }
+            });
+
+            // 加载页脚
+            $("#footer-placeholder").load("/footer.html");
+
+            // 生成站点地图
+            generateSitemap();
+        });
+    </script>
+</body>
+</html>

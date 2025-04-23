@@ -1,0 +1,70 @@
+<!-- Footer -->
+<footer class="footer mt-5">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4 mb-4 mb-md-0">
+        <h5 class="footer-title">About Blog</h5>
+        <p class="footer-text">YoungYannick's Blog is a personal blog space that shares technology, photography, and life.</p>
+        <div class="social-links-footer">
+          <a href="https://github.com/youngyannick" target="_blank" class="social-link-footer"><i class="fab fa-github"></i></a>
+          <a href="https://gitee.com/YoungYannick/" target="_blank" class="social-link-footer">
+            <img src="/images/nav/gitee.svg" alt="Gitee" style="height: 1rem; width: 1rem; filter: brightness(0) invert(1);">
+          </a>
+          <a href="https://www.youtube.com/@yannick_yang" target="_blank" class="social-link-footer"><i class="fab fa-youtube"></i></a>
+          <a href="https://space.bilibili.com/505709474" target="_blank" class="social-link-footer">
+            <i class="fab fa-bilibili"></i>
+          </a>
+          <a href="https://music.163.com/#/user/home?id=435291570" target="_blank" class="social-link-footer">
+            <img src="/images/nav/NCMusic.svg" alt="NetEase Cloud Music" style="height: 1rem; width: 1rem; filter: brightness(0) invert(1);">
+          </a>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4 mb-md-0">
+        <h5 class="footer-title">Quick Links</h5>
+        <ul class="footer-links">
+          <li><a href="/index.html">Home</a></li>
+          <li><a href="/sitemap.html">Sitemap</a></li>
+          <li><a href="/privacy.html">Privacy Policy</a></li>
+        </ul>
+      </div>
+      <div class="col-md-4">
+        <h5 class="footer-title">Contact Me</h5>
+        <p class="footer-text"><i class="fas fa-envelope me-2"></i>BigYannick2@gmail.com</p>
+        <p class="footer-text"><i class="fas fa-map-marker-alt me-2"></i>China</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="copyright-footer">Copyright © <span id="copyright-year"></span> YoungYannick. All Rights Reserved.</p>
+      <p class="footer-text">Made by YoungYannick <i class="fas fa-heart-footer"></i></p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  (function() {
+    // 设置版权年份
+    document.getElementById('copyright-year').textContent = new Date().getFullYear()+" ";
+
+    // 检查当前页面是否已经加载了footer.css
+    var footerCssLoaded = false;
+    var links = document.getElementsByTagName('link');
+    for (var i = 0; i < links.length; i++) {
+      if (links[i].href.indexOf('footer.css') !== -1) {
+        footerCssLoaded = true;
+        break;
+      }
+    }
+    
+    // 只有在没有加载footer.css的情况下才动态加载
+    if (!footerCssLoaded) {
+      var link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = '/css/footer.css';
+      document.head.appendChild(link);
+      console.log('Footer CSS dynamically loaded');
+    } else {
+      console.log('Footer CSS already loaded, skipping dynamic load');
+    }
+  })();
+</script>

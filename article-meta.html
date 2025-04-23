@@ -1,0 +1,411 @@
+<!-- 文章元数据和赞助组件 -->
+<div class="am-container" data-publish-date="" data-update-date="">
+    <div class="am-meta-info">
+        <div class="am-meta-item">
+            <i class="fas fa-calendar"></i>
+            <span class="am-publish-date">Release: <span id="am-publishDate"></span></span>
+        </div>
+        <div class="am-meta-item">
+            <i class="fas fa-pencil-alt"></i>
+            <span class="am-update-date">Updated: <span id="am-updateDate"></span></span>
+        </div>
+        <div class="am-meta-item">
+            <i class="fas fa-file-alt"></i>
+            <span class="am-word-count"><span id="am-wordCount"></span> Words</span>
+        </div>
+        <div class="am-meta-item">
+            <i class="fas fa-clock"></i>
+            <span class="am-read-time"><span id="am-readTime"></span> Minutes</span>
+        </div>
+        <div class="am-meta-item am-sponsor-container">
+        <button class="am-sponsor-button" id="am-sponsorBtn">
+            <i class="fas fa-heart"></i> Support
+        </button>
+        <div class="am-sponsor-qr" id="am-sponsorQR">
+            <div class="am-qr-container">
+                <div class="am-qr-item">
+                    <img src="/images/sponsor/wx.png" alt="WeChat reward code">
+                    <p>WeChat Pay</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</div>
+
+<style>
+    .am-container {
+        background: var(--light-card-bg);
+        border-radius: 24px;
+        padding: 0.8rem;
+        margin: 0.8rem auto; 
+        box-shadow: 0 8px 32px rgba(135, 206, 250, 0.1); 
+        border: 1px solid var(--light-border);
+        backdrop-filter: blur(8px);
+        max-width: 1200px;
+        width: calc(100% - 2rem); 
+    }
+
+    .am-meta-info {
+        display: flex;
+        flex-wrap: nowrap;
+        gap: 0.8rem;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .am-meta-item {
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+        font-size: 0.85rem;
+        color: var(--light-text);
+    }
+
+    .am-meta-item i {
+        color: #87CEFA;
+    }
+
+    .am-sponsor-container {
+        position: relative; 
+    }
+
+    .am-sponsor-button {
+        background: linear-gradient(135deg, #FFC0CB 30%, #87CEFA 70%);
+        color: white;
+        border: none;
+        padding: 0.4rem 0.8rem; 
+        border-radius: 12px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        font-size: 0.85rem; 
+        white-space: nowrap; 
+    }
+
+    .am-sponsor-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .am-sponsor-qr {
+        position: absolute;
+        top: calc(100% + 10px);
+        left: 50%;
+        transform: translateX(-50%) scale(0.95);
+        background: var(--light-card-bg);
+        border-radius: 16px;
+        padding: 1rem;
+        box-shadow: 0 8px 32px rgba(135, 206, 250, 0.15);
+        border: 1px solid var(--light-border);
+        display: none;
+        z-index: 9999;
+        backdrop-filter: blur(8px);
+        opacity: 0;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .am-sponsor-qr.show {
+        display: block;
+        opacity: 1;
+        transform: translateX(-50%) scale(1);
+    }
+
+    #sponsor-toast {
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 10px 20px;
+        border-radius: 12px;
+        z-index: 2147483647;
+        transition: opacity 0.3s;
+        font-size: 0.9rem;
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    body[data-theme="dark"] #sponsor-toast {
+        background: var(--dark-card-bg);
+        color: var(--dark-text);
+        border: 1px solid var(--dark-border);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    body:not([data-theme="dark"]) #sponsor-toast {
+        background: linear-gradient(135deg, #FFC0CB 30%, #87CEFA 70%);
+        color: white;
+        box-shadow: 0 4px 10px rgba(135, 206, 250, 0.3);
+    }
+
+    .am-sponsor-qr::before {
+        content: '';
+        position: absolute;
+        top: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        border-left: 10px solid transparent;
+        border-right: 10px solid transparent;
+        border-bottom: 10px solid var(--light-card-bg);
+    }
+
+    /* 暗色模式下的小三角形 */
+    body[data-theme="dark"] .am-sponsor-qr::before {
+        border-bottom-color: var(--dark-card-bg);
+    }
+
+    .am-qr-container {
+        text-align: center;
+    }
+
+    .am-qr-item img {
+        width: 160px; 
+        height: 160px;
+        border-radius: 8px;
+        margin-bottom: 0.5rem;
+    }
+
+    .am-qr-item p {
+        color: var(--light-text);
+        margin: 0;
+        font-size: 0.85rem;
+    }
+
+    body[data-theme="dark"] .am-container {
+        background: var(--dark-card-bg);
+        border-color: var(--dark-border);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    }
+
+    body[data-theme="dark"] .am-meta-item {
+        color: var(--dark-text);
+    }
+
+    body[data-theme="dark"] .am-sponsor-button {
+        background: var(--dark-card-bg);
+        color: var(--dark-text);
+        border: 1px solid var(--dark-border);
+    }
+
+    body[data-theme="dark"] .am-sponsor-button:hover {
+        background: rgba(255, 255, 255, 0.1);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    body[data-theme="dark"] .am-sponsor-qr {
+        background: var(--dark-card-bg);
+        border-color: var(--dark-border);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    }
+
+    body[data-theme="dark"] .am-qr-item p {
+        color: var(--dark-text);
+    }
+
+    @media (min-width: 1200px) {
+        .am-container {
+            padding: 1rem;
+            width: calc(100% - 4rem);
+        }
+
+        .am-meta-info {
+            gap: 1rem;
+        }
+
+        .am-meta-item {
+            font-size: 0.9rem;
+        }
+    }
+
+    @media (max-width: 1200px) {
+        .am-container {
+            padding: 1rem;
+            width: calc(100% - 2rem);
+        }
+
+        .am-meta-info {
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .am-meta-item {
+            font-size: 0.85rem;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .am-container {
+            padding: 0.6rem;
+            margin: 0.6rem auto;
+        }
+
+        #sponsor-toast {
+            font-size: 0.85rem;
+            padding: 8px 16px;
+        }
+
+        .am-meta-info {
+            gap: 0.6rem;
+        }
+
+        .am-meta-item {
+            font-size: 0.8rem;
+        }
+
+        .am-sponsor-button {
+            padding: 0.4rem 0.8rem;
+            font-size: 0.8rem;
+        }
+
+        .am-sponsor-qr {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.95);
+            opacity: 0;
+        }
+
+        .am-sponsor-qr.show {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+        }
+
+        .am-sponsor-qr::before {
+            display: none;
+        }
+
+        .am-qr-item img {
+            width: 140px;
+            height: 140px;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .am-container {
+            padding: 0.4rem;
+            margin: 0.4rem auto;
+        }
+
+        .am-meta-info {
+            gap: 0.4rem;
+        }
+
+        .am-meta-item {
+            font-size: 0.75rem;
+        }
+
+        .am-sponsor-button {
+            padding: 0.3rem 0.6rem;
+        }
+
+        .am-sponsor-qr {
+            max-height: 220px;
+        }
+
+        .am-qr-item img {
+            width: 120px;
+            height: 120px;
+        }
+    }
+</style>
+
+<script>
+    function initArticleMeta() {
+        const metaContainer = document.querySelector('.am-container');
+        if (!metaContainer) return;
+
+        // 仅统计文章正文内容，排除脚本、样式和其他非正文元素
+        const articleContent = document.querySelector('article') || document.body;
+        let content = "";
+        if (articleContent !== document.body) {
+            content = articleContent.textContent || "";
+        } else {
+            // 如果没有明确的 article 标签，排除已知非正文元素
+            const excludedElements = document.querySelectorAll('script, style, .am-container, header, footer, nav');
+            content = document.body.textContent || "";
+            excludedElements.forEach(el => {
+                content = content.replace(el.textContent || "", "");
+            });
+        }
+
+        const wordCount = content.replace(/[\r\n\s]+/g, "").length;
+        document.getElementById('am-wordCount').textContent = wordCount;
+
+        const readTimeMinutes = Math.ceil(wordCount / 300);
+        document.getElementById('am-readTime').textContent = readTimeMinutes;
+
+        document.getElementById('am-publishDate').textContent = metaContainer.dataset.publishDate || '未知';
+        document.getElementById('am-updateDate').textContent = metaContainer.dataset.updateDate || '未知';
+
+        const sponsorBtn = document.getElementById('am-sponsorBtn');
+        const sponsorQR = document.getElementById('am-sponsorQR');
+
+        function showSponsorToast(message) {
+            let toast = document.getElementById('sponsor-toast');
+            if (!toast) {
+                toast = document.createElement('div');
+                toast.id = 'sponsor-toast';
+                toast.style.position = 'fixed';
+                toast.style.bottom = '20px';
+                toast.style.left = '50%';
+                toast.style.transform = 'translateX(-50%)';
+                toast.style.background = document.body.getAttribute('data-theme') === 'dark' 
+                    ? 'var(--dark-card-bg)'
+                    : 'linear-gradient(135deg, #FFC0CB 30%, #87CEFA 70%)';
+                toast.style.color = document.body.getAttribute('data-theme') === 'dark'
+                    ? 'var(--dark-text)'
+                    : 'white';
+                toast.style.padding = '10px 20px';
+                toast.style.borderRadius = '12px';
+                toast.style.zIndex = '2147483647';
+                toast.style.transition = 'opacity 0.3s';
+                toast.style.boxShadow = document.body.getAttribute('data-theme') === 'dark'
+                    ? '0 4px 10px rgba(0, 0, 0, 0.3)'
+                    : '0 4px 10px rgba(135, 206, 250, 0.3)';
+                if (document.body.getAttribute('data-theme') === 'dark') {
+                    toast.style.border = '1px solid var(--dark-border)';
+                }
+                document.body.appendChild(toast);
+            }
+
+            toast.textContent = message;
+            toast.style.opacity = '1';
+
+            clearTimeout(toast.timeout);
+            toast.timeout = setTimeout(() => {
+                toast.style.opacity = '0';
+            }, 2000);
+        }
+
+        sponsorBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            sponsorQR.style.display = 'block';
+            // 强制重排以触发动画
+            sponsorQR.offsetHeight;
+            sponsorQR.classList.add('show');
+            showSponsorToast('Thank you for your support!');
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!sponsorQR.contains(e.target)) {
+                sponsorQR.classList.remove('show');
+                // 等待动画完成后隐藏元素
+                setTimeout(() => {
+                    if (!sponsorQR.classList.contains('show')) {
+                        sponsorQR.style.display = 'none';
+                    }
+                }, 300);
+            }
+        });
+
+        sponsorQR.addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
+    }
+
+    // 确保函数在全局范围可用
+    window.initArticleMeta = initArticleMeta;
+
+    // 如果是通过 load 方法加载，等待短暂延时后执行初始化
+    setTimeout(initArticleMeta, 100);
+</script>

@@ -1,0 +1,166 @@
+/* Footer 样式 */
+.footer {
+  background: var(--light-card-bg);
+  backdrop-filter: blur(10px);
+  border-radius: 24px 24px 0 0;
+  padding: 3rem 0 1rem;
+  box-shadow: 0 -8px 32px var(--light-shadow);
+  border-top: 1px solid var(--light-border);
+  margin-top: 3rem;
+  width: 100%;
+  transition: all 0.3s ease;
+}
+
+.footer-title {
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: var(--light-text);
+  margin-bottom: 1.2rem;
+  background: linear-gradient(135deg, var(--light-gradient-1) 30%, var(--light-gradient-2) 70%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.footer-text {
+  color: var(--light-text);
+  font-size: 0.95rem;
+  margin-bottom: 0.8rem;
+}
+
+.social-links-footer {
+  display: flex;
+  gap: 15px;
+  margin-top: 1rem;
+}
+
+.social-link-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--light-gradient-1) 30%, var(--light-gradient-2) 70%);
+  color: #fff;
+  text-decoration: none;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.social-link-footer:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px var(--light-shadow);
+}
+
+.social-link-footer i,
+.social-link-footer img {
+  color: #fff;
+}
+
+.footer-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-links a {
+  color: var(--light-text);
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: color 0.3s ease;
+  position: relative;
+  padding-left: 15px;
+}
+
+.footer-links a:before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  color: var(--light-gradient-2);
+}
+
+.footer-links a:hover {
+  color: var(--light-gradient-1);
+}
+
+.footer-bottom {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--light-footer-border);
+  text-align: center;
+}
+
+.copyright-footer {
+  color: var(--light-text);
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+
+.fa-heart-footer {
+  color: var(--light-gradient-1);
+}
+
+/* 暗色主题适配 */
+[data-theme="dark"] .footer {
+  background: var(--dark-card-bg);
+  box-shadow: 0 -8px 32px var(--dark-shadow);
+  border-top: 1px solid var(--dark-border);
+}
+
+[data-theme="dark"] .footer-title {
+  color: var(--dark-text);
+  background: linear-gradient(135deg, var(--dark-gradient-1) 30%, var(--dark-gradient-2) 70%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+[data-theme="dark"] .footer-text,
+[data-theme="dark"] .footer-links a,
+[data-theme="dark"] .copyright-footer {
+  color: var(--dark-text);
+}
+
+[data-theme="dark"] .social-link-footer {
+  background: var(--dark-card-bg);
+  border: 1px solid var(--dark-border);
+  color: #fff !important;
+}
+
+[data-theme="dark"] .social-link-footer i,
+[data-theme="dark"] .social-link-footer img {
+  filter: brightness(0) invert(1);
+  transition: none;
+}
+
+[data-theme="dark"] .social-link-footer:hover {
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 5px 15px var(--dark-shadow);
+}
+
+[data-theme="dark"] .social-link-footer:hover i,
+[data-theme="dark"] .social-link-footer:hover img {
+  filter: brightness(0) invert(1);
+  color: #fff !important;
+}
+
+[data-theme="dark"] .footer-links a:before {
+  color: var(--dark-gradient-2);
+}
+
+[data-theme="dark"] .footer-links a:hover {
+  color: var(--dark-gradient-1);
+}
+
+[data-theme="dark"] .footer-bottom {
+  border-top: 1px solid var(--dark-footer-border);
+}
+
+[data-theme="dark"] .fa-heart-footer {
+  color: var(--dark-gradient-1);
+}
+
+@media (max-width: 768px) {
+  .footer {
+    padding: 2rem 0 1rem;
+  }
+}

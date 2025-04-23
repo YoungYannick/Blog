@@ -1,0 +1,49 @@
+<!-- 导航栏 -->
+<nav class="navbar navbar-expand-lg navbar-light">
+  <a class="navbar-brand" id="navbar-title-link" href="#">
+    <img src="/images/Yannick_64.ico" alt="YoungYannick's Blog" />
+    YoungYannick's Blog
+  </a>
+  <!-- 导航栏中间标题 -->
+  <div class="navbar-center" id="navbar-title"></div>
+  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav ms-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="/index.html">Home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/about.html">About</a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+          aria-expanded="false">
+          Panel Tools
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <li>
+            <a class="dropdown-item" href="https://sub.youngyannick.eu.org/" target="_blank">
+              <img src="/images/nav/Sub-Store.png" alt="Edge Sub" style="height: 1rem; width: 1rem; margin-right: 8px;">Edge Sub</a>
+          </li>
+          <li>
+            <a class="dropdown-item" href="https://youngyannick.cn:444/" target="_blank">
+              <img src="/images/nav/Sub-Store.png" alt="Sub Store" style="height: 1rem; width: 1rem; margin-right: 8px;">Sub Store</a>
+          </li>
+          <li>
+            <a class="dropdown-item" href="https://youngyannick.cn:445/" target="_blank">
+              <img src="/images/nav/beszel.svg" alt="Beszel" style="height: 1rem; width: 1rem; margin-right: 8px;">Beszel</a>
+          </li>
+        </ul>
+      </li>
+      <!-- 修改主题切换按钮 -->
+      <li class="nav-item">
+        <a href="javascript:void(0)" class="nav-link theme-toggle" onclick="window.themeManager.toggleTheme()">
+          <i id="theme-icon" class="fas fa-sun"></i>
+        </a>
+      </li>
+    </ul>
+  </div>
+</nav>
