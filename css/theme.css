@@ -4,12 +4,12 @@
   --light-text: #2c3e50;
   --light-text-secondary: #4a5568;
   --light-text-muted: #666;
-  --light-link: #007bff;
+  --light-link: #54c7fc;
   --light-link-hover: #87CEFA;
   --light-card-bg: rgba(255, 255, 255, 0.8);
   --light-border: rgba(255, 255, 255, 0.3);
   --light-footer-border: rgba(200, 200, 200, 0.5);
-  --light-shadow: rgba(135, 206, 250, 0.1);
+  --light-shadow: rgba(0, 0, 0, 0.08)
   --light-hover: rgba(249, 249, 249, 0.8);
   --light-gradient-1: #FFC0CB;
   --light-gradient-2: #87CEFA;
@@ -26,7 +26,7 @@
   --dark-card-bg: rgba(32, 34, 37, 0.8);
   --dark-border: rgba(255, 255, 255, 0.1);
   --dark-footer-border: rgba(255, 255, 255, 0.2);
-  --dark-shadow: rgba(0, 0, 0, 0.2);
+  --dark-shadow: rgba(0, 0, 0, 0.25);
   --dark-hover: rgba(40, 42, 46, 0.8);
   --dark-gradient-1: #ff8fa3;
   --dark-gradient-2: #5fb2e6;
@@ -169,4 +169,11 @@ input,
 textarea,
 select {
   transition: all 0.3s ease;
+}
+
+html {
+  scroll-behavior: smooth;
+  overflow-y: scroll;
+  overscroll-behavior-y: auto;
+  scroll-snap-type: y proximity;
 }

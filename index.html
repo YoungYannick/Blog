@@ -35,7 +35,7 @@
     body {
       min-height: 100vh;
       font-family: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      background: #f0f4ff;
+      background: var(--light-bg);
       position: relative;
       overflow-x: hidden;
     }
@@ -54,13 +54,13 @@
     }
 
     body::before {
-      background: #FFC0CB;
+      background: var(--light-gradient-1);
       top: 20%;
       left: 10%;
     }
 
     body::after {
-      background: #87CEFA;
+      background: var(--light-gradient-2);
       bottom: 20%;
       right: 10%;
       animation-delay: -10s;
@@ -261,12 +261,12 @@
     }
 
     .timeline::-webkit-scrollbar-thumb {
-      background: linear-gradient(135deg, #FFC0CB 30%, #87CEFA 70%);
+      background: linear-gradient(135deg, var(--light-gradient-1) 30%, var(--light-gradient-2) 70%);
       border-radius: 3px;
     }
 
     .timeline::-webkit-scrollbar-thumb:hover {
-      background: linear-gradient(135deg, #FFC0CB 50%, #87CEFA 90%);
+      background: linear-gradient(135deg, var(--light-gradient-1) 50%, var(--light-gradient-2) 90%);
     }
 
     .timeline::before {
@@ -275,7 +275,7 @@
       left: 12px;
       top: 0;
       width: 2px;
-      background: linear-gradient(135deg, #FFC0CB 30%, #87CEFA 70%);
+      background: linear-gradient(135deg, var(--light-gradient-1) 30%, var(--light-gradient-2) 70%);
       z-index: 1;
     }
 
@@ -296,7 +296,7 @@
       width: 14px;
       height: 14px;
       border-radius: 50%;
-      background: linear-gradient(135deg, #FFC0CB 30%, #87CEFA 70%);
+      background: linear-gradient(135deg, var(--light-gradient-1) 30%, var(--light-gradient-2) 70%);
       border: 2px solid var(--light-card-bg);
     }
 
@@ -328,7 +328,7 @@
     }
 
     .timeline-content a:hover {
-      color: #FFC0CB;
+      color: var(--light-gradient-1);
     }
 
     .welcome-bubble {
@@ -366,9 +366,9 @@
       font-family: 'Quicksand', sans-serif;
       font-weight: 700;
       font-size: 1.1rem;
-      color: #2c3e50;
+      color: var(--light-text); 
       margin: 0;
-      background: linear-gradient(135deg, #FFC0CB 30%, #87CEFA 70%);
+      background: linear-gradient(135deg, var(--light-gradient-1) 30%, var(--light-gradient-2) 70%); 
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
@@ -415,7 +415,7 @@
       width: 50px;
       height: 50px;
       border-radius: 50%;
-      background: linear-gradient(135deg, #FFC0CB 30%, #87CEFA 70%);
+      background: linear-gradient(135deg, var(--light-gradient-1) 30%, var(--light-gradient-2) 70%); 
       color: white;
       display: none;
       align-items: center;
@@ -483,7 +483,7 @@
       content: '|';
       position: absolute;
       right: -0.5rem;
-      color: #FFC0CB;
+      color: var(--light-gradient-1); 
       font-size: 1.15rem; 
       animation: cursor 1.2s infinite;
     }
@@ -581,7 +581,7 @@
     }
 
     .box-description a:hover {
-      color: #FFC0CB;
+      color: var(--light-gradient-1);
     }
 
     .section-title {
@@ -593,9 +593,9 @@
       font-family: 'Quicksand', sans-serif;
       font-weight: 700;
       font-size: 2rem;
-      color: #2c3e50;
+      color: var(--light-text); 
       margin-bottom: 0.5rem;
-      background: linear-gradient(135deg, #FFC0CB 30%, #87CEFA 70%);
+      background: linear-gradient(135deg, var(--light-gradient-1) 30%, var(--light-gradient-2) 70%); 
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       display: inline-block;
@@ -604,7 +604,7 @@
     .title-underline {
       height: 4px;
       width: 80px;
-      background: linear-gradient(135deg, #FFC0CB 30%, #87CEFA 70%);
+      background: linear-gradient(135deg, var(--light-gradient-1) 30%, var(--light-gradient-2) 70%);
       margin: 0 auto;
       border-radius: 2px;
     }

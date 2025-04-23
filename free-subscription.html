@@ -57,13 +57,13 @@
         }
 
         body::before {
-            background: #FFC0CB;
+            background: var(--light-gradient-1);
             top: 20%;
             left: 10%;
         }
 
         body::after {
-            background: #87CEFA;
+            background: var(--light-gradient-2);
             bottom: 20%;
             right: 10%;
             animation-delay: -10s;
@@ -84,12 +84,12 @@
 
         .page-title h1 {
             font-family: 'Quicksand', sans-serif;
-            color: #2c3e50;
+            color: var(--light-text);
             font-size: clamp(2rem, 5vw, 2.8rem);
             font-weight: 800;
             letter-spacing: -0.03em;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-            background: linear-gradient(135deg, #FFC0CB 30%, #87CEFA 70%);
+            background: linear-gradient(135deg, var(--light-gradient-1) 30%, var(--light-gradient-2) 70%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             margin: 0 auto;
@@ -145,7 +145,7 @@
         }
 
         .filter-tag.active {
-            background: linear-gradient(135deg, #FFC0CB 30%, #87CEFA 70%);
+            background: linear-gradient(135deg, var(--light-gradient-1) 30%, var(--light-gradient-2) 70%); 
             color: white;
             border: none;
         }
@@ -182,7 +182,7 @@
             left: 0;
             width: 100%;
             height: 4px;
-            background: linear-gradient(135deg, #FFC0CB 30%, #87CEFA 70%);
+            background: linear-gradient(135deg, var(--light-gradient-1) 30%, var(--light-gradient-2) 70%);
         }
 
         .subscription-card:hover {
@@ -236,7 +236,7 @@
             font-size: 0.9rem;
             cursor: pointer;
             transition: all 0.3s ease;
-            background: linear-gradient(135deg, #FFC0CB 30%, #87CEFA 70%);
+            background: linear-gradient(135deg, var(--light-gradient-1) 30%, var(--light-gradient-2) 70%); 
             color: white;
             text-align: center;
             border: none;
@@ -310,7 +310,7 @@
         .modal-title {
             font-family: 'Quicksand', sans-serif;
             font-weight: 700;
-            background: linear-gradient(135deg, #FFC0CB 30%, #87CEFA 70%);
+            background: linear-gradient(135deg, var(--light-gradient-1) 30%, var(--light-gradient-2) 70%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }

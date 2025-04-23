@@ -34,7 +34,7 @@
     body {
       min-height: 100vh;
       font-family: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      background: #f0f4ff;
+      background: var(--light-bg);
       position: relative;
       overflow-x: hidden;
       padding: 1rem;
@@ -54,13 +54,13 @@
     }
 
     body::before {
-      background: #FFC0CB;
+      background: var(--light-gradient-1);
       top: 20%;
       left: 10%;
     }
 
     body::after {
-      background: #87CEFA;
+      background: var(--light-gradient-2);
       bottom: 20%;
       right: 10%;
       animation-delay: -10s;
@@ -90,12 +90,12 @@
 
     .page-title h1 {
       font-family: 'Quicksand', sans-serif;
-      color: #2c3e50;
+      color: var(--light-text); 
       font-size: clamp(2rem, 5vw, 2.8rem);
       font-weight: 800;
       letter-spacing: -0.03em;
       text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-      background: linear-gradient(135deg, #FFC0CB 30%, #87CEFA 70%);
+      background: linear-gradient(135deg, var(--light-gradient-1) 30%, var(--light-gradient-2) 70%); 
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       margin: 0 auto;
@@ -103,11 +103,11 @@
     }
 
     .content-section {
-      background: rgba(255, 255, 255, 0.7);
+      background: var(--light-card-bg);
       border-radius: 24px;
       padding: 2rem;
-      box-shadow: 0 8px 32px rgba(135, 206, 250, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 8px 32px var(--light-shadow);
+      border: 1px solid var(--light-border);
       backdrop-filter: blur(8px);
       margin-bottom: 3rem;
     }
@@ -123,7 +123,7 @@
       font-size: 2rem;
       color: var(--light-text);
       margin-bottom: 0.5rem;
-      background: linear-gradient(135deg, #FFC0CB 30%, #87CEFA 70%);
+      background: linear-gradient(135deg, var(--light-gradient-1) 30%, var(--light-gradient-2) 70%); 
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       display: inline-block;
@@ -132,7 +132,7 @@
     .title-underline {
       height: 4px;
       width: 80px;
-      background: linear-gradient(135deg, #FFC0CB 30%, #87CEFA 70%);
+      background: linear-gradient(135deg, var(--light-gradient-1) 30%, var(--light-gradient-2) 70%); 
       margin: 0 auto;
       border-radius: 2px;
     }
@@ -180,7 +180,7 @@
 
     .screenshot {
       border-radius: 12px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 4px 15px var(--light-shadow); 
       margin: 2rem 0;
       max-width: 100%;
       height: auto;
