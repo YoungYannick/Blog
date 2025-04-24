@@ -10,47 +10,47 @@ A personal blog website built with HTML, CSS, and JavaScript.
 Blog/
 ├── css/                    		# CSS style files
 │   ├── bootstrap.min.css   		# Bootstrap framework styles
-│   ├── footer.css         			# Footer component styles
-│   ├── navbar.css         			# Navigation bar component styles
-│   ├── sidebar.css        			# Sidebar component styles
-│   ├── theme.css          			# Theme switching styles
-│   ├── tools-bubble.css   			# Tools bubble styles
-│   └── toastr.min.css     			# Toastr notification styles
+│   ├── footer.css         		# Footer component styles
+│   ├── navbar.css         		# Navigation bar component styles
+│   ├── sidebar.css        		# Sidebar component styles
+│   ├── theme.css          		# Theme switching styles
+│   ├── tools-bubble.css   		# Tools bubble styles
+│   └── toastr.min.css     		# Toastr notification styles
 ├── js/                     		# JavaScript files
 │   ├── bootstrap.bundle.min.js  	# Bootstrap framework scripts
-│   ├── clipboard.min.js   			# Clipboard functionality
-│   ├── filter-module.js  			# Filter module
-│   ├── jquery-3.7.1.js    			# jQuery library
-│   ├── navbar.js          			# Navigation bar functionality
-│   ├── sidebar.js         			# Sidebar functionality
-│   ├── theme.js           			# Theme switching functionality
-│   ├── toastr.min.js      			# Notification functionality
-│   └── tools-bubble.js    			# Tools bubble functionality
+│   ├── clipboard.min.js   		# Clipboard functionality
+│   ├── filter-module.js  		# Filter module
+│   ├── jquery-3.7.1.js    		# jQuery library
+│   ├── navbar.js          		# Navigation bar functionality
+│   ├── sidebar.js         		# Sidebar functionality
+│   ├── theme.js           		# Theme switching functionality
+│   ├── toastr.min.js      		# Notification functionality
+│   └── tools-bubble.js    		# Tools bubble functionality
 ├── Tools/                  		# Component templates
-│   ├── article-meta.html  			# Article metadata component
-│   ├── filter-panel.html  			# Filter management panel
-│   ├── footer.html       			# Footer component
-│   ├── navbar.html        			# Navigation bar component
-│   └── sidebar.html       			# Sidebar component
+│   ├── article-meta.html  		# Article metadata component
+│   ├── filter-panel.html  		# Filter management panel
+│   ├── footer.html       		# Footer component
+│   ├── navbar.html        		# Navigation bar component
+│   └── sidebar.html       		# Sidebar component
 ├── images/                 		# Image resources
-│   ├── banner/           			# Banner images
-│   ├── content/          			# Content images
-│   ├── nav/             			# Navigation icons
-│   ├── sponsor/         			# Sponsor-related images
-│   ├── 404.gif         			# 404 error image
+│   ├── banner/           		# Banner images
+│   ├── content/          		# Content images
+│   ├── nav/             		# Navigation icons
+│   ├── sponsor/         		# Sponsor-related images
+│   ├── 404.gif         		# 404 error image
 │   └── Yannick_64.ico         		# Site icon
-├── 123pan-unlock-tools-share.html  # 123Pan unlock tools
-├── compare.html           			# File comparison tool
-├── free-subscription.html 			# Free subscription sharing
-├── proxy-tools.html       			# Proxy tools
-├── regular.html           			# Regular expression generator
+├── 123pan-unlock-tools-share.html      # 123Pan unlock tools
+├── compare.html           		# File comparison tool
+├── free-subscription.html 		# Free subscription sharing
+├── proxy-tools.html       		# Proxy tools
+├── regular.html           		# Regular expression generator
 ├── weapon-analysis-tool.html  		# Weapon analysis tool sharing
-├── 404.html              			# 404 error page
-├── about.html             			# About page
-├── content.html           			# Forza Horizon Gallery
-├── index.html             			# Homepage
-├── privacy.html           			# Privacy policy
-├── sitemap.html           			# Site map
+├── 404.html              		# 404 error page
+├── about.html             		# About page
+├── content.html           		# Forza Horizon Gallery
+├── index.html             		# Homepage
+├── privacy.html           		# Privacy policy
+├── sitemap.html           		# Site map
 ├── README-EN.md                  	# Project documentation in English
 └── README.md                  		# Project documentation
 ```
