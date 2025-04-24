@@ -1211,7 +1211,13 @@
             <div class="title-underline"></div>
           </div>
           <ul class="timeline">
-            
+            <li class="timeline-item">
+              <div class="timeline-dot"></div>
+              <div class="timeline-date">2025-04-24</div>
+              <div class="timeline-content">
+                <a href="/123pan-unlock-tools-share.html" target="_blank">123pan Unlock Tools Share</a>
+              </div>
+            </li>
             <li class="timeline-item">
               <div class="timeline-dot"></div>
               <div class="timeline-date">2025-04-14</div>
@@ -1281,11 +1287,11 @@
 
   <script>
     $(document).ready(function() {
-      $("#navbar-container").load("navbar.html", function() {
+      $("#navbar-container").load("/Tools/navbar.html", function() {
         window.dispatchEvent(new Event('scroll'));
       });
 
-      $("#footer-container").load("footer.html");
+      $("#footer-container").load("/Tools/footer.html");
 
       const text = "The world has become so alien to me, and everything, including my own existence, feels devoid of meaning.";
       const typewriterElement = $("#typewriter");
@@ -1373,24 +1379,14 @@
 
       const contentData = [
         {
-          title: "Forza Horizon 4&5 Gallery",
-          image: "/images/content/Forza/1.jpg",
-          link: "/content.html"
+          title: "123Pan Unlock Tools Share",
+          image: "/images/content/123Pan_unlock/123.ico",
+          link: "/123pan-unlock-tools-share.html"
         },
         {
-          title: "File Comparison",
-          image: "/images/content/File_Comparison/comparison.png",
-          link: "/compare.html"
-        },
-        {
-          title: "Regular Expression Generator",
-          image: "/images/content/Regular_Expression_Generator/regular.png",
-          link: "/regular.html"
-        },
-        {
-          title: "Proxy Tools",
-          image: "/images/content/Proxy_Tools/proxy.png",
-          link: "/proxy-tools.html"
+          title: "Free Subscription Share",
+          image: "/images/content/FreeSubscription/freeSubscription.png",
+          link: "/free-subscription.html"
         },
         {
           title: "Weapon Analysis Tool",
@@ -1398,9 +1394,24 @@
           link: "/weapon-analysis-tool.html"
         },
         {
-          title: "Free Subscription Share",
-          image: "/images/content/FreeSubscription/freeSubscription.png",
-          link: "/free-subscription.html"
+          title: "Proxy Tools",
+          image: "/images/content/Proxy_Tools/proxy.png",
+          link: "/proxy-tools.html"
+        },
+        {
+          title: "Regular Expression Generator",
+          image: "/images/content/Regular_Expression_Generator/regular.png",
+          link: "/regular.html"
+        },
+        {
+          title: "File Comparison",
+          image: "/images/content/File_Comparison/comparison.png",
+          link: "/compare.html"
+        },
+        {
+          title: "Forza Horizon 4&5 Gallery",
+          image: "/images/content/Forza/1.jpg",
+          link: "/content.html"
         }
       ];
 

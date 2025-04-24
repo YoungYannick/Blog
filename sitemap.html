@@ -255,6 +255,7 @@
                     title: 'Share Page',
                     icon: 'fas fa-share-alt',
                     items: [
+                        { url: '123pan-unlock-tools-share.html', title: '123Pan Unlock Tools Share' },
                         { url: 'free-subscription.html', title: 'Free Subscription Share' },
                         { url: 'content.html', title: 'Forza Horizon 4&5' }
                     ]
@@ -313,7 +314,7 @@
 
         $(document).ready(function() {
             // 加载导航栏
-            $("#navbar-placeholder").load("/navbar.html", function() {
+            $("#navbar-placeholder").load("/Tools//navbar.html", function() {
                 const navbarTitle = document.getElementById('navbar-title');
                 if (navbarTitle) {
                     navbarTitle.textContent = 'Sitemap';
@@ -321,7 +322,7 @@
             });
 
             // 加载页脚
-            $("#footer-placeholder").load("/footer.html");
+            $("#footer-placeholder").load("/Tools//footer.html");
 
             // 生成站点地图
             generateSitemap();

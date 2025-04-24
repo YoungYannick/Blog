@@ -134,14 +134,6 @@ class FilterModule {
     }
   }
 
-  // 重置为默认配置
-  resetToDefaults() {
-    this.config = { ...defaultFilterConfig };
-    this.applyCurrentFilter();
-    this.saveConfig();
-    return this.config;
-  }
-
   // 初始化滤镜模块
   init() {
     if (this.initialized) return;

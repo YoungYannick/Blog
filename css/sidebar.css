@@ -1,0 +1,135 @@
+.sidebar-container {
+  position: fixed;
+  top: 100px;
+  right: 20px;
+  width: 260px;
+  max-height: calc(100vh - 200px);
+  overflow-y: auto;
+  background: var(--light-card-bg);
+  border-radius: 16px;
+  box-shadow: 0 4px 12px var(--light-shadow);
+  border: 1px solid var(--light-border);
+  backdrop-filter: blur(8px);
+  z-index: 100;
+  display: none;
+  transition: all 0.3s ease;
+}
+
+.sidebar-content {
+  padding: 0.75rem;
+}
+
+.sidebar-header {
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid var(--light-border);
+}
+
+.sidebar-title {
+  font-family: 'Quicksand', sans-serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin: 0;
+  background: linear-gradient(135deg, var(--light-gradient-1) 30%, var(--light-gradient-2) 70%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.sidebar-nav {
+  font-size: 0.9rem;
+}
+
+.sidebar-nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar-nav li {
+  margin: 0.3rem 0;
+  padding-left: 1rem;
+  position: relative;
+}
+
+.sidebar-nav li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--light-gradient-1);
+  transform: translateY(-50%);
+}
+
+.sidebar-nav a {
+  color: var(--light-text);
+  text-decoration: none;
+  transition: color 0.3s ease;
+  display: block;
+  padding: 0.2rem 0;
+}
+
+.sidebar-nav a:hover {
+  color: var(--light-gradient-1);
+}
+
+.sidebar-nav a.active {
+  color: var(--light-gradient-2);
+  font-weight: 600;
+}
+
+/* 暗色主题适配 */
+body[data-theme="dark"] .sidebar-container {
+  background: var(--dark-card-bg);
+  border-color: var(--dark-border);
+  box-shadow: 0 4px 12px var(--dark-shadow);
+}
+
+body[data-theme="dark"] .sidebar-header {
+  border-color: var(--dark-border);
+}
+
+body[data-theme="dark"] .sidebar-nav a {
+  color: var(--dark-text);
+}
+
+body[data-theme="dark"] .sidebar-nav a:hover {
+  color: var(--light-gradient-1);
+}
+
+body[data-theme="dark"] .sidebar-nav a.active {
+  color: var(--light-gradient-2);
+}
+
+/* 响应式设计 */
+@media (max-width: 1200px) {
+  .sidebar-container {
+    display: none !important;
+  }
+}
+
+@media (max-width: 900px) {
+  .sidebar-container {
+    display: none !important;
+  }
+}
+
+/* 自定义滚动条 */
+.sidebar-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sidebar-container::-webkit-scrollbar-thumb {
+  background: var(--light-gradient-2);
+  border-radius: 3px;
+}
+
+body[data-theme="dark"] .sidebar-container::-webkit-scrollbar-thumb {
+  background: var(--dark-gradient-2);
+}

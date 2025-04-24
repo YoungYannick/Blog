@@ -832,12 +832,12 @@
 
         $(document).ready(function() {
             // 加载导航栏
-            $("#navbar-container").load("navbar.html", function() {
+            $("#navbar-container").load("/Tools/navbar.html", function() {
                 $("#navbar-title").text("Free Sub");
                 window.dispatchEvent(new Event('scroll'));
             });
             // 加载文章元数据
-            $("#article-meta-container").load("article-meta.html", function() {
+            $("#article-meta-container").load("/Tools/article-meta.html", function() {
                 // 设置日期
                 $('.am-container').attr({
                     'data-publish-date': '2025-04-14 15:01:12',
@@ -850,7 +850,7 @@
             });
 
             // 加载底部
-            $("#footer-container").load("footer.html");
+            $("#footer-container").load("/Tools/footer.html");
 
             // 渲染订阅卡片
             const grid = document.getElementById('subGrid');

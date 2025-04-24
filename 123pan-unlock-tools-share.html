@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>123Pan Unlock Tools Share - YoungYannick's Blog</title>
+  <meta name="author" content="YoungYannick" />
+  <meta name="description" content="123Pan Unlock Tools Share - YoungYannick's Blog" />
+  <meta name="keywords" content="YoungYannick,Blog,123Pan,Unlock Tools Share,网盘解锁工具" />
+  <link rel="icon" href="/images/Yannick_64.ico" />
+  <link rel="stylesheet" href="/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&family=Quicksand:wght@500&display=swap" rel="stylesheet">
+  <link href="/css/toastr.min.css" rel="stylesheet" />
+  <link href="/css/navbar.css" rel="stylesheet" />
+  <link href="/css/footer.css" rel="stylesheet" />
+  <link href="/css/theme.css" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/tools-bubble.css">
+  <link rel="stylesheet" href="/css/sidebar.css">
+  <script src="/js/sidebar.js"></script>
+  <script src="/js/tools-bubble.js"></script>
+  <script src="/js/theme.js"></script>
+  <script src="/js/filter-module.js"></script>
+  <script src="/js/jquery-3.7.1.js"></script>
+  <script src="/js/bootstrap.bundle.min.js"></script>
+  <script src="/js/clipboard.min.js"></script>
+  <script src="/js/toastr.min.js"></script>
+  <script src="/js/navbar.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--light-bg);
+      position: relative;
+      overflow-x: hidden;
+      padding: 1rem;
+    }
+
+    body::before,
+    body::after {
+      content: '';
+      position: absolute;
+      width: 60vmin;
+      height: 60vmin;
+      border-radius: 50%;
+      filter: blur(100px);
+      opacity: 0.65;
+      animation: float 20s infinite linear;
+      z-index: -1;
+    }
+
+    body::before {
+      background: var(--light-gradient-1);
+      top: 20%;
+      left: 10%;
+    }
+
+    body::after {
+      background: var(--light-gradient-2);
+      bottom: 20%;
+      right: 10%;
+      animation-delay: -10s;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0) rotate(0deg); }
+      25% { transform: translate(5vw, -3vh) rotate(90deg); }
+      50% { transform: translate(-4vw, 6vh) rotate(180deg); }
+      75% { transform: translate(3vw, -5vh) rotate(270deg); }
+    }
+
+    .custom-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 15px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .page-title {
+      text-align: center;
+      margin: 2rem auto;
+      padding-top: 80px;
+      width: 100%;
+    }
+
+    .page-title h1 {
+      font-family: 'Quicksand', sans-serif;
+      color: var(--light-text); 
+      font-size: clamp(2rem, 5vw, 2.8rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+      background: linear-gradient(135deg, var(--light-gradient-1) 30%, var(--light-gradient-2) 70%); 
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .content-section {
+      background: var(--light-card-bg);
+      border-radius: 24px;
+      padding: 2rem;
+      box-shadow: 0 8px 32px var(--light-shadow);
+      border: 1px solid var(--light-border);
+      backdrop-filter: blur(8px);
+      margin-bottom: 3rem;
+    }
+
+    .section-title {
+      position: relative;
+      margin-bottom: 2rem;
+    }
+
+    .section-title h2 {
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 700;
+      font-size: 2rem;
+      color: var(--light-text);
+      margin-bottom: 0.5rem;
+      background: linear-gradient(135deg, var(--light-gradient-1) 30%, var(--light-gradient-2) 70%); 
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: inline-block;
+    }
+
+    .title-underline {
+      height: 4px;
+      width: 80px;
+      background: linear-gradient(135deg, var(--light-gradient-1) 30%, var(--light-gradient-2) 70%); 
+      margin: 0 auto;
+      border-radius: 2px;
+    }
+
+    .feature-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .feature-list li {
+      margin-bottom: 1rem;
+      padding-left: 2rem;
+      position: relative;
+      color: var(--light-text);
+    }
+
+    .feature-list li::before {
+      content: '✨';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    .feature-card {
+      background: var(--light-card-bg);
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      border: 1px solid var(--light-border);
+    }
+
+    .feature-card h3 {
+      color: var(--light-text);
+      margin-bottom: 1rem;
+      font-size: 1.5rem;
+    }
+
+    .feature-card p {
+      color: var(--light-text);
+      margin-bottom: 1rem;
+      line-height: 1.6;
+    }
+
+    .screenshot {
+      border-radius: 12px;
+      box-shadow: 0 4px 15px var(--light-shadow); 
+      margin: 2rem 0;
+      max-width: 100%;
+      height: auto;
+      transition: transform 0.3s ease;
+    }
+
+    .screenshot:hover {
+      transform: scale(1.02);
+    }
+
+    .screenshot-container {
+      position: relative;
+      margin: 2rem 0;
+      text-align: center;
+    }
+
+    .screenshot-caption {
+      margin-top: 1rem;
+      color: var(--light-text);
+      font-style: italic;
+      text-align: center;
+    }
+
+    .method-card {
+      background: var(--light-card-bg);
+      border-radius: 16px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      border: 1px solid var(--light-border);
+    }
+
+    .method-card h3 {
+      color: var(--light-text);
+      margin-bottom: 1.5rem;
+      font-size: 1.8rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .method-card .step {
+      margin-bottom: 1.5rem;
+      padding-left: 2.5rem;
+      position: relative;
+    }
+
+    .method-card .step::before {
+      content: attr(data-step);
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 1.8rem;
+      height: 1.8rem;
+      background: linear-gradient(135deg, var(--light-gradient-1) 30%, var(--light-gradient-2) 70%);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      font-weight: bold;
+    }
+
+    .method-card .step-content {
+      color: var(--light-text);
+      line-height: 1.6;
+    }
+
+    .method-card .step-link {
+      color: var(--light-gradient-1);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .method-card .step-link:hover {
+      color: var(--light-gradient-2);
+    }
+
+    .warning-text {
+      color: #ff6b6b;
+      font-weight: bold;
+    }
+
+    .recommendation-badge {
+      background: linear-gradient(135deg, var(--light-gradient-1) 30%, var(--light-gradient-2) 70%);
+      color: white;
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      margin-left: 1rem;
+    }
+
+    @media (max-width: 768px) {
+      .section-title h2 {
+        font-size: 1.8rem;
+      }
+      
+      .content-section {
+        padding: 1.5rem;
+      }
+
+      .feature-card {
+        padding: 1rem;
+      }
+
+      .method-card {
+        padding: 1.5rem;
+      }
+
+      .method-card h3 {
+        font-size: 1.5rem;
+      }
+    }
+
+    @media (max-width: 576px) {
+      body {
+        padding: 0.5rem;
+      }
+      
+      .page-title h1 {
+        font-size: 1.8rem;
+      }
+      
+      .section-title h2 {
+        font-size: 1.5rem;
+      }
+      
+      .content-section {
+        padding: 1.5rem 1rem;
+      }
+      
+      .feature-card h3 {
+        font-size: 1.3rem;
+      }
+
+      .method-card {
+        padding: 1rem;
+      }
+
+      .method-card h3 {
+        font-size: 1.3rem;
+      }
+
+      .recommendation-badge {
+        font-size: 0.8rem;
+        padding: 0.2rem 0.6rem;
+      }
+    }
+
+    /* 暗色主题适配 */
+    body[data-theme="dark"] .feature-list li {
+      color: var(--dark-text);
+    }
+
+    body[data-theme="dark"] .feature-card,
+    body[data-theme="dark"] .method-card {
+      background: var(--dark-card-bg);
+      border-color: var(--dark-border);
+    }
+
+    body[data-theme="dark"] .feature-card h3,
+    body[data-theme="dark"] .feature-card p,
+    body[data-theme="dark"] .method-card h3,
+    body[data-theme="dark"] .method-card .step-content {
+      color: var(--dark-text);
+    }
+
+    body[data-theme="dark"] .screenshot-caption {
+      color: var(--dark-text);
+    }
+
+    body[data-theme="dark"] .method-card .step-link {
+      color: var(--light-gradient-1);
+    }
+
+    body[data-theme="dark"] .method-card .step-link:hover {
+      color: var(--light-gradient-2);
+    }
+
+    body[data-theme="dark"] .warning-text {
+      color: #ff8787;
+    }
+
+    .command-text {
+      background: linear-gradient(135deg, var(--light-gradient-1) 30%, var(--light-gradient-2) 70%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: bold;
+    }
+
+    .command-description {
+      color: var(--light-text);
+      margin-left: 8px;
+    }
+
+    body[data-theme="dark"] .command-description {
+      color: var(--dark-text);
+    }
+  </style>
+</head>
+
+<body>
+  <div id="navbar-container"></div>
+
+  <div class="container-fluid">
+    <div class="row justify-content-center">
+      <div class="col-12 page-title">
+        <h1>123Pan Unlock Tools Share</h1>
+      </div>
+    </div>
+  </div>
+
+  <div class="container custom-container">
+    <div id="article-meta-container" style="position: relative; z-index: 999999;"></div>
+    
+    <!-- 工具概述 -->
+    <div class="content-section">
+      <div class="section-title text-center mb-4" data-sidebar-title="Overview" data-sidebar-level="1">
+        <h2>Overview</h2>
+        <div class="title-underline"></div>
+      </div>
+      <div class="feature-card">
+        <h3>🎯 Introduction</h3>
+        <p>123Pan Unlock Plugin is a powerful Tampermonkey plugin designed to help you download files that exceed the size limit on the web. It also supports removing ads and provides a pretend function to help users disguise their VIP identity.</p>
+        <ul class="feature-list">
+          <li>Browser Extension Based: Easy to install and use</li>
+          <li>Safe and Reliable: Open source code, no privacy concerns</li>
+          <li>Regular Updates: Continuous maintenance and feature updates</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 使用方法 -->
+    <div class="content-section" data-sidebar-title="Solutions" data-sidebar-level="1">
+      <div class="section-title text-center mb-4">
+        <h2>Solutions</h2>
+        <div class="title-underline"></div>
+      </div>
+
+      <!-- 方案一 -->
+      <div class="method-card" data-sidebar-title="Solution 1" data-sidebar-level="2">
+        <h3>
+          <i class="fas fa-star"></i>
+          Solution 1: Browser Extension
+          <span class="recommendation-badge">Recommended</span>
+        </h3>
+        <p>
+          Based on the Tampermonkey extension, this method is easy to implement and highly recommended for most users.<br>
+          Open source project address: <a href="https://github.com/QingJ01/123pan_unlock" target="_blank" class="step-link">https://github.com/QingJ01/123pan_unlock</a>
+
+        </p>
+        
+        <div class="step" data-step="1" data-sidebar-title="First" data-sidebar-level="3">
+          <div class="step-content">
+            Open Chrome Web Store and search for "Tampermonkey":<br>
+            <a href="https://chromewebstore.google.com/search/tampermonkey" target="_blank" class="step-link">https://chromewebstore.google.com/search/tampermonkey</a>
+          </div>
+        </div>
+
+        <div class="screenshot-container">
+          <img src="/images/content/123Pan_Unlock/1.png" alt="Chrome Web Store" class="screenshot">
+          <p class="screenshot-caption">Chrome Web Store Interface</p>
+        </div>
+
+        <div class="step" data-step="2" data-sidebar-title="Second" data-sidebar-level="3">
+          <div class="step-content">
+            Install Tampermonkey from the official store:<br>
+            <a href="https://chromewebstore.google.com/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo" target="_blank" class="step-link">https://chromewebstore.google.com/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo</a>
+          </div>
+        </div>
+
+        <div class="screenshot-container">
+          <img src="/images/content/123Pan_Unlock/2.png" alt="Tampermonkey Search" class="screenshot">
+          <p class="screenshot-caption">Tampermonkey Search Results</p>
+        </div>
+
+        <div class="step" data-step="3" data-sidebar-title="Third" data-sidebar-level="3">
+          <div class="step-content">
+            Click the Tampermonkey icon and select "Get new scripts":<br>
+            <a href="https://www.tampermonkey.net/scripts.php" target="_blank" class="step-link">https://www.tampermonkey.net/scripts.php</a>
+          </div>
+        </div>
+
+        <div class="screenshot-container">
+          <img src="/images/content/123Pan_Unlock/3.png" alt="Get New Scripts" class="screenshot">
+          <p class="screenshot-caption">Get New Scripts Option</p>
+        </div>
+
+        <div class="step" data-step="4" data-sidebar-title="Fourth" data-sidebar-level="3">
+          <div class="step-content">
+            Select "GreasyFork" and enter the website:<br>
+            <a href="https://greasyfork.org/zh-CN" target="_blank" class="step-link">https://greasyfork.org/zh-CN</a>
+          </div>
+        </div>
+
+        <div class="screenshot-container">
+          <img src="/images/content/123Pan_Unlock/4.png" alt="GreasyFork Website" class="screenshot">
+          <p class="screenshot-caption">GreasyFork Website Interface</p>
+        </div>
+
+        <div class="step" data-step="5" data-sidebar-title="Fifth" data-sidebar-level="3">
+          <div class="step-content">
+            Search for "123云盘解锁" and find the script:<br>
+            <a href="https://greasyfork.org/zh-CN/scripts?q=123%E4%BA%91%E7%9B%98%E8%A7%A3%E9%94%81" target="_blank" class="step-link">https://greasyfork.org/zh-CN/scripts?q=123云盘解锁</a>
+          </div>
+        </div>
+
+        <div class="screenshot-container">
+          <img src="/images/content/123Pan_Unlock/5.png" alt="Script Search" class="screenshot">
+          <p class="screenshot-caption">Script Search Results</p>
+        </div>
+
+        <div class="step" data-step="6" data-sidebar-title="Sixth" data-sidebar-level="3">
+          <div class="step-content">
+            Install the script from the search results:<br>
+            <a href="https://greasyfork.org/zh-CN/scripts/519353-123%E4%BA%91%E7%9B%98%E8%A7%A3%E9%94%81" target="_blank" class="step-link">https://greasyfork.org/zh-CN/scripts/519353-123云盘解锁</a>
+          </div>
+        </div>
+
+        <div class="screenshot-container">
+          <img src="/images/content/123Pan_Unlock/6.png" alt="Script Installation" class="screenshot">
+          <p class="screenshot-caption">Script Installation Page</p>
+        </div>
+
+        <div class="step" data-step="7" data-sidebar-title="Seventh" data-sidebar-level="3">
+          <div class="step-content">
+            Visit any 123Pan share link or your cloud drive, click the download button to trigger browser download. If you have IDM installed, it will automatically capture the download.
+          </div>
+        </div>
+
+        <div class="screenshot-container">
+          <img src="/images/content/123Pan_Unlock/7.png" alt="Download Demo" class="screenshot">
+          <p class="screenshot-caption">Download Button Demonstration</p>
+        </div>
+
+        <div class="screenshot-container">
+          <img src="/images/content/123Pan_Unlock/8.png" alt="IDM Capture" class="screenshot">
+          <p class="screenshot-caption">IDM Download Capture Interface</p>
+        </div>
+      </div>
+
+      <!-- 方案二 -->
+      <div class="method-card"  data-sidebar-title="Solution 2" data-sidebar-level="2">
+        <h3>
+          <i class="fas fa-code"></i>
+          Solution 2: Python Client
+          <span class="recommendation-badge" style="background: #ff6b6b;">Not Recommended</span>
+        </h3>
+        <p>An Android protocol-based Python downloader. <span class="warning-text">Warning: There may be a risk of account and password leakage!</span></p>
+        
+        <div class="step" data-step="1" data-sidebar-title="Download" data-sidebar-level="3">
+          <div class="step-content">
+            Download the client from either source:<br>
+            Lanzou: <a href="https://clamowo.lanzouj.com/inGUA2b4l7ab" target="_blank" class="step-link">https://clamowo.lanzouj.com/inGUA2b4l7ab</a><br>
+            Local: <a href="https://raw.gitcode.com/weixin_42717364/download/blobs/8689dc73aa175a0213870264736a7454be4048ff/123pan_win_x86_64.exe" target="_blank" class="step-link">123pan_win_x86_64.exe</a>
+          </div>
+        </div>
+
+        <div class="step" data-step="2" data-sidebar-title="Commands" data-sidebar-level="3">
+          <div class="step-content">
+            Available commands:
+            <ul class="feature-list">
+              <li><span class="command-text">log</span><span class="command-description">: Login to account</span></li>
+              <li><span class="command-text">ls</span><span class="command-description">: List files</span></li>
+              <li><span class="command-text">re</span><span class="command-description">: Refresh directory</span></li>
+              <li><span class="command-text">download &lt;file_id&gt;</span><span class="command-description">: Download file (supports folder download with Android protocol)</span></li>
+              <li><span class="command-text">link &lt;file_id&gt;</span><span class="command-description">: Get download link</span></li>
+              <li><span class="command-text">share</span><span class="command-description">: Share file</span></li>
+              <li><span class="command-text">delete &lt;file_id&gt;</span><span class="command-description">: Delete file</span></li>
+              <li><span class="command-text">mkdir &lt;folder_name&gt;</span><span class="command-description">: Create folder</span></li>
+              <li><span class="command-text">cd &lt;dir_id&gt;</span><span class="command-description">: Change directory (cd .. to return to parent directory)</span></li>
+              <li><span class="command-text">upload</span><span class="command-description">: Upload file (enter file path after command)</span></li>
+              <li><span class="command-text">exit</span><span class="command-description">: Exit program</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 注意事项 -->
+    <div class="content-section">
+      <div class="section-title text-center mb-4">
+        <h2>Important Notes</h2>
+        <div class="title-underline"></div>
+      </div>
+      
+      <div class="feature-card">
+        <h3>⚠️ Security Considerations</h3>
+        <ul class="feature-list">
+          <li>Method 1 (Browser Extension) is strongly recommended as it's open source and secure</li>
+          <li>Method 2 (Python Client) may pose security risks due to potential credential exposure</li>
+          <li>Always download tools from official or trusted sources</li>
+          <li>Regularly update the extension/script to ensure optimal functionality</li>
+        </ul>
+      </div>
+
+      <div class="feature-card">
+        <h3>💡 Usage Tips</h3>
+        <ul class="feature-list">
+          <li>Use IDM for better download management and speed</li>
+          <li>Check script updates regularly for new features</li>
+          <li>Report any issues to the script author for timely fixes</li>
+          <li>Consider using Method 1 for the best balance of security and convenience</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div id="footer-container"></div>
+
+  <script>
+    $(document).ready(function() {
+      $("#navbar-container").load("/Tools/navbar.html", function() {
+        $("#navbar-title").text("123Pan Unlock Tools Share");
+        window.dispatchEvent(new Event('scroll'));
+      });
+      
+      $("#article-meta-container").load("/Tools/article-meta.html", function() {
+        $('.am-container').attr({
+          'data-publish-date': '2025-04-14 14:01:12',
+          'data-update-date': '2025-04-16 16:16:30'
+        });
+        if (typeof initArticleMeta === 'function') {
+          initArticleMeta();
+        }
+      });
+      
+      $("#footer-container").load("/Tools/footer.html");
+    });
+  </script>
+</body>
+</html>
+<script setup lang="ts">
+</script>

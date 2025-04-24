@@ -316,14 +316,14 @@
   <script>
     // 加载导航栏
     $(document).ready(function() {
-      $("#navbar-container").load("navbar.html", function() {
+      $("#navbar-container").load("/Tools/navbar.html", function() {
         // 导航栏加载完成后设置标题
         $("#navbar-title").text("About Me");
         // 导航栏加载完成后手动触发滚动事件，确保导航栏状态正确
         window.dispatchEvent(new Event('scroll'));
       });
       // 加载底部
-      $("#footer-container").load("footer.html");
+      $("#footer-container").load("/Tools/footer.html");
     });
   </script>
 </body>

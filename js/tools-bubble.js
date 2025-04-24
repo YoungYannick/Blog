@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function() {
         </div>
         <div class="tools-section">
           <div class="tools-section-title">Filter Settings</div>
-          <a href="/filter-panel.html" class="filter-settings-link">
+          <a href="/Tools/filter-panel.html" class="filter-settings-link">
             <i class="fas fa-sliders-h"></i>
             <span>Manage Filters</span>
           </a>

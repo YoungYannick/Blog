@@ -16,6 +16,8 @@
   <link href="/css/footer.css" rel="stylesheet" />
   <link href="/css/theme.css" rel="stylesheet" />
   <link rel="stylesheet" href="/css/tools-bubble.css">
+  <link rel="stylesheet" href="/css/sidebar.css">
+  <script src="/js/sidebar.js"></script>
   <script src="/js/tools-bubble.js"></script>
   <script src="/js/theme.js"></script>
   <script src="/js/filter-module.js"></script>
@@ -275,7 +277,7 @@
   <div class="container custom-container">
     <div id="article-meta-container" style="position: relative; z-index: 999999;"></div>
     <!-- 工具概述 -->
-    <div class="content-section">
+    <div class="content-section" data-sidebar-title="Overview" data-sidebar-level="1">
       <div class="section-title text-center mb-4">
         <h2>Overview</h2>
         <div class="title-underline"></div>
@@ -298,14 +300,14 @@
     </div>
 
     <!-- 功能特性 -->
-    <div class="content-section">
+    <div class="content-section" data-sidebar-title="Features" data-sidebar-level="1">
       <div class="section-title text-center mb-4">
         <h2>Features</h2>
         <div class="title-underline"></div>
       </div>
       
       <!-- 智能文件管理 -->
-      <div class="feature-card">
+      <div class="feature-card" data-sidebar-title="Intelligent File Management" data-sidebar-level="2">
         <h3>📁 Intelligent File Management</h3>
         <ul class="feature-list">
           <li>Dual Path Support: Automatically detect and load default file paths</li>
@@ -316,7 +318,7 @@
       </div>
 
       <!-- 三维搜索系统 -->
-      <div class="feature-card">
+      <div class="feature-card" data-sidebar-title="3D Search System" data-sidebar-level="2">
         <h3>🔍 3D Search System</h3>
         <div class="screenshot-container">
           <img src="/images/content/Weapon_Analysis_Tool/BF005_4.png" alt="Search Feature" class="screenshot">
@@ -332,7 +334,7 @@
       </div>
 
       <!-- 皮肤管理中心 -->
-      <div class="feature-card">
+      <div class="feature-card" data-sidebar-title="Skin Management Center" data-sidebar-level="2">
         <h3>🎨 Skin Management Center</h3>
         <div class="screenshot-container">
           <img src="/images/content/Weapon_Analysis_Tool/BF005_2.png" alt="Skin Display" class="screenshot">
@@ -350,7 +352,7 @@
       </div>
 
       <!-- 智能数据导出 -->
-      <div class="feature-card">
+      <div class="feature-card" data-sidebar-title="Smart Data Export" data-sidebar-level="2">
         <h3>📤 Smart Data Export</h3>
         <ul class="feature-list">
           <li>Multiple Format Support: XLSX/PNG/TXT/LTA</li>
@@ -360,7 +362,7 @@
       </div>
 
       <!-- 本地化支持 -->
-      <div class="feature-card">
+      <div class="feature-card" data-sidebar-title="Localization Support" data-sidebar-level="2">
         <h3>🌐 Localization Support</h3>
         <ul class="feature-list">
           <li>Real-time Chinese-English Property Translation</li>
@@ -371,14 +373,14 @@
     </div>
 
     <!-- 性能优化 -->
-    <div class="content-section">
+    <div class="content-section" data-sidebar-title="Performance Optimization" data-sidebar-level="1">
       <div class="section-title text-center mb-4">
         <h2>Performance Optimization</h2>
         <div class="title-underline"></div>
       </div>
       
       <!-- 智能线程调度 -->
-      <div class="feature-card">
+      <div class="feature-card" data-sidebar-title="Intelligent Thread Scheduling" data-sidebar-level="2">
         <h3>🧵 Intelligent Thread Scheduling</h3>
         <ul class="feature-list">
           <li>Four-Thread Architecture: File parsing thread, Data saving thread, Image export thread, CSV processing thread</li>
@@ -387,7 +389,7 @@
       </div>
 
       <!-- 企业级稳定性 -->
-      <div class="feature-card">
+      <div class="feature-card" data-sidebar-title="Enterprise-level Stability" data-sidebar-level="2">
         <h3>🛡️ Enterprise-level Stability</h3>
         <ul class="feature-list">
           <li>Exception Capture Mechanism: Prevent program crashes</li>
@@ -397,7 +399,7 @@
       </div>
 
       <!-- 内存优化 -->
-      <div class="feature-card">
+      <div class="feature-card" data-sidebar-title="Memory Optimization" data-sidebar-level="2">
         <h3>🧠 Memory Optimization</h3>
         <ul class="feature-list">
           <li>Segmented Reading Technology: Process GB-level files</li>
@@ -411,12 +413,12 @@
 
   <script>
     $(document).ready(function() {
-      $("#navbar-container").load("navbar.html", function() {
+      $("#navbar-container").load("/Tools/navbar.html", function() {
         $("#navbar-title").text("Weapon Analysis Tool");
         window.dispatchEvent(new Event('scroll'));
       });
       // 加载文章元数据
-      $("#article-meta-container").load("article-meta.html", function() {
+      $("#article-meta-container").load("/Tools/article-meta.html", function() {
         // 设置日期
         $('.am-container').attr({
           'data-publish-date': '2025-04-14 14:01:12',
@@ -427,7 +429,7 @@
           initArticleMeta();
         }
       });
-      $("#footer-container").load("footer.html");
+      $("#footer-container").load("/Tools/footer.html");
     });
   </script>
 </body>
