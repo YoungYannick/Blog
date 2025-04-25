@@ -51,33 +51,88 @@
   position: relative;
 }
 
+/* 基础链接样式 */
+.sidebar-nav a {
+  color: var(--light-text);
+  text-decoration: none;
+  transition: all 0.3s ease;
+  display: block;
+  padding: 0.2rem 0;
+}
+
+/* 层级样式 */
+.sidebar-nav li[data-level="1"] a {
+  font-size: 1rem;
+  font-weight: 600;
+  padding-left: 0rem;
+}
+
+.sidebar-nav li[data-level="2"] a {
+  font-size: 0.95rem;
+  font-weight: 500;
+  padding-left: 1rem;
+  opacity: 0.95;
+}
+
+.sidebar-nav li[data-level="3"] a {
+  font-size: 0.9rem;
+  font-weight: 450;
+  padding-left: 2rem;
+  opacity: 0.9;
+}
+
+.sidebar-nav li[data-level="4"] a {
+  font-size: 0.85rem;
+  font-weight: 400;
+  padding-left: 3rem;
+  opacity: 0.85;
+}
+
+.sidebar-nav li[data-level="5"] a {
+  font-size: 0.8rem;
+  font-weight: 400;
+  padding-left: 4rem;
+  opacity: 0.8;
+}
+
+.sidebar-nav li[data-level="6"] a {
+  font-size: 0.8rem;
+  font-weight: 400;
+  padding-left: 5rem;
+  opacity: 0.75;
+}
+
+/* 指示条基础样式 */
 .sidebar-nav li::before {
   content: '';
   position: absolute;
   left: 0;
   top: 50%;
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  background: var(--light-gradient-1);
+  border-radius: 2px;
+  background: linear-gradient(to bottom, var(--light-gradient-1), var(--light-gradient-2));
   transform: translateY(-50%);
+  transition: opacity 0.3s ease, height 0.2s ease;
 }
 
-.sidebar-nav a {
-  color: var(--light-text);
-  text-decoration: none;
-  transition: color 0.3s ease;
-  display: block;
-  padding: 0.2rem 0;
-}
+/* 不同层级指示条样式 */
+.sidebar-nav li[data-level="1"]::before { width: 4px; height: 14px; opacity: 0.9; }
+.sidebar-nav li[data-level="2"]::before { width: 3px; height: 12px; opacity: 0.8; }
+.sidebar-nav li[data-level="3"]::before { width: 3px; height: 10px; opacity: 0.7; }
+.sidebar-nav li[data-level="4"]::before { width: 2px; height: 8px; opacity: 0.6; }
+.sidebar-nav li[data-level="5"]::before { width: 2px; height: 7px; opacity: 0.5; }
+.sidebar-nav li[data-level="6"]::before { width: 2px; height: 6px; opacity: 0.4; }
 
-.sidebar-nav a:hover {
-  color: var(--light-gradient-1);
-}
-
+/* 悬停和激活状态 */
+.sidebar-nav a:hover,
 .sidebar-nav a.active {
   color: var(--light-gradient-2);
-  font-weight: 600;
+  opacity: 1;
+}
+
+.sidebar-nav li:hover::before,
+.sidebar-nav a.active + li::before {
+  opacity: 1;
+  height: 16px;
 }
 
 /* 暗色主题适配 */
@@ -95,10 +150,7 @@ body[data-theme="dark"] .sidebar-nav a {
   color: var(--dark-text);
 }
 
-body[data-theme="dark"] .sidebar-nav a:hover {
-  color: var(--light-gradient-1);
-}
-
+body[data-theme="dark"] .sidebar-nav a:hover,
 body[data-theme="dark"] .sidebar-nav a.active {
   color: var(--light-gradient-2);
 }
