@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Browser not supported - YoungYannick's Blog</title>
+    <link rel="icon" href="/images/Yannick_64.ico" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/theme.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            min-height: 100vh;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--light-bg, #f0f4ff); /* 回退背景 */
+            display: flex;
+            display: -ms-flexbox;
+            justify-content: center;
+            -ms-flex-pack: center;
+            align-items: center;
+            -ms-flex-align: center;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        body::before,
+        body::after {
+            content: '';
+            position: absolute;
+            width: 60vmin;
+            height: 60vmin;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.65;
+            animation: float 20s infinite linear;
+            z-index: -1;
+        }
+        
+        body::before {
+            background: var(--light-gradient-1, #FFC0CB);
+            top: 20%;
+            left: 10%;
+        }
+        
+        body::after {
+            background: var(--light-gradient-2, #87CEFA);
+            bottom: 20%;
+            right: 10%;
+            animation-delay: -10s;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(5vw, -3vh) rotate(90deg); }
+            50% { transform: translate(-4vw, 6vh) rotate(180deg); }
+            75% { transform: translate(3vw, -5vh) rotate(270deg); }
+        }
+        
+        .ie-container {
+            background: var(--light-card-bg, rgba(255, 255, 255, 0.95));
+            padding: 2rem;
+            border-radius: 24px;
+            text-align: center;
+            max-width: 550px;
+            width: 90%;
+            box-shadow: 0 8px 32px var(--light-shadow, rgba(0, 0, 0, 0.08));
+            border: 1px solid var(--light-border, rgba(200, 200, 200, 0.5));
+            display: inline-block;
+            vertical-align: middle;
+        }
+        
+        @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+            body {
+                display: block;
+                position: relative;
+                background: #f0f4ff; /* IE 回退背景 */
+            }
+            body::before, body::after {
+                display: none; /* IE 不支持伪元素动画 */
+            }
+            .ie-container {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                -ms-transform: translate(-50%, -50%);
+                border: 1px solid rgba(200, 200, 200, 0.5);
+                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+            }
+        }
+        
+        .ie-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--light-gradient-1, #FFC0CB) 30%, var(--light-gradient-2, #87CEFA) 70%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .ie-text {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            color: var(--light-text-muted, #666);
+        }
+        
+        .browser-list {
+            display: flex;
+            display: -ms-flexbox;
+            justify-content: center;
+            -ms-flex-pack: center;
+            gap: 1.5rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+            -ms-flex-wrap: wrap;
+        }
+        
+        .browser-item {
+            text-decoration: none;
+            color: var(--light-text-muted, #666);
+            transition: transform 0.3s ease;
+            display: flex;
+            display: -ms-flexbox;
+            flex-direction: column;
+            -ms-flex-direction: column;
+            align-items: center;
+            -ms-flex-align: center;
+            gap: 0.5rem;
+            padding: 1rem;
+            border-radius: 12px;
+            background: var(--light-hover, rgba(255, 255, 255, 0.5));
+            min-width: 120px;
+        }
+        
+        .browser-item:hover {
+            transform: translateY(-5px);
+            background: var(--light-card-bg, rgba(255, 255, 255, 0.8));
+        }
+        
+        .browser-icon {
+            font-size: 2.5rem;
+        }
+        
+        .browser-name {
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        
+        body[data-theme="dark"] {
+            background: var(--dark-bg, #1a1b1e);
+        }
+        
+        body[data-theme="dark"]::before {
+            background: var(--dark-gradient-1, #ff8fa3);
+        }
+        
+        body[data-theme="dark"]::after {
+            background: var(--dark-gradient-2, #5fb2e6);
+        }
+        
+        body[data-theme="dark"] .ie-container {
+            background: var(--dark-card-bg, rgba(32, 34, 37, 0.8));
+            box-shadow: 0 8px 32px var(--dark-shadow, rgba(0, 0, 0, 0.25));
+            border: 1px solid var(--dark-border, rgba(255, 255, 255, 0.2));
+        }
+        
+        body[data-theme="dark"] .ie-title {
+            background: linear-gradient(135deg, var(--dark-gradient-1, #ff8fa3) 30%, var(--dark-gradient-2, #5fb2e6) 70%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        body[data-theme="dark"] .ie-text {
+            color: var(--dark-text-muted, #888);
+        }
+        
+        body[data-theme="dark"] .browser-item {
+            color: var(--dark-text-muted, #888);
+            background: var(--dark-hover, rgba(40, 42, 46, 0.8));
+        }
+        
+        body[data-theme="dark"] .browser-item:hover {
+            background: var(--dark-card-bg, rgba(32, 34, 37, 0.8));
+        }
+        
+        @media (max-width: 480px) {
+            .ie-title {
+                font-size: 1.5rem;
+            }
+            
+            .ie-text {
+                font-size: 1rem;
+            }
+            
+            .browser-list {
+                gap: 1rem;
+            }
+            
+            .browser-item {
+                min-width: 100px;
+                padding: 0.8rem;
+            }
+            
+            .browser-icon {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="ie-container">
+        <h1 class="ie-title">Browser not supported</h1>
+        <p class="ie-text">
+            Sorry, the Internet Explorer browser is no longer supported.<br>
+            Please use the following modern browsers to access this site.
+        </p>
+        <div class="browser-list">
+            <a href="https://www.google.com/chrome/" class="browser-item" target="_blank">
+                <i class="fab fa-chrome browser-icon" style="color: #4285F4;"></i>
+                <span class="browser-name">Chrome</span>
+            </a>
+            <a href="https://www.mozilla.org/firefox/" class="browser-item" target="_blank">
+                <i class="fab fa-firefox browser-icon" style="color: #FF7139;"></i>
+                <span class="browser-name">Firefox</span>
+            </a>
+            <a href="https://www.microsoft.com/edge" class="browser-item" target="_blank">
+                <i class="fab fa-edge browser-icon" style="color: #0078D7;"></i>
+                <span class="browser-name">Edge</span>
+            </a>
+        </div>
+    </div>
+    <script>
+        (function(){
+            function c(){
+                var b = a.contentDocument || a.contentWindow.document;
+                if(b){
+                    var d = b.createElement('script');
+                    d.innerHTML = "window.__CF$cv$params={r:'935d03b81f1f7bb2',t:'MTc0NTU3NTQ0OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";
+                    b.getElementsByTagName('head')[0].appendChild(d);
+                }
+            }
+            if(document.body){
+                var a = document.createElement('iframe');
+                a.height = 1;
+                a.width = 1;
+                a.style.position = 'absolute';
+                a.style.top = 0;
+                a.style.left = 0;
+                a.style.border = 'none';
+                a.style.visibility = 'hidden';
+                document.body.appendChild(a);
+                if('loading' !== document.readyState) c();
+                else if(window.addEventListener) document.addEventListener('DOMContentLoaded', c);
+                else {
+                    var e = document.onreadystatechange || function(){};
+                    document.onreadystatechange = function(b){
+                        e(b);
+                        if('loading' !== document.readyState){
+                            document.onreadystatechange = e;
+                            c();
+                        }
+                    };
+                }
+            }
+        })();
+    </script>
+</body>
+</html>
