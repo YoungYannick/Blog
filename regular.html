@@ -424,7 +424,7 @@
         <div class="version-info">Version: 1.0.0    By: YoungYannick</div>
     </div>
 
-    <div id="article-meta-container" style="position: relative; z-index: 999999;"></div>
+    <div id="article-meta-container" style="position: relative; z-index: 100;"></div>
 
     <div class="container coustom-container">
         <!-- 选项区 -->
@@ -988,15 +988,117 @@
         // 显示结果
         document.getElementById('regexResult').textContent = regex;
     }
-    function copy(that) {
-        // 创建一个临时的输入框来复制内容
-        var tempInput = document.createElement('input');
-        document.body.appendChild(tempInput);
-        tempInput.value = that.textContent;
-        tempInput.select();
-        document.execCommand('copy');
-        document.body.removeChild(tempInput);
+    function copyToClipboard(text) {
+        // Check if Clipboard API is available
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(() => {
+                showCopyToast(`Copied: ${text}`);
+            }).catch(() => {
+                showErrorToast('Copy failed');
+            });
+        } else {
+            // Fallback to execCommand
+            try {
+                const textarea = document.createElement('textarea');
+                textarea.value = text;
+                textarea.style.position = 'fixed'; // Prevent scrolling to bottom
+                textarea.style.opacity = '0'; // Hide element
+                document.body.appendChild(textarea);
+                textarea.focus();
+                textarea.select();
+                const successful = document.execCommand('copy');
+                document.body.removeChild(textarea);
+                if (successful) {
+                    showCopyToast(`Copied: ${text}`);
+                } else {
+                    showErrorToast('Copy failed');
+                }
+            } catch (err) {
+                showErrorToast('Copy failed');
+            }
+        }
     }
+
+    function showCopyToast(message) {
+        let toast = document.getElementById('copy-toast');
+        if (!toast) {
+            toast = document.createElement('div');
+            toast.id = 'copy-toast';
+            toast.style.position = 'fixed';
+            toast.style.bottom = '20px';
+            toast.style.left = '50%';
+            toast.style.transform = 'translateX(-50%)';
+            // According to theme setting different background color
+            toast.style.background = document.body.getAttribute('data-theme') === 'dark' 
+                ? 'var(--dark-card-bg)'
+                : 'linear-gradient(135deg, var(--light-gradient-1) 30%, var(--light-gradient-2) 70%)';
+            toast.style.color = document.body.getAttribute('data-theme') === 'dark'
+                ? 'var(--dark-text)'
+                : 'white';
+            toast.style.padding = '10px 20px';
+            toast.style.borderRadius = '12px';
+            toast.style.zIndex = '1000';
+            toast.style.transition = 'opacity 0.3s';
+            toast.style.boxShadow = document.body.getAttribute('data-theme') === 'dark'
+                ? '0 4px 10px rgba(0, 0, 0, 0.3)'
+                : '0 4px 10px rgba(135, 206, 250, 0.3)';
+            // Add border in dark mode
+            if (document.body.getAttribute('data-theme') === 'dark') {
+                toast.style.border = '1px solid var(--dark-border)';
+            }
+            document.body.appendChild(toast);
+        }
+
+        // Update message and show
+        toast.textContent = message;
+        toast.style.opacity = '1';
+
+        // Hide after 2 seconds
+        clearTimeout(toast.timeout);
+        toast.timeout = setTimeout(() => {
+            toast.style.opacity = '0';
+        }, 2000);
+    }
+
+    function showErrorToast(message) {
+        let toast = document.getElementById('error-toast');
+        if (!toast) {
+            toast = document.createElement('div');
+            toast.id = 'error-toast';
+            toast.style.position = 'fixed';
+            toast.style.bottom = '20px';
+            toast.style.left = '50%';
+            toast.style.transform = 'translateX(-50%)';
+            toast.style.background = document.body.getAttribute('data-theme') === 'dark'
+                ? 'rgba(220, 53, 69, 0.9)' // Dark mode error color
+                : 'rgba(255, 99, 71, 0.9)'; // Light mode error color
+            toast.style.color = 'white';
+            toast.style.padding = '10px 20px';
+            toast.style.borderRadius = '12px';
+            toast.style.zIndex = '1000';
+            toast.style.transition = 'opacity 0.3s';
+            toast.style.boxShadow = document.body.getAttribute('data-theme') === 'dark'
+                ? '0 4px 10px rgba(0, 0, 0, 0.3)'
+                : '0 4px 10px rgba(135, 206, 250, 0.3)';
+            document.body.appendChild(toast);
+        }
+
+        // Update message and show
+        toast.textContent = message;
+        toast.style.opacity = '1';
+
+        // Hide after 2 seconds
+        clearTimeout(toast.timeout);
+        toast.timeout = setTimeout(() => {
+            toast.style.opacity = '0';
+        }, 2000);
+    }
+
+    function copy(element) {
+        const text = element.textContent;
+        copyToClipboard(text);
+    }
+    
     // 初始化时绑定搜索事件
     document.getElementById('searchInput').addEventListener('input', handleSearch);
     // 初始化

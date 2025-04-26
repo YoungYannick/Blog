@@ -458,7 +458,7 @@
         <div class="version-info">Version: 0.0.1    By: YoungYannick</div>
     </div>
 
-    <div id="article-meta-container" style="position: relative; z-index: 999999;"></div>
+    <div id="article-meta-container" style="position: relative; z-index: 100;"></div>
 
     <div class="custom-container">
         <div class="drop-zone" data-zone="1">
@@ -909,25 +909,34 @@
 
         // 添加复制到剪贴板功能
         function copyToClipboard(text) {
-            navigator.clipboard.writeText(text).then(() => {
-                showCopyToast(`Copied: ${text}`);
-            }).catch(err => {
-                console.error('Copy failed:', err);
-                // 备用方法
-                const textarea = document.createElement('textarea');
-                textarea.value = text;
-                textarea.style.position = 'fixed';
-                textarea.style.opacity = '0';
-                document.body.appendChild(textarea);
-                textarea.select();
-                try {
-                    document.execCommand('copy');
+            // Check if Clipboard API is available
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(() => {
                     showCopyToast(`Copied: ${text}`);
+                }).catch(() => {
+                    showErrorToast('Copy failed');
+                });
+            } else {
+                // Fallback to execCommand
+                try {
+                    const textarea = document.createElement('textarea');
+                    textarea.value = text;
+                    textarea.style.position = 'fixed'; // Prevent scrolling to bottom
+                    textarea.style.opacity = '0'; // Hide element
+                    document.body.appendChild(textarea);
+                    textarea.focus();
+                    textarea.select();
+                    const successful = document.execCommand('copy');
+                    document.body.removeChild(textarea);
+                    if (successful) {
+                        showCopyToast(`Copied: ${text}`);
+                    } else {
+                        showErrorToast('Copy failed');
+                    }
                 } catch (err) {
-                    console.error('Copy failed:', err);
+                    showErrorToast('Copy failed');
                 }
-                document.body.removeChild(textarea);
-            });
+            }
         }
 
         // 显示复制成功提示

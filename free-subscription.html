@@ -460,7 +460,7 @@
         <h1>Free Subscription Share</h1>
     </div>
 
-    <div id="article-meta-container" style="position: relative; z-index: 999999;"></div>
+    <div id="article-meta-container" style="position: relative; z-index: 100;"></div>
 
     <div class="subscription-container">
         <div class="search-box">
@@ -741,16 +741,34 @@
         }
 
         function copyToClipboard(text) {
-            navigator.clipboard.writeText(text).then(() => {
-                showCopyToast(`Copied: ${text}`);
-            }).catch(() => {
-                // 使用自定义 toast 显示错误
-                const toast = document.createElement('div');
-                toast.id = 'copy-toast';
-                toast.textContent = 'Copy failed';
-                toast.style.background = '#dc3545';  // 使用红色背景表示错误
-                showToast(toast);
-            });
+            // Check if Clipboard API is available
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(() => {
+                    showCopyToast(`Copied: ${text}`);
+                }).catch(() => {
+                    showErrorToast('Copy failed');
+                });
+            } else {
+                // Fallback to execCommand
+                try {
+                    const textarea = document.createElement('textarea');
+                    textarea.value = text;
+                    textarea.style.position = 'fixed'; // Prevent scrolling to bottom
+                    textarea.style.opacity = '0'; // Hide element
+                    document.body.appendChild(textarea);
+                    textarea.focus();
+                    textarea.select();
+                    const successful = document.execCommand('copy');
+                    document.body.removeChild(textarea);
+                    if (successful) {
+                        showCopyToast(`Copied: ${text}`);
+                    } else {
+                        showErrorToast('Copy failed');
+                    }
+                } catch (err) {
+                    showErrorToast('Copy failed');
+                }
+            }
         }
 
         function showCopyToast(message) {

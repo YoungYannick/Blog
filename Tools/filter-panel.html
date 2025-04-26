@@ -884,6 +884,78 @@
         updatePreview();
       }
 
+      function copyToClipboard(text) {
+        // Check if Clipboard API is available
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(() => {
+                showCopyToast(`Copied: ${text}`);
+            }).catch(() => {
+                toastr.error('Copy failed');
+            });
+        } else {
+            // Fallback to execCommand
+            try {
+                const textarea = document.createElement('textarea');
+                textarea.value = text;
+                textarea.style.position = 'fixed'; // Prevent scrolling to bottom
+                textarea.style.opacity = '0'; // Hide element
+                document.body.appendChild(textarea);
+                textarea.focus();
+                textarea.select();
+                const successful = document.execCommand('copy');
+                document.body.removeChild(textarea);
+                if (successful) {
+                    showCopyToast(`Copied: ${text}`);
+                } else {
+                    toastr.error('Copy failed');
+                }
+            } catch (err) {
+                toastr.error('Copy failed');
+            }
+        }
+      }
+
+      function showCopyToast(message) {
+          let toast = document.getElementById('copy-toast');
+          if (!toast) {
+              toast = document.createElement('div');
+              toast.id = 'copy-toast';
+              toast.style.position = 'fixed';
+              toast.style.bottom = '20px';
+              toast.style.left = '50%';
+              toast.style.transform = 'translateX(-50%)';
+              // 根据主题设置不同的背景色
+              toast.style.background = document.body.getAttribute('data-theme') === 'dark' 
+                  ? 'var(--dark-card-bg)'
+                  : 'linear-gradient(135deg, #FFC0CB 30%, #87CEFA 70%)';
+              toast.style.color = document.body.getAttribute('data-theme') === 'dark'
+                  ? 'var(--dark-text)'
+                  : 'white';
+              toast.style.padding = '10px 20px';
+              toast.style.borderRadius = '12px';
+              toast.style.zIndex = '1000';
+              toast.style.transition = 'opacity 0.3s';
+              toast.style.boxShadow = document.body.getAttribute('data-theme') === 'dark'
+                  ? '0 4px 10px rgba(0, 0, 0, 0.3)'
+                  : '0 4px 10px rgba(135, 206, 250, 0.3)';
+              // 暗色模式下添加边框
+              if (document.body.getAttribute('data-theme') === 'dark') {
+                  toast.style.border = '1px solid var(--dark-border)';
+              }
+              document.body.appendChild(toast);
+          }
+
+          // 更新消息并显示
+          toast.textContent = message;
+          toast.style.opacity = '1';
+
+          // 2秒后隐藏
+          clearTimeout(toast.timeout);
+          toast.timeout = setTimeout(() => {
+              toast.style.opacity = '0';
+          }, 2000);
+      }
+
       function updateConfigCode() {
         const config = window.filterModule.getConfig();
         const codeString = `const defaultFilterConfig = {
@@ -908,7 +980,7 @@
 
       // 添加复制按钮功能
       const copyButton = document.getElementById('copy-button');
-      copyButton.addEventListener('click', async () => {
+      copyButton.addEventListener('click', () => {
         const config = window.filterModule.getConfig();
         const codeString = `const defaultFilterConfig = {
   enabled: ${config.enabled},                // 是否启用滤镜
@@ -919,19 +991,14 @@
   transitionTime: ${config.transitionTime},          // 滤镜切换过渡时间(秒)
 };`;
 
-        try {
-          await navigator.clipboard.writeText(codeString);
+          copyToClipboard(codeString);
           copyButton.classList.add('copied');
           copyButton.innerHTML = '<i class="fas fa-check"></i>';
-          toastr.success('Code copied to clipboard');
           
           setTimeout(() => {
-            copyButton.classList.remove('copied');
-            copyButton.innerHTML = '<i class="fas fa-copy"></i>';
+              copyButton.classList.remove('copied');
+              copyButton.innerHTML = '<i class="fas fa-copy"></i>';
           }, 2000);
-        } catch (err) {
-          toastr.error('Copy failed, please copy manually');
-        }
       });
 
       // 过渡时间滑块事件
