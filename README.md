@@ -2,8 +2,6 @@
 
 这是一个基于HTML、CSS和JavaScript构建的个人博客网站。
 
-[English Version](README-EN.md)
-
 ## 项目结构
 
 ```plaintext
