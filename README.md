@@ -41,7 +41,8 @@ Blog/
 │   └── Yannick_64.ico         	        # 站点图标
 ├── 123pan-unlock-tools-share.html      # 123网盘解锁工具
 ├── compare.html           		# 文件比较工具
-├── free-subscription.html 		# 免费订阅分享
+├── free-subscription-share.html        # 免费订阅分享
+├── unlock-music-tool-share.html        # 音乐解锁工具分享
 ├── proxy-tools.html       		# 代理工具
 ├── regular.html           		# 正则表达式生成器
 ├── weapon-analysis-tool.html  	        # 武器分析工具分享

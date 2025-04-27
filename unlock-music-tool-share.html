@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <script src="/js/detectIE.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Unlock Music Tool Share- YoungYannick's Blog</title>
+    <meta name="author" content="YoungYannick" />
+    <meta name="description" content="Unlock Music Tool - Decrypt encrypted music files in your browser" />
+    <meta name="keywords" content="YoungYannick,Blog,Unlock Music,Music Decryption,QQ Music,NetEase Music" />
+    <link rel="icon" href="/images/Yannick_64.ico" />
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&family=Quicksand:wght@500&display=swap"
+        rel="stylesheet">
+    <link href="/css/toastr.min.css" rel="stylesheet" />
+    <link href="/css/navbar.css" rel="stylesheet" />
+    <link href="/css/footer.css" rel="stylesheet" />
+    <link href="/css/theme.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/tools-bubble.css">
+    <link rel="stylesheet" href="/css/sidebar.css">
+    <script src="/js/sidebar.js"></script>
+    <script src="/js/tools-bubble.js"></script>
+    <script src="/js/theme.js"></script>
+    <script src="/js/filter-module.js"></script>
+    <script src="/js/jquery-3.7.1.js"></script>
+    <script src="/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/clipboard.min.js"></script>
+    <script src="/js/toastr.min.js"></script>
+    <script src="/js/navbar.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--light-bg);
+            position: relative;
+            overflow-x: hidden;
+            padding: 1rem;
+        }
+
+        body::before,
+        body::after {
+            content: '';
+            position: absolute;
+            width: 60vmin;
+            height: 60vmin;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.65;
+            animation: float 20s infinite linear;
+            z-index: -1;
+        }
+
+        body::before {
+            background: var(--light-gradient-1);
+            top: 20%;
+            left: 10%;
+        }
+
+        body::after {
+            background: var(--light-gradient-2);
+            bottom: 20%;
+            right: 10%;
+            animation-delay: -10s;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+
+            25% {
+                transform: translate(5vw, -3vh) rotate(90deg);
+            }
+
+            50% {
+                transform: translate(-4vw, 6vh) rotate(180deg);
+            }
+
+            75% {
+                transform: translate(3vw, -5vh) rotate(270deg);
+            }
+        }
+
+        .custom-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .page-title {
+            text-align: center;
+            margin: 2rem auto;
+            padding-top: 80px;
+            width: 100%;
+        }
+
+        .page-title h1 {
+            font-family: 'Quicksand', sans-serif;
+            color: var(--light-text);
+            font-size: clamp(2rem, 5vw, 2.8rem);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            background: linear-gradient(135deg, var(--light-gradient-1) 30%, var(--light-gradient-2) 70%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .content-section {
+            background: var(--light-card-bg);
+            border-radius: 24px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px var(--light-shadow);
+            border: 1px solid var(--light-border);
+            backdrop-filter: blur(8px);
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            position: relative;
+            margin-bottom: 2rem;
+        }
+
+        .section-title h2 {
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 700;
+            font-size: 2rem;
+            color: var(--light-text);
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--light-gradient-1) 30%, var(--light-gradient-2) 70%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+        }
+
+        .title-underline {
+            height: 4px;
+            width: 80px;
+            background: linear-gradient(135deg, var(--light-gradient-1) 30%, var(--light-gradient-2) 70%);
+            margin: 0 auto;
+            border-radius: 2px;
+        }
+
+        .feature-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .feature-list li {
+            margin-bottom: 1rem;
+            padding-left: 2rem;
+            position: relative;
+            color: var(--light-text);
+        }
+
+        .feature-list li::before {
+            content: '✨';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .feature-card {
+            background: var(--light-card-bg);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--light-border);
+        }
+
+        .feature-card h3 {
+            color: var(--light-text);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .feature-card p {
+            color: var(--light-text);
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        /* .screenshot {
+      border-radius: 12px;
+      box-shadow: 0 4px 15px var(--light-shadow); 
+      margin: 2rem 0;
+      max-width: 100%;
+      height: auto;
+      transition: transform 0.3s ease;
+    }
+
+    .screenshot:hover {
+      transform: scale(1.02);
+    } */
+
+        /* .screenshot-container {
+      position: relative;
+      margin: 2rem 0;
+      text-align: center;
+    } */
+
+        /* .screenshot-caption {
+      margin-top: 1rem;
+      color: var(--light-text);
+      font-style: italic;
+      text-align: center;
+    } */
+
+        .method-card {
+            background: var(--light-card-bg);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--light-border);
+        }
+
+        .method-card h3 {
+            color: var(--light-text);
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .method-card .step {
+            margin-bottom: 1.5rem;
+            padding-left: 2.5rem;
+            position: relative;
+        }
+
+        .method-card .step::before {
+            content: attr(data-step);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 1.8rem;
+            height: 1.8rem;
+            background: linear-gradient(135deg, var(--light-gradient-1) 30%, var(--light-gradient-2) 70%);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        .method-card .step-content {
+            color: var(--light-text);
+            line-height: 1.6;
+        }
+
+        .method-card .step-link {
+            color: var(--light-gradient-1);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .method-card .step-link:hover {
+            color: var(--light-gradient-2);
+        }
+
+        .warning-text {
+            color: #ff6b6b;
+            font-weight: bold;
+        }
+
+        .recommendation-badge {
+            background: linear-gradient(135deg, var(--light-gradient-1) 30%, var(--light-gradient-2) 70%);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-left: 1rem;
+        }
+
+        .format-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .format-table th,
+        .format-table td {
+            padding: 0.8rem 1rem;
+            text-align: left;
+            border: 1px solid var(--light-border);
+        }
+
+        .format-table th {
+            background: linear-gradient(135deg, var(--light-gradient-1) 30%, var(--light-gradient-2) 70%);
+            color: white;
+            font-weight: 600;
+        }
+
+        .format-table tr:nth-child(even) {
+            background-color: rgba(0, 0, 0, 0.02);
+        }
+
+        .format-table tr:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+            margin-top: auto;  /* 确保按钮始终在底部 */
+        }
+
+        .action-button {
+            flex: 1;
+            padding: 0.8rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, var(--light-gradient-1) 30%, var(--light-gradient-2) 70%); 
+            color: white;
+            text-align: center;
+            border: none;
+            outline: none;
+            transform: translateY(0);
+        }
+
+        .action-button:hover,
+        .action-button:focus,
+        .action-button:active {
+            outline: none !important;
+            box-shadow: 0 6px 15px rgba(191, 200, 209, 0.274);
+            border: none;
+            transform: none;
+        }
+
+        body[data-theme="dark"] .action-button {
+            background: var(--dark-card-bg);
+            color: var(--dark-text);
+            border: 1px solid var(--dark-border);
+        }
+
+        body[data-theme="dark"] .action-button:hover,
+        body[data-theme="dark"] .action-button:focus,
+        body[data-theme="dark"] .action-button:active {
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            .section-title h2 {
+                font-size: 1.8rem;
+            }
+
+            .content-section {
+                padding: 1.5rem;
+            }
+
+            .feature-card {
+                padding: 1rem;
+            }
+
+            .method-card {
+                padding: 1.5rem;
+            }
+
+            .method-card h3 {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            body {
+                padding: 0.5rem;
+            }
+
+            .page-title h1 {
+                font-size: 1.8rem;
+            }
+
+            .section-title h2 {
+                font-size: 1.5rem;
+            }
+
+            .content-section {
+                padding: 1.5rem 1rem;
+            }
+
+            .feature-card h3 {
+                font-size: 1.3rem;
+            }
+
+            .method-card {
+                padding: 1rem;
+            }
+
+            .method-card h3 {
+                font-size: 1.3rem;
+            }
+
+            .recommendation-badge {
+                font-size: 0.8rem;
+                padding: 0.2rem 0.6rem;
+            }
+        }
+
+        /* 暗色主题适配 */
+        body[data-theme="dark"] .feature-list li {
+            color: var(--dark-text);
+        }
+
+        body[data-theme="dark"] .feature-card,
+        body[data-theme="dark"] .method-card {
+            background: var(--dark-card-bg);
+            border-color: var(--dark-border);
+        }
+
+        body[data-theme="dark"] .feature-card h3,
+        body[data-theme="dark"] .feature-card p,
+        body[data-theme="dark"] .method-card h3,
+        body[data-theme="dark"] .method-card .step-content {
+            color: var(--dark-text);
+        }
+
+        body[data-theme="dark"] .method-card .step-link {
+            color: var(--light-gradient-1);
+        }
+
+        body[data-theme="dark"] .method-card .step-link:hover {
+            color: var(--light-gradient-2);
+        }
+
+        body[data-theme="dark"] .warning-text {
+            color: #ff8787;
+        }
+
+        body[data-theme="dark"] .format-table th {
+            color: white;
+        }
+
+        body[data-theme="dark"] .format-table td {
+            color: var(--dark-text);
+        }
+
+        body[data-theme="dark"] .format-table tr:nth-child(even) {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        body[data-theme="dark"] .format-table tr:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+    </style>
+</head>
+
+<body>
+    <div id="navbar-container"></div>
+
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-12 page-title">
+                <h1>Unlock Music Tool Share</h1>
+            </div>
+        </div>
+    </div>
+
+    <div class="container custom-container">
+        <div id="article-meta-container" style="position: relative; z-index: 100;"></div>
+
+        <!-- 工具概述 -->
+        <div class="content-section">
+            <div class="section-title text-center mb-4" data-sidebar-title="Overview" data-sidebar-level="1">
+                <h2>Overview</h2>
+                <div class="title-underline"></div>
+            </div>
+            <div class="feature-card">
+                <h3>
+                    <i class="fas fa-music"></i>
+                    Introduction
+                </h3>
+                <p>Unlock Music is a powerful browser-based tool designed to decrypt encrypted music files from various
+                    Chinese music platforms. It allows you to unlock your purchased music files directly in your browser
+                    without any installation.</p>
+                <p>Open source project: <a href="https://git.unlock-music.dev/um/web" target="_blank"
+                        class="step-link">https://git.unlock-music.dev/um/web</a></p>
+                <ul class="feature-list">
+                    <li>Browser-Based: No installation required, works directly in your browser</li>
+                    <li>Wide Format Support: Supports multiple encrypted music formats from various platforms</li>
+                    <li>Privacy-Focused: All processing happens locally, no files are uploaded to any server</li>
+                    <li>Open Source: Transparent code that can be audited by anyone</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 支持的格式 -->
+        <div class="content-section" data-sidebar-title="Supported Formats" data-sidebar-level="1">
+            <div class="section-title text-center mb-4">
+                <h2>Supported Formats</h2>
+                <div class="title-underline"></div>
+            </div>
+
+            <div class="method-card" data-sidebar-title="Music Platforms" data-sidebar-level="2">
+                <h3>
+                    <i class="fas fa-music"></i>
+                    Supported Music Platforms
+                </h3>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="feature-card">
+                            <ul class="feature-list">
+                                <li>QQ Music (.qmc0/.qmc2/.qmc3/.qmcflac/.qmcogg/.tkm)</li>
+                                <li>Moo Music Format (.bkcmp3/.bkcflac/...)</li>
+                                <li>QQ Music Tm Format (.tm0/.tm2/.tm3/.tm6)</li>
+                                <li>QQ Music New Format (.mflac/.mgg/.mflac0/.mgg1/.mggl)</li>
+                                <li>JOOX Music (.ofl_en)</li>
+                                <li>NetEase Cloud Music (.ncm)</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="feature-card">
+                            <ul class="feature-list">
+                                
+                                <li>Xiami Music (.xm)</li>
+                                <li>Kuwo Music (.kwm)</li>
+                                <li>Kugou Music (.kgm/.vpr)</li>
+                                <li>Ximalaya Android (.x2m/.x3m)</li>
+                                <li>Migu Music (.mg3d)</li>
+                                <li>……</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 特性 -->
+        <div class="content-section" data-sidebar-title="Features" data-sidebar-level="1">
+            <div class="section-title text-center mb-4">
+                <h2>Features</h2>
+                <div class="title-underline"></div>
+            </div>
+
+            <div class="method-card" data-sidebar-title="Key Features" data-sidebar-level="2">
+                <h3>
+                    <i class="fas fa-star"></i>
+                    Key Features
+                </h3>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="feature-card">
+                            <h3>Core Features</h3>
+                            <ul class="feature-list">
+                                <li>Browser-based decryption</li>
+                                <li>Drag and drop file support</li>
+                                <li>Batch unlocking capability</li>
+                                <li>Progressive Web App (PWA)</li>
+                                <li>Multi-threading for faster processing</li>
+                                <li>Metadata and album cover editing</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="feature-card">
+                            <h3>Technical Advantages</h3>
+                            <ul class="feature-list">
+                                <li>Local processing for privacy</li>
+                                <li>No file size limitations</li>
+                                <li>Works offline after initial load</li>
+                                <li>Cross-platform compatibility</li>
+                                <li>Regular updates for new formats</li>
+                                <li>……</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 使用按钮 -->
+        <div class="text-center mb-5" data-sidebar-title="Try Unlock Music Now" data-sidebar-level="1">
+            <button class="action-button" onclick="TryNow()">
+                <i class="fas fa-play-circle mr-2"></i> Try Unlock Music Now
+            </button>
+        </div>
+    </div>
+
+    <div id="footer-container"></div>
+
+    <script>
+        $(document).ready(function () {
+            // 加载导航栏
+            $("#navbar-container").load("/Tools/navbar.html", function () {
+                $("#navbar-title").text("Unlock Music Tool Share");
+                window.dispatchEvent(new Event('scroll'));
+            });
+
+            // 加载文章元数据
+            $("#article-meta-container").load("/Tools/article-meta.html", function () {
+                $('.am-container').attr({
+                    'data-publish-date': '2025-04-27 14:59:40',
+                    'data-update-date': '2025-04-27 14:59:40'
+                });
+                if (typeof initArticleMeta === 'function') {
+                    initArticleMeta();
+                }
+            });
+
+            // 加载底部
+            $("#footer-container").load("/Tools/footer.html");
+        });
+        function TryNow() {
+            window.location.href = "https://unlock.youngyannick.eu.org/";
+        }
+    </script>
+</body>
+
+</html>
