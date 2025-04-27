@@ -633,7 +633,10 @@
             $("#footer-container").load("/Tools/footer.html");
         });
         function TryNow() {
-            window.location.href = "https://unlock.youngyannick.eu.org/";
+            var a = document.createElement('a');
+            a.href = "https://unlock.youngyannick.eu.org/";
+            a.target = '_blank';
+            a.click();
         }
     </script>
 </body>
