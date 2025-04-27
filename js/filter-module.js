@@ -152,6 +152,17 @@ class FilterModule {
         this.applyCurrentFilter();
       }
     });
+
+    // 添加系统主题变化监听
+    if (window.matchMedia) {
+      const colorSchemeQuery = window.matchMedia('(prefers-color-scheme: dark)');
+      colorSchemeQuery.addEventListener('change', (e) => {
+        const isDarkMode = e.matches;
+        if (this.config.darkModeAuto && this.config.enabled) {
+          this.applyFilter(isDarkMode ? this.config.darkModeFilter : this.config.currentFilter);
+        }
+      });
+    }
     
     this.initialized = true;
     this.applyCurrentFilter();
