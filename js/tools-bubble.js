@@ -364,7 +364,7 @@ document.addEventListener('DOMContentLoaded', function() {
           ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
 
           // 添加半透明白色背景以增强文字可读性
-          ctx.fillStyle = 'rgba(255, 255, 255, 0.55)';
+          ctx.fillStyle = 'rgba(255, 255, 255, 0.43)';
           ctx.fillRect(0, 0, canvas.width, canvas.height);
 
           // 加载站点LOGO
@@ -374,14 +374,27 @@ document.addEventListener('DOMContentLoaded', function() {
 
           logo.onload = function() {
             // 绘制LOGO
+            // 保存当前画布状态
+            ctx.save();
+
+            // 创建圆形剪切路径
+            ctx.beginPath();
+            ctx.arc(40 + 32, 40 + 32, 32, 0, Math.PI * 2); // Center at (40+32, 40+32), radius 32
+            ctx.closePath();
+            ctx.clip();
+
+            // 绘制LOGO
             ctx.drawImage(logo, 40, 40, 64, 64);
 
+            // 恢复画布状态以移除剪裁
+            ctx.restore();
+
             // 设置文本样式
-            ctx.fillStyle = '#2c3e50';
-            ctx.font = 'bold 28px Quicksand, sans-serif';
+            ctx.fillStyle = '#333';
+            ctx.font = 'bold 30px Quicksand, sans-serif';
 
             // 绘制站点名称
-            ctx.fillText("YoungYannick's Blog", 120, 70);
+            ctx.fillText("YoungYannick's Blog", 120, 80);
 
             // 绘制分割线
             ctx.beginPath();
@@ -421,15 +434,15 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             // 绘制分享时间
-            ctx.font = '18px Nunito, sans-serif';
-            const now = new Date();
-            const dateStr = now.toLocaleDateString() + ' ' + now.toLocaleTimeString();
-            ctx.fillText('Share time: ' + dateStr, 40, titleY + 40);
+            // ctx.font = '18px Nunito, sans-serif';
+            // const now = new Date();
+            // const dateStr = now.toLocaleDateString() + ' ' + now.toLocaleTimeString();
+            // ctx.fillText('Share time: ' + dateStr, 40, titleY + 40);
 
             // 生成二维码
             const qrCodeSize = 150;
-            const qrCodeX = canvas.width - qrCodeSize - 40;
-            const qrCodeY = canvas.height - qrCodeSize - 40;
+            const qrCodeX = 40; // 左下角
+            const qrCodeY = canvas.height - qrCodeSize - 50; // 保持底部
 
             // 加载QRCode.js
             if (typeof QRCode === 'undefined') {
@@ -457,8 +470,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 ctx.drawImage(qrImg, qrCodeX, qrCodeY, qrCodeSize, qrCodeSize);
 
                 // 二维码说明文字
-                ctx.font = '16px Nunito, sans-serif';
-                ctx.fillText('Scan and access web pages', qrCodeX + qrCodeSize / 2 - 105, qrCodeY + qrCodeSize + 25);
+                // ctx.font = '16px Nunito, sans-serif';
+                // ctx.fillText('Scan and access web pages', qrCodeX + qrCodeSize / 2 - 75, qrCodeY + qrCodeSize + 25);
+                ctx.font = '20px Nunito, sans-serif';
+                const now = new Date();
+                const dateStr = now.toLocaleDateString() + ' ' + now.toLocaleTimeString();
+                ctx.fillStyle = '#333333';
+                ctx.fillText('Share time: ' + dateStr, 40, qrCodeY + qrCodeSize + 30);
 
                 // 恢复上下文状态（移除裁剪）
                 ctx.restore();
