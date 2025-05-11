@@ -267,9 +267,10 @@
                     title: 'System Page',
                     icon: 'fas fa-cog',
                     items: [
-                        { url: 'filter-panel.html', title: 'Filter Management Panel' },
+                        { url: 'Tools/filter-panel.html', title: 'Filter Management Panel' },
                         { url: '404.html', title: '404 Page' },
-                        { url: 'sitemap.html', title: 'Sitemap' }
+                        { url: 'sitemap.html', title: 'Sitemap' },
+                        { url: 'Tools/isIE.html', title: 'isIE' }
                     ]
                 }
             ]
@@ -282,11 +283,10 @@
 
             // 遍历配置生成HTML
             siteConfig.pages.forEach(section => {
-                // 检查页面是否存在
                 const existingItems = section.items.filter(item => {
                     const link = document.createElement('a');
                     link.href = item.url;
-                    return true; // 在纯前端环境中我们假设所有页面都存在
+                    return true;
                 });
 
                 if (existingItems.length > 0) {
