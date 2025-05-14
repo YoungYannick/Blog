@@ -755,6 +755,20 @@
     // 初始化位置选择
     function initCountries() {
         const container = document.getElementById('countriesContainer');
+        const uniqueCountries = [];
+        const seenCodes = new Set();
+
+        countries.forEach(country => {
+            // 使用国家代码作为唯一标识
+            if (!seenCodes.has(country.code)) {
+                seenCodes.add(country.code);
+                uniqueCountries.push(country);
+            }
+        });
+
+        countries.length = 0; // 清空原数组
+        uniqueCountries.forEach(country => countries.push(country)); // 添加唯一项
+
         countries.forEach(country => {
             const label = document.createElement('label');
             // 添加搜索数据属性
@@ -773,11 +787,44 @@
     }
     // 新增搜索功能
     function handleSearch() {
-        const keyword = document.getElementById('searchInput').value.trim().toLowerCase();
-        document.querySelectorAll('.country-item').forEach(item => {
-            const shouldShow = item.dataset.search.includes(keyword);
-            item.style.display = shouldShow ? 'flex' : 'none';
+        const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+        const container = document.getElementById('countriesContainer');
+        
+        // 清空容器，防止重复显示
+        container.innerHTML = '';
+        
+        const displayType = document.querySelector('input[name="displayType"]:checked').value;
+        const includeAll = document.getElementById('allTypesCheckbox').checked;
+        
+        countries.forEach(country => {
+            const matchesSearch = country.name.toLowerCase().includes(searchTerm) || 
+                                country.code.toLowerCase().includes(searchTerm) || 
+                                country.zh.toLowerCase().includes(searchTerm) ||
+                                country.flag.includes(searchTerm);
+            
+            if (matchesSearch) {
+                const item = document.createElement('div');
+                item.className = 'country-item';
+                
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.value = country.code;
+                checkbox.addEventListener('change', generateRegex);
+                
+                const label = document.createElement('label');
+                if (includeAll) {
+                    label.textContent = `${country[displayType]} (${country.name}, ${country.code}, ${country.flag})`;
+                } else {
+                    label.textContent = country[displayType];
+                }
+                
+                item.appendChild(checkbox);
+                item.appendChild(label);
+                container.appendChild(item);
+            }
         });
+        
+        generateRegex();
     }
     // 新增全选功能
     function selectAll() {
